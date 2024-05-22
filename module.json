@@ -1,16 +1,8 @@
 {
   "id": "fates-descent",
   "title": "Fate's Descent",
-  "version": "1.0.0",
-  "description": "",
-  "version": "0.2.0",
-  "authors": [
-    {
-      "name": "Relic",
-      "url": "",
-      "discord": "Relic"
-    }
-  ],
+  "description": "Put something here",
+  "version": "0.2.0",  
   "compatibility": {
     "minimum": "10",
     "verified": "11"
@@ -43,6 +35,14 @@
       }
     ]
   },
+  "authors": [
+    {
+      "name": "Relic",
+      "url": "",
+      "discord": "Relic",
+      "flags": {}
+    }
+  ],
   "esmodules": [
     "index.js",
     "scripts/main.js",
