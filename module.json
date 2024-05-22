@@ -1,7 +1,6 @@
 {
   "id": "fates-descent",
   "title": "Fate's Descent",
-  "description": "Put something here",
   "version": "0.2.0",  
   "compatibility": {
     "minimum": "10",
@@ -44,16 +43,13 @@
     }
   ],
   "esmodules": [
-    "index.js",
+    "src/index.js",
     "scripts/main.js",
     "scripts/FatesDescentRoll.js",
     "scripts/settings.js",
     "scripts/hooks.js",
     "scripts/SanityMadnessHandler.js",
     "scripts/utils.js"
-  ],
-  "styles": [
-    "style.css"
   ],
   "flags": {
     "hotReload": {
@@ -106,14 +102,5 @@
       "flags": {}
     }
   ],
-  "socket": true,
-  "url": "",
-  "readme": "",
-  "bugs": "",
-  "changelog": "",
-  "manifest": "",
-  "download": "",
-  "protected": false,
-  "coreTranslation": false,
-  "library": false
+  "socket": true
 }
