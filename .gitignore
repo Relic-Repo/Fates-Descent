@@ -8,3 +8,12 @@ node_modules/
 /index.js
 /index.js.map
 /style.css
+.eslintrc
+.eslintignore
+.editorconfig
+scripts/
+vite.config.mjs
+template-svelte-esm.lock
+LICENSE-CCO
+LICENSE-MIT
+LICENSE-UNLICENSE
