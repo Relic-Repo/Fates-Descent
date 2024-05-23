@@ -1,11 +1,13 @@
 {
-  "description": "Provides a bare-bones Foundry module template repo to get set up with using the TyphonJS Runtime Library and Svelte with ES Modules.",
+  "name": "fates-descent",
+  "version": "1.0.0",
+  "description": "Fate's Descent module for Foundry VTT",
   "license": "MIT",
   "private": true,
   "type": "module",
-  "author": "Michael Leahy <support@typhonjs.io> (https://github.com/typhonrt)",
+  "author": "Relic",
   "contributors": [
-    "Michael Leahy <support@typhonjs.io> (https://github.com/typhonrt)"
+    "Relic"
   ],
   "imports": {
     "#runtime/*": "@typhonjs-fvtt/runtime/*",
@@ -23,7 +25,10 @@
     "svelte-preprocess": "^5",
     "vite": "^4.4.0"
   },
-  "browserslist": [">5%", "not IE 11"],
+  "browserslist": [
+    ">5%",
+    "not IE 11"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite",
