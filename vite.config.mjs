@@ -80,9 +80,9 @@ export default () =>
          target: ['es2022'],
          terserOptions: s_COMPRESS ? { ...terserConfig(), ecma: 2022 } : void 0,
          lib: {
-            entry: './index.js',
+            entry: './main.js',
             formats: ['es'],
-            fileName: 'index'
+            fileName: 'fates-descent'
          }
       },
 

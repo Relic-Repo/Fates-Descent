@@ -43,13 +43,10 @@
     }
   ],
   "esmodules": [
-    "src/index.js",
-    "scripts/main.js",
-    "scripts/FatesDescentRoll.js",
-    "scripts/settings.js",
-    "scripts/hooks.js",
-    "scripts/SanityMadnessHandler.js",
-    "scripts/utils.js"
+    "fates-descent.js"
+  ],
+  "styles": [
+    "style.css"
   ],
   "flags": {
     "hotReload": {
