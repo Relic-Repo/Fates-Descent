@@ -14,6 +14,6 @@ node_modules/
 scripts/
 vite.config.mjs
 template-svelte-esm.lock
-LICENSE-CCO
+LICENSE-CC0
 LICENSE-MIT
 LICENSE-UNLICENSE
