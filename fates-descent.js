@@ -467,25 +467,6 @@ function get_current_component() {
 function onMount(fn) {
   get_current_component().$$.on_mount.push(fn);
 }
-function createEventDispatcher() {
-  const component = get_current_component();
-  return (type, detail, { cancelable = false } = {}) => {
-    const callbacks = component.$$.callbacks[type];
-    if (callbacks) {
-      const event = custom_event(
-        /** @type {string} */
-        type,
-        detail,
-        { cancelable }
-      );
-      callbacks.slice().forEach((fn) => {
-        fn.call(component, event);
-      });
-      return !event.defaultPrevented;
-    }
-    return true;
-  };
-}
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
   return context;
@@ -14372,14 +14353,14 @@ cssVariables.setProperties({
 const SanityApp_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[22] = list[i];
+  child_ctx[23] = list[i];
   return child_ctx;
 }
 function create_each_block(ctx) {
   let option;
   let t_value = (
     /*severity*/
-    ctx[22].text + ""
+    ctx[23].text + ""
   );
   let t;
   return {
@@ -14387,7 +14368,7 @@ function create_each_block(ctx) {
       option = element("option");
       t = text(t_value);
       option.__value = /*severity*/
-      ctx[22];
+      ctx[23];
       set_input_value(option, option.__value);
     },
     m(target, anchor) {
@@ -14450,7 +14431,7 @@ function create_default_slot(ctx) {
   let dispose;
   let each_value = ensure_array_like(
     /*severities*/
-    ctx[6]
+    ctx[7]
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
@@ -14464,14 +14445,14 @@ function create_default_slot(ctx) {
       t0 = space();
       t1 = text(
         /*dialogTitle*/
-        ctx[9]
+        ctx[10]
       );
       t2 = space();
       i1 = element("i");
       t3 = space();
       form = element("form");
       label0 = element("label");
-      t4 = text("Severity:\r\n          ");
+      t4 = text("Severity:\r\n        ");
       select = element("select");
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
@@ -14500,40 +14481,40 @@ function create_default_slot(ctx) {
       t17 = text(t17_value);
       attr(i0, "class", "fas fa-dice");
       attr(i1, "class", "fas fa-dice");
-      attr(select, "class", "svelte-fdcss-nihvwz");
+      attr(select, "class", "svelte-fdcss-qndi45");
       if (
         /*selectedSeverity*/
         ctx[1] === void 0
       )
         add_render_callback(() => (
           /*select_change_handler*/
-          ctx[14].call(select)
+          ctx[15].call(select)
         ));
-      attr(label0, "class", "svelte-fdcss-nihvwz");
+      attr(label0, "class", "svelte-fdcss-qndi45");
       attr(input0, "type", "checkbox");
-      attr(input0, "class", "svelte-fdcss-nihvwz");
+      attr(input0, "class", "svelte-fdcss-qndi45");
       attr(input1, "type", "text");
       attr(input1, "placeholder", "DC");
       input1.disabled = input1_disabled_value = !/*useCustomDC*/
       ctx[2];
-      attr(input1, "class", "svelte-fdcss-nihvwz");
-      attr(label1, "class", "svelte-fdcss-nihvwz");
+      attr(input1, "class", "svelte-fdcss-qndi45");
+      attr(label1, "class", "svelte-fdcss-qndi45");
       attr(input2, "type", "checkbox");
-      attr(input2, "class", "svelte-fdcss-nihvwz");
+      attr(input2, "class", "svelte-fdcss-qndi45");
       attr(input3, "type", "text");
       attr(input3, "placeholder", "Loss");
       input3.disabled = input3_disabled_value = !/*useCustomLoss*/
       ctx[4];
-      attr(input3, "class", "svelte-fdcss-nihvwz");
-      attr(label2, "class", "svelte-fdcss-nihvwz");
+      attr(input3, "class", "svelte-fdcss-qndi45");
+      attr(label2, "class", "svelte-fdcss-qndi45");
       button0.disabled = button0_disabled_value = /*selectedSeverity*/
       ctx[1] === null;
       attr(button0, "type", "submit");
-      attr(button0, "class", "svelte-fdcss-nihvwz");
+      attr(button0, "class", "svelte-fdcss-qndi45");
       attr(button1, "type", "button");
-      attr(button1, "class", "svelte-fdcss-nihvwz");
-      attr(form, "class", "svelte-fdcss-nihvwz");
-      attr(main, "class", "svelte-fdcss-nihvwz");
+      attr(button1, "class", "svelte-fdcss-qndi45");
+      attr(form, "class", "svelte-fdcss-qndi45");
+      attr(main, "class", "svelte-fdcss-qndi45");
     },
     m(target, anchor) {
       insert(target, main, anchor);
@@ -14600,43 +14581,43 @@ function create_default_slot(ctx) {
             select,
             "change",
             /*select_change_handler*/
-            ctx[14]
+            ctx[15]
           ),
           listen(
             select,
             "change",
             /*change_handler*/
-            ctx[15]
+            ctx[16]
           ),
           listen(
             input0,
             "change",
             /*input0_change_handler*/
-            ctx[16]
+            ctx[17]
           ),
           listen(
             input1,
             "input",
             /*input1_input_handler*/
-            ctx[17]
+            ctx[18]
           ),
           listen(
             input2,
             "change",
             /*input2_change_handler*/
-            ctx[18]
+            ctx[19]
           ),
           listen(
             input3,
             "input",
             /*input3_input_handler*/
-            ctx[19]
+            ctx[20]
           ),
           listen(
             button1,
             "click",
-            /*click_handler*/
-            ctx[20]
+            /*handleCancel*/
+            ctx[9]
           ),
           listen(form, "submit", prevent_default(
             /*handleRoll*/
@@ -14648,10 +14629,10 @@ function create_default_slot(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty & /*severities*/
-      64) {
+      128) {
         each_value = ensure_array_like(
           /*severities*/
-          ctx2[6]
+          ctx2[7]
         );
         let i;
         for (i = 0; i < each_value.length; i += 1) {
@@ -14670,7 +14651,7 @@ function create_default_slot(ctx) {
         each_blocks.length = each_value.length;
       }
       if (dirty & /*selectedSeverity, severities*/
-      66) {
+      130) {
         select_option(
           select,
           /*selectedSeverity*/
@@ -14716,7 +14697,7 @@ function create_default_slot(ctx) {
         );
       }
       if (dirty & /*selectedSeverity, severities*/
-      66 && button0_disabled_value !== (button0_disabled_value = /*selectedSeverity*/
+      130 && button0_disabled_value !== (button0_disabled_value = /*selectedSeverity*/
       ctx2[1] === null)) {
         button0.disabled = button0_disabled_value;
       }
@@ -14746,6 +14727,10 @@ function create_fragment(ctx) {
     ctx[21](value);
   }
   let applicationshell_props = {
+    stylesContent: (
+      /*stylesContent*/
+      ctx[6]
+    ),
     $$slots: { default: [create_default_slot] },
     $$scope: { ctx }
   };
@@ -14769,7 +14754,7 @@ function create_fragment(ctx) {
     p(ctx2, [dirty]) {
       const applicationshell_changes = {};
       if (dirty & /*$$scope, selectedSeverity, useCustomLoss, loss, useCustomDC, customDC*/
-      33554494) {
+      67108926) {
         applicationshell_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_elementRoot && dirty & /*elementRoot*/
@@ -14802,6 +14787,8 @@ function instance($$self, $$props, $$invalidate) {
   let { config } = $$props;
   let { performRoll = FatesDescentRoll.performRoll } = $$props;
   let { elementRoot } = $$props;
+  const { application } = getContext("#external");
+  const stylesContent = { padding: "0" };
   let severities = [
     { id: "minimal", text: "Minimal (DC 8)" },
     { id: "moderate", text: "Moderate (DC 12)" },
@@ -14813,22 +14800,37 @@ function instance($$self, $$props, $$invalidate) {
   let customDC = 0;
   let useCustomLoss = false;
   let loss = 0;
-  const dispatch2 = createEventDispatcher();
-  function handleRoll() {
+  async function handleRoll() {
     const lossInput = useCustomLoss ? loss : {
       "minimal": "1d4",
       "moderate": "1d6",
       "serious": "1d8",
       "extreme": "1d10"
     }[selectedSeverity.id];
-    performRoll(actorId, selectedSeverity.id, customDC, type, lossInput, config, useCustomDC, useCustomLoss);
-    dispatch2("close");
+    const rollResult = await new Roll(lossInput).evaluate({ async: true });
+    performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
+    application.close();
+  }
+  function handleCancel() {
+    const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
+    const rollOptions = {
+      chatMessage: true,
+      fastForward: true,
+      fromDialog: true,
+      advantage: config?.advantage || false,
+      disadvantage: config?.disadvantage || false
+    };
+    const actor = game.actors.get(actorId);
+    if (actor) {
+      actor[method]("san", rollOptions);
+    }
+    application.close();
   }
   const dialogTitle = type === "save" ? "Sanity Save" : "Sanity Check";
   function select_change_handler() {
     selectedSeverity = select_value(this);
     $$invalidate(1, selectedSeverity);
-    $$invalidate(6, severities);
+    $$invalidate(7, severities);
   }
   const change_handler = () => {
     $$invalidate(3, customDC = 0);
@@ -14850,20 +14852,19 @@ function instance($$self, $$props, $$invalidate) {
     loss = this.value;
     $$invalidate(5, loss);
   }
-  const click_handler = () => dispatch2("close");
   function applicationshell_elementRoot_binding(value) {
     elementRoot = value;
     $$invalidate(0, elementRoot);
   }
   $$self.$$set = ($$props2) => {
     if ("actorId" in $$props2)
-      $$invalidate(10, actorId = $$props2.actorId);
+      $$invalidate(11, actorId = $$props2.actorId);
     if ("type" in $$props2)
-      $$invalidate(11, type = $$props2.type);
+      $$invalidate(12, type = $$props2.type);
     if ("config" in $$props2)
-      $$invalidate(12, config = $$props2.config);
+      $$invalidate(13, config = $$props2.config);
     if ("performRoll" in $$props2)
-      $$invalidate(13, performRoll = $$props2.performRoll);
+      $$invalidate(14, performRoll = $$props2.performRoll);
     if ("elementRoot" in $$props2)
       $$invalidate(0, elementRoot = $$props2.elementRoot);
   };
@@ -14874,9 +14875,10 @@ function instance($$self, $$props, $$invalidate) {
     customDC,
     useCustomLoss,
     loss,
+    stylesContent,
     severities,
-    dispatch2,
     handleRoll,
+    handleCancel,
     dialogTitle,
     actorId,
     type,
@@ -14888,7 +14890,6 @@ function instance($$self, $$props, $$invalidate) {
     input1_input_handler,
     input2_change_handler,
     input3_input_handler,
-    click_handler,
     applicationshell_elementRoot_binding
   ];
 }
@@ -14896,36 +14897,36 @@ class SanityApp extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance, create_fragment, safe_not_equal, {
-      actorId: 10,
-      type: 11,
-      config: 12,
-      performRoll: 13,
+      actorId: 11,
+      type: 12,
+      config: 13,
+      performRoll: 14,
       elementRoot: 0
     });
   }
   get actorId() {
-    return this.$$.ctx[10];
+    return this.$$.ctx[11];
   }
   set actorId(actorId) {
     this.$$set({ actorId });
     flush();
   }
   get type() {
-    return this.$$.ctx[11];
+    return this.$$.ctx[12];
   }
   set type(type) {
     this.$$set({ type });
     flush();
   }
   get config() {
-    return this.$$.ctx[12];
+    return this.$$.ctx[13];
   }
   set config(config) {
     this.$$set({ config });
     flush();
   }
   get performRoll() {
-    return this.$$.ctx[13];
+    return this.$$.ctx[14];
   }
   set performRoll(performRoll) {
     this.$$set({ performRoll });

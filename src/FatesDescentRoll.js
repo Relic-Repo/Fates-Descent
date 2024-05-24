@@ -1,3 +1,10 @@
+/* eslint-disable jsdoc/check-types */
+/* eslint-disable jsdoc/tag-lines */
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-vars */
+/* eslint-disable curly */
+/* eslint-disable no-undef */
+/* eslint-disable brace-style */
 // FatesDescentRoll.js for "Fate's Descent"
 
 import { MODULE_ID } from "./settings.js";
@@ -8,7 +15,8 @@ export class FatesDescentRoll {
     /**
      * Constructs an instance of FatesDescentRoll and initializes socket and hooks.
      */
-    constructor() {
+    constructor() 
+    {
         this.styling = `
             color:#D01B00;
             background-color:#A3A6B4;
