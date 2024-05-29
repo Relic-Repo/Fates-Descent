@@ -8,42 +8,42 @@ function FDregisterSettings() {
     type: Boolean,
     default: true
   });
-  game.settings.register(
-    MODULE_ID,
-    "startingSanityPoints",
-    {
-      name: "Starting Sanity Points",
-      hint: "Set the initial amount of Sanity Points before modifiers.",
-      scope: "world",
-      config: true,
-      type: Number,
-      default: 28
-    }
-  );
-  game.settings.register(
-    MODULE_ID,
-    "startingMadnessPoints",
-    {
-      name: "Starting Madness Points",
-      hint: "Set the initial amount of Madness Points before modifiers.",
-      scope: "world",
-      config: true,
-      type: Number,
-      default: 8
-    }
-  );
-  game.settings.register(
-    MODULE_ID,
-    "debug",
-    {
-      name: "Enable Debug Logging",
-      hint: "Enable or disable debug logging for the Fate's Descent module.",
-      scope: "world",
-      config: true,
-      type: Boolean,
-      default: false
-    }
-  );
+  game.settings.register(MODULE_ID, "startingSanityPoints", {
+    name: "Starting Sanity Points",
+    hint: "Set the initial amount of Sanity Points before modifiers.",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 28
+  });
+  game.settings.register(MODULE_ID, "startingMadnessPoints", {
+    name: "Starting Madness Points",
+    hint: "Set the initial amount of Madness Points before modifiers.",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 8
+  });
+  game.settings.register(MODULE_ID, "debug", {
+    name: "Enable Debug Logging",
+    hint: "Enable or disable debug logging for the Fate's Descent module.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+  game.settings.register(MODULE_ID, "globalSaveRequests", {
+    scope: "world",
+    config: false,
+    type: Array,
+    default: []
+  });
+  game.settings.register(MODULE_ID, "globalTestRequests", {
+    scope: "world",
+    config: false,
+    type: Array,
+    default: []
+  });
 }
 function debugLog(message, styling2, additionalData = null) {
   if (game.settings.get(MODULE_ID, "debug")) {
@@ -467,6 +467,9 @@ function get_current_component() {
 function onMount(fn) {
   get_current_component().$$.on_mount.push(fn);
 }
+function onDestroy(fn) {
+  get_current_component().$$.on_destroy.push(fn);
+}
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
   return context;
@@ -743,6 +746,79 @@ function create_out_transition(node, fn, params) {
 }
 function ensure_array_like(array_like_or_iterator) {
   return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
+}
+function destroy_block(block, lookup) {
+  block.d(1);
+  lookup.delete(block.key);
+}
+function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block2, next, get_context) {
+  let o = old_blocks.length;
+  let n = list.length;
+  let i = o;
+  const old_indexes = {};
+  while (i--)
+    old_indexes[old_blocks[i].key] = i;
+  const new_blocks = [];
+  const new_lookup = /* @__PURE__ */ new Map();
+  const deltas = /* @__PURE__ */ new Map();
+  const updates = [];
+  i = n;
+  while (i--) {
+    const child_ctx = get_context(ctx, list, i);
+    const key = get_key(child_ctx);
+    let block = lookup.get(key);
+    if (!block) {
+      block = create_each_block2(key, child_ctx);
+      block.c();
+    } else if (dynamic) {
+      updates.push(() => block.p(child_ctx, dirty));
+    }
+    new_lookup.set(key, new_blocks[i] = block);
+    if (key in old_indexes)
+      deltas.set(key, Math.abs(i - old_indexes[key]));
+  }
+  const will_move = /* @__PURE__ */ new Set();
+  const did_move = /* @__PURE__ */ new Set();
+  function insert2(block) {
+    transition_in(block, 1);
+    block.m(node, next);
+    lookup.set(block.key, block);
+    next = block.first;
+    n--;
+  }
+  while (o && n) {
+    const new_block = new_blocks[n - 1];
+    const old_block = old_blocks[o - 1];
+    const new_key = new_block.key;
+    const old_key = old_block.key;
+    if (new_block === old_block) {
+      next = new_block.first;
+      o--;
+      n--;
+    } else if (!new_lookup.has(old_key)) {
+      destroy(old_block, lookup);
+      o--;
+    } else if (!lookup.has(new_key) || will_move.has(new_key)) {
+      insert2(new_block);
+    } else if (did_move.has(old_key)) {
+      o--;
+    } else if (deltas.get(new_key) > deltas.get(old_key)) {
+      did_move.add(new_key);
+      insert2(new_block);
+    } else {
+      will_move.add(old_key);
+      o--;
+    }
+  }
+  while (o--) {
+    const old_block = old_blocks[o];
+    if (!new_lookup.has(old_block.key))
+      destroy(old_block, lookup);
+  }
+  while (n)
+    insert2(new_blocks[n - 1]);
+  run_all(updates);
+  return new_blocks;
 }
 function get_spread_update(levels, updates) {
   const update2 = {};
@@ -12363,7 +12439,7 @@ function get_each_context$1(ctx, list, i) {
   child_ctx[31] = list[i];
   return child_ctx;
 }
-function get_each_context_1(ctx, list, i) {
+function get_each_context_1$1(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[31] = list[i];
   return child_ctx;
@@ -12397,7 +12473,7 @@ function create_if_block$1(ctx) {
     }
   };
 }
-function create_each_block_1(ctx) {
+function create_each_block_1$1(ctx) {
   let switch_instance;
   let switch_instance_anchor;
   let current;
@@ -12605,7 +12681,7 @@ function create_key_block(ctx) {
   );
   let each_blocks_1 = [];
   for (let i = 0; i < each_value_1.length; i += 1) {
-    each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
   }
   const out = (i) => transition_out(each_blocks_1[i], 1, 1, () => {
     each_blocks_1[i] = null;
@@ -12734,12 +12810,12 @@ function create_key_block(ctx) {
         );
         let i;
         for (i = 0; i < each_value_1.length; i += 1) {
-          const child_ctx = get_each_context_1(ctx2, each_value_1, i);
+          const child_ctx = get_each_context_1$1(ctx2, each_value_1, i);
           if (each_blocks_1[i]) {
             each_blocks_1[i].p(child_ctx, dirty);
             transition_in(each_blocks_1[i], 1);
           } else {
-            each_blocks_1[i] = create_each_block_1(child_ctx);
+            each_blocks_1[i] = create_each_block_1$1(child_ctx);
             each_blocks_1[i].c();
             transition_in(each_blocks_1[i], 1);
             each_blocks_1[i].m(header, t3);
@@ -14353,14 +14429,21 @@ cssVariables.setProperties({
 const SanityApp_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[23] = list[i];
+  child_ctx[19] = list[i];
+  child_ctx[20] = list;
+  child_ctx[21] = i;
   return child_ctx;
 }
-function create_each_block(ctx) {
+function get_each_context_1(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[22] = list[i];
+  return child_ctx;
+}
+function create_each_block_1(ctx) {
   let option;
   let t_value = (
     /*severity*/
-    ctx[23].text + ""
+    ctx[22].text + ""
   );
   let t;
   return {
@@ -14368,7 +14451,7 @@ function create_each_block(ctx) {
       option = element("option");
       t = text(t_value);
       option.__value = /*severity*/
-      ctx[23];
+      ctx[22];
       set_input_value(option, option.__value);
     },
     m(target, anchor) {
@@ -14383,152 +14466,187 @@ function create_each_block(ctx) {
     }
   };
 }
-function create_default_slot(ctx) {
-  let main;
-  let h2;
-  let i0;
+function create_each_block(key_1, ctx) {
+  let div8;
+  let div0;
+  let t0_value = (
+    /*request*/
+    ctx[19].actorName + ""
+  );
   let t0;
   let t1;
-  let t2;
-  let i1;
-  let t3;
-  let form;
-  let label0;
-  let t4;
+  let div1;
   let select;
-  let t5;
-  let label1;
-  let t6;
+  let t2;
+  let div3;
+  let div2;
   let input0;
-  let t7;
+  let t3;
   let input1;
   let input1_disabled_value;
-  let t8;
-  let label2;
-  let t9;
+  let t4;
+  let div5;
+  let div4;
   let input2;
-  let t10;
+  let t5;
   let input3;
   let input3_disabled_value;
-  let t11;
+  let t6;
+  let div7;
+  let div6;
   let button0;
-  let t12;
-  let button0_disabled_value;
-  let t13;
+  let t8;
   let button1;
-  let t15;
-  let p;
-  let t16;
-  let t17_value = (
-    /*selectedSeverity*/
-    (ctx[1] ? (
-      /*selectedSeverity*/
-      ctx[1].text
-    ) : "[waiting...]") + ""
-  );
-  let t17;
+  let t10;
   let mounted;
   let dispose;
-  let each_value = ensure_array_like(
+  let each_value_1 = ensure_array_like(
     /*severities*/
-    ctx[7]
+    ctx[6]
   );
   let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+  for (let i = 0; i < each_value_1.length; i += 1) {
+    each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+  }
+  function select_change_handler() {
+    ctx[8].call(
+      select,
+      /*each_value*/
+      ctx[20],
+      /*request_index*/
+      ctx[21]
+    );
+  }
+  function input0_change_handler() {
+    ctx[9].call(
+      input0,
+      /*each_value*/
+      ctx[20],
+      /*request_index*/
+      ctx[21]
+    );
+  }
+  function input1_input_handler() {
+    ctx[10].call(
+      input1,
+      /*each_value*/
+      ctx[20],
+      /*request_index*/
+      ctx[21]
+    );
+  }
+  function input2_change_handler() {
+    ctx[11].call(
+      input2,
+      /*each_value*/
+      ctx[20],
+      /*request_index*/
+      ctx[21]
+    );
+  }
+  function input3_input_handler() {
+    ctx[12].call(
+      input3,
+      /*each_value*/
+      ctx[20],
+      /*request_index*/
+      ctx[21]
+    );
+  }
+  function click_handler() {
+    return (
+      /*click_handler*/
+      ctx[13](
+        /*request*/
+        ctx[19]
+      )
+    );
+  }
+  function click_handler_1() {
+    return (
+      /*click_handler_1*/
+      ctx[14](
+        /*request*/
+        ctx[19]
+      )
+    );
   }
   return {
+    key: key_1,
+    first: null,
     c() {
-      main = element("main");
-      h2 = element("h2");
-      i0 = element("i");
-      t0 = space();
-      t1 = text(
-        /*dialogTitle*/
-        ctx[10]
-      );
-      t2 = space();
-      i1 = element("i");
-      t3 = space();
-      form = element("form");
-      label0 = element("label");
-      t4 = text("Severity:\r\n        ");
+      div8 = element("div");
+      div0 = element("div");
+      t0 = text(t0_value);
+      t1 = space();
+      div1 = element("div");
       select = element("select");
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      t5 = space();
-      label1 = element("label");
-      t6 = text("Custom DC: ");
+      t2 = space();
+      div3 = element("div");
+      div2 = element("div");
       input0 = element("input");
-      t7 = space();
+      t3 = space();
       input1 = element("input");
-      t8 = space();
-      label2 = element("label");
-      t9 = text("Loss: ");
+      t4 = space();
+      div5 = element("div");
+      div4 = element("div");
       input2 = element("input");
-      t10 = space();
+      t5 = space();
       input3 = element("input");
-      t11 = space();
+      t6 = space();
+      div7 = element("div");
+      div6 = element("div");
       button0 = element("button");
-      t12 = text("Roll");
-      t13 = space();
+      button0.textContent = "Roll";
+      t8 = space();
       button1 = element("button");
       button1.textContent = "Cancel";
-      t15 = space();
-      p = element("p");
-      t16 = text("Selected severity: ");
-      t17 = text(t17_value);
-      attr(i0, "class", "fas fa-dice");
-      attr(i1, "class", "fas fa-dice");
-      attr(select, "class", "svelte-fdcss-qndi45");
+      t10 = space();
+      attr(div0, "class", "cell svelte-fdcss-bb2ux6");
+      attr(select, "class", "svelte-fdcss-bb2ux6");
       if (
-        /*selectedSeverity*/
-        ctx[1] === void 0
+        /*request*/
+        ctx[19].selectedSeverity === void 0
       )
-        add_render_callback(() => (
-          /*select_change_handler*/
-          ctx[15].call(select)
-        ));
-      attr(label0, "class", "svelte-fdcss-qndi45");
+        add_render_callback(select_change_handler);
+      attr(div1, "class", "cell svelte-fdcss-bb2ux6");
       attr(input0, "type", "checkbox");
-      attr(input0, "class", "svelte-fdcss-qndi45");
+      attr(input0, "class", "svelte-fdcss-bb2ux6");
       attr(input1, "type", "text");
       attr(input1, "placeholder", "DC");
-      input1.disabled = input1_disabled_value = !/*useCustomDC*/
-      ctx[2];
-      attr(input1, "class", "svelte-fdcss-qndi45");
-      attr(label1, "class", "svelte-fdcss-qndi45");
+      input1.disabled = input1_disabled_value = !/*request*/
+      ctx[19].useCustomDC;
+      attr(input1, "class", "svelte-fdcss-bb2ux6");
+      attr(div2, "class", "custom-dc svelte-fdcss-bb2ux6");
+      attr(div3, "class", "cell svelte-fdcss-bb2ux6");
       attr(input2, "type", "checkbox");
-      attr(input2, "class", "svelte-fdcss-qndi45");
+      attr(input2, "class", "svelte-fdcss-bb2ux6");
       attr(input3, "type", "text");
       attr(input3, "placeholder", "Loss");
-      input3.disabled = input3_disabled_value = !/*useCustomLoss*/
-      ctx[4];
-      attr(input3, "class", "svelte-fdcss-qndi45");
-      attr(label2, "class", "svelte-fdcss-qndi45");
-      button0.disabled = button0_disabled_value = /*selectedSeverity*/
-      ctx[1] === null;
-      attr(button0, "type", "submit");
-      attr(button0, "class", "svelte-fdcss-qndi45");
+      input3.disabled = input3_disabled_value = !/*request*/
+      ctx[19].useCustomLoss;
+      attr(input3, "class", "svelte-fdcss-bb2ux6");
+      attr(div4, "class", "custom-loss svelte-fdcss-bb2ux6");
+      attr(div5, "class", "cell svelte-fdcss-bb2ux6");
+      attr(button0, "type", "button");
+      attr(button0, "class", "svelte-fdcss-bb2ux6");
       attr(button1, "type", "button");
-      attr(button1, "class", "svelte-fdcss-qndi45");
-      attr(form, "class", "svelte-fdcss-qndi45");
-      attr(main, "class", "svelte-fdcss-qndi45");
+      attr(button1, "class", "svelte-fdcss-bb2ux6");
+      attr(div6, "class", "buttons svelte-fdcss-bb2ux6");
+      attr(div7, "class", "cell svelte-fdcss-bb2ux6");
+      attr(div8, "class", "row svelte-fdcss-bb2ux6");
+      this.first = div8;
     },
     m(target, anchor) {
-      insert(target, main, anchor);
-      append(main, h2);
-      append(h2, i0);
-      append(h2, t0);
-      append(h2, t1);
-      append(h2, t2);
-      append(h2, i1);
-      append(main, t3);
-      append(main, form);
-      append(form, label0);
-      append(label0, t4);
-      append(label0, select);
+      insert(target, div8, anchor);
+      append(div8, div0);
+      append(div0, t0);
+      append(div8, t1);
+      append(div8, div1);
+      append(div1, select);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
           each_blocks[i].m(select, null);
@@ -14536,111 +14654,75 @@ function create_default_slot(ctx) {
       }
       select_option(
         select,
-        /*selectedSeverity*/
-        ctx[1],
+        /*request*/
+        ctx[19].selectedSeverity,
         true
       );
-      append(form, t5);
-      append(form, label1);
-      append(label1, t6);
-      append(label1, input0);
-      input0.checked = /*useCustomDC*/
-      ctx[2];
-      append(label1, t7);
-      append(label1, input1);
+      append(div8, t2);
+      append(div8, div3);
+      append(div3, div2);
+      append(div2, input0);
+      input0.checked = /*request*/
+      ctx[19].useCustomDC;
+      append(div2, t3);
+      append(div2, input1);
       set_input_value(
         input1,
-        /*customDC*/
-        ctx[3]
+        /*request*/
+        ctx[19].customDC
       );
-      append(form, t8);
-      append(form, label2);
-      append(label2, t9);
-      append(label2, input2);
-      input2.checked = /*useCustomLoss*/
-      ctx[4];
-      append(label2, t10);
-      append(label2, input3);
+      append(div8, t4);
+      append(div8, div5);
+      append(div5, div4);
+      append(div4, input2);
+      input2.checked = /*request*/
+      ctx[19].useCustomLoss;
+      append(div4, t5);
+      append(div4, input3);
       set_input_value(
         input3,
-        /*loss*/
-        ctx[5]
+        /*request*/
+        ctx[19].loss
       );
-      append(form, t11);
-      append(form, button0);
-      append(button0, t12);
-      append(form, t13);
-      append(form, button1);
-      append(main, t15);
-      append(main, p);
-      append(p, t16);
-      append(p, t17);
+      append(div8, t6);
+      append(div8, div7);
+      append(div7, div6);
+      append(div6, button0);
+      append(div6, t8);
+      append(div6, button1);
+      append(div8, t10);
       if (!mounted) {
         dispose = [
-          listen(
-            select,
-            "change",
-            /*select_change_handler*/
-            ctx[15]
-          ),
-          listen(
-            select,
-            "change",
-            /*change_handler*/
-            ctx[16]
-          ),
-          listen(
-            input0,
-            "change",
-            /*input0_change_handler*/
-            ctx[17]
-          ),
-          listen(
-            input1,
-            "input",
-            /*input1_input_handler*/
-            ctx[18]
-          ),
-          listen(
-            input2,
-            "change",
-            /*input2_change_handler*/
-            ctx[19]
-          ),
-          listen(
-            input3,
-            "input",
-            /*input3_input_handler*/
-            ctx[20]
-          ),
-          listen(
-            button1,
-            "click",
-            /*handleCancel*/
-            ctx[9]
-          ),
-          listen(form, "submit", prevent_default(
-            /*handleRoll*/
-            ctx[8]
-          ))
+          listen(select, "change", select_change_handler),
+          listen(input0, "change", input0_change_handler),
+          listen(input1, "input", input1_input_handler),
+          listen(input2, "change", input2_change_handler),
+          listen(input3, "input", input3_input_handler),
+          listen(button0, "click", click_handler),
+          listen(button1, "click", click_handler_1)
         ];
         mounted = true;
       }
     },
-    p(ctx2, dirty) {
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (dirty & /*$requestsStore*/
+      2 && t0_value !== (t0_value = /*request*/
+      ctx[19].actorName + ""))
+        set_data(t0, t0_value);
       if (dirty & /*severities*/
-      128) {
-        each_value = ensure_array_like(
+      64) {
+        each_value_1 = ensure_array_like(
           /*severities*/
-          ctx2[7]
+          ctx[6]
         );
         let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context(ctx2, each_value, i);
+        for (i = 0; i < each_value_1.length; i += 1) {
+          const child_ctx = get_each_context_1(ctx, each_value_1, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
           } else {
-            each_blocks[i] = create_each_block(child_ctx);
+            each_blocks[i] = create_each_block_1(child_ctx);
             each_blocks[i].c();
             each_blocks[i].m(select, null);
           }
@@ -14648,74 +14730,135 @@ function create_default_slot(ctx) {
         for (; i < each_blocks.length; i += 1) {
           each_blocks[i].d(1);
         }
-        each_blocks.length = each_value.length;
+        each_blocks.length = each_value_1.length;
       }
-      if (dirty & /*selectedSeverity, severities*/
-      130) {
+      if (dirty & /*$requestsStore, severities*/
+      66) {
         select_option(
           select,
-          /*selectedSeverity*/
-          ctx2[1]
+          /*request*/
+          ctx[19].selectedSeverity
         );
       }
-      if (dirty & /*useCustomDC*/
-      4) {
-        input0.checked = /*useCustomDC*/
-        ctx2[2];
+      if (dirty & /*$requestsStore, severities*/
+      66) {
+        input0.checked = /*request*/
+        ctx[19].useCustomDC;
       }
-      if (dirty & /*useCustomDC*/
-      4 && input1_disabled_value !== (input1_disabled_value = !/*useCustomDC*/
-      ctx2[2])) {
+      if (dirty & /*$requestsStore, severities*/
+      66 && input1_disabled_value !== (input1_disabled_value = !/*request*/
+      ctx[19].useCustomDC)) {
         input1.disabled = input1_disabled_value;
       }
-      if (dirty & /*customDC*/
-      8 && input1.value !== /*customDC*/
-      ctx2[3]) {
+      if (dirty & /*$requestsStore, severities*/
+      66 && input1.value !== /*request*/
+      ctx[19].customDC) {
         set_input_value(
           input1,
-          /*customDC*/
-          ctx2[3]
+          /*request*/
+          ctx[19].customDC
         );
       }
-      if (dirty & /*useCustomLoss*/
-      16) {
-        input2.checked = /*useCustomLoss*/
-        ctx2[4];
+      if (dirty & /*$requestsStore, severities*/
+      66) {
+        input2.checked = /*request*/
+        ctx[19].useCustomLoss;
       }
-      if (dirty & /*useCustomLoss*/
-      16 && input3_disabled_value !== (input3_disabled_value = !/*useCustomLoss*/
-      ctx2[4])) {
+      if (dirty & /*$requestsStore, severities*/
+      66 && input3_disabled_value !== (input3_disabled_value = !/*request*/
+      ctx[19].useCustomLoss)) {
         input3.disabled = input3_disabled_value;
       }
-      if (dirty & /*loss*/
-      32 && input3.value !== /*loss*/
-      ctx2[5]) {
+      if (dirty & /*$requestsStore, severities*/
+      66 && input3.value !== /*request*/
+      ctx[19].loss) {
         set_input_value(
           input3,
-          /*loss*/
-          ctx2[5]
+          /*request*/
+          ctx[19].loss
         );
       }
-      if (dirty & /*selectedSeverity, severities*/
-      130 && button0_disabled_value !== (button0_disabled_value = /*selectedSeverity*/
-      ctx2[1] === null)) {
-        button0.disabled = button0_disabled_value;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div8);
       }
-      if (dirty & /*selectedSeverity*/
-      2 && t17_value !== (t17_value = /*selectedSeverity*/
-      (ctx2[1] ? (
-        /*selectedSeverity*/
-        ctx2[1].text
-      ) : "[waiting...]") + ""))
-        set_data(t17, t17_value);
+      destroy_each(each_blocks, detaching);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_default_slot(ctx) {
+  let main;
+  let h2;
+  let t1;
+  let div6;
+  let div5;
+  let t11;
+  let each_blocks = [];
+  let each_1_lookup = /* @__PURE__ */ new Map();
+  let each_value = ensure_array_like(
+    /*$requestsStore*/
+    ctx[1]
+  );
+  const get_key = (ctx2) => (
+    /*request*/
+    ctx2[19].actorId
+  );
+  for (let i = 0; i < each_value.length; i += 1) {
+    let child_ctx = get_each_context(ctx, each_value, i);
+    let key = get_key(child_ctx);
+    each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+  }
+  return {
+    c() {
+      main = element("main");
+      h2 = element("h2");
+      h2.innerHTML = `<i class="fas fa-dice"></i> Sanity <i class="fas fa-dice"></i>`;
+      t1 = space();
+      div6 = element("div");
+      div5 = element("div");
+      div5.innerHTML = `<div class="cell svelte-fdcss-bb2ux6">Character</div> <div class="cell svelte-fdcss-bb2ux6">Severity</div> <div class="cell svelte-fdcss-bb2ux6">Custom DC</div> <div class="cell svelte-fdcss-bb2ux6">Custom Loss</div> <div class="cell svelte-fdcss-bb2ux6">Confirm</div>`;
+      t11 = space();
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      attr(h2, "class", "svelte-fdcss-bb2ux6");
+      attr(div5, "class", "row header svelte-fdcss-bb2ux6");
+      attr(div6, "class", "table svelte-fdcss-bb2ux6");
+      attr(main, "class", "svelte-fdcss-bb2ux6");
+    },
+    m(target, anchor) {
+      insert(target, main, anchor);
+      append(main, h2);
+      append(main, t1);
+      append(main, div6);
+      append(div6, div5);
+      append(div6, t11);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        if (each_blocks[i]) {
+          each_blocks[i].m(div6, null);
+        }
+      }
+    },
+    p(ctx2, dirty) {
+      if (dirty & /*handleCancel, $requestsStore, handleRoll, severities*/
+      114) {
+        each_value = ensure_array_like(
+          /*$requestsStore*/
+          ctx2[1]
+        );
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div6, destroy_block, create_each_block, null, get_each_context);
+      }
     },
     d(detaching) {
       if (detaching) {
         detach(main);
       }
-      destroy_each(each_blocks, detaching);
-      mounted = false;
-      run_all(dispose);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].d();
+      }
     }
   };
 }
@@ -14724,12 +14867,12 @@ function create_fragment(ctx) {
   let updating_elementRoot;
   let current;
   function applicationshell_elementRoot_binding(value) {
-    ctx[21](value);
+    ctx[15](value);
   }
   let applicationshell_props = {
     stylesContent: (
       /*stylesContent*/
-      ctx[6]
+      ctx[2]
     ),
     $$slots: { default: [create_default_slot] },
     $$scope: { ctx }
@@ -14753,8 +14896,8 @@ function create_fragment(ctx) {
     },
     p(ctx2, [dirty]) {
       const applicationshell_changes = {};
-      if (dirty & /*$$scope, selectedSeverity, useCustomLoss, loss, useCustomDC, customDC*/
-      67108926) {
+      if (dirty & /*$$scope, $requestsStore*/
+      33554434) {
         applicationshell_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_elementRoot && dirty & /*elementRoot*/
@@ -14782,36 +14925,37 @@ function create_fragment(ctx) {
   };
 }
 function instance($$self, $$props, $$invalidate) {
-  let { actorId } = $$props;
-  let { type } = $$props;
-  let { config } = $$props;
+  let $requestsStore;
   let { performRoll = FatesDescentRoll.performRoll } = $$props;
   let { elementRoot } = $$props;
   const { application } = getContext("#external");
   const stylesContent = { padding: "0" };
-  let severities = [
-    { id: "minimal", text: "Minimal (DC 8)" },
-    { id: "moderate", text: "Moderate (DC 12)" },
-    { id: "serious", text: "Serious (DC 16)" },
-    { id: "extreme", text: "Extreme (DC 20)" }
-  ];
-  let selectedSeverity = severities[0];
-  let useCustomDC = false;
-  let customDC = 0;
-  let useCustomLoss = false;
-  let loss = 0;
-  async function handleRoll() {
+  const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests"));
+  component_subscribe($$self, requestsStore, (value) => $$invalidate(1, $requestsStore = value));
+  function handleRoll(request) {
+    const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const lossInput = useCustomLoss ? loss : {
       "minimal": "1d4",
       "moderate": "1d6",
       "serious": "1d8",
       "extreme": "1d10"
     }[selectedSeverity.id];
-    const rollResult = await new Roll(lossInput).evaluate({ async: true });
-    performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
-    application.close();
+    new Roll(lossInput).evaluate({ async: true }).then((rollResult) => {
+      performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
+      let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+      const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
+      if (index > -1) {
+        globalRequests.splice(index, 1);
+        game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+        requestsStore.set(globalRequests);
+      }
+      if (globalRequests.length === 0) {
+        application.close();
+      }
+    });
   }
-  function handleCancel() {
+  function handleCancel(request) {
+    const { actorId, type, config } = request;
     const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
     const rollOptions = {
       chatMessage: true,
@@ -14824,109 +14968,95 @@ function instance($$self, $$props, $$invalidate) {
     if (actor) {
       actor[method]("san", rollOptions);
     }
-    application.close();
+    let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
+    if (index > -1) {
+      globalRequests.splice(index, 1);
+      game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+      requestsStore.set(globalRequests);
+    }
+    if (globalRequests.length === 0) {
+      application.close();
+    }
   }
-  const dialogTitle = type === "save" ? "Sanity Save" : "Sanity Check";
-  function select_change_handler() {
-    selectedSeverity = select_value(this);
-    $$invalidate(1, selectedSeverity);
-    $$invalidate(7, severities);
+  function updateRequests() {
+    const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    requestsStore.set(globalRequests);
   }
-  const change_handler = () => {
-    $$invalidate(3, customDC = 0);
-    $$invalidate(5, loss = 0);
-  };
-  function input0_change_handler() {
-    useCustomDC = this.checked;
-    $$invalidate(2, useCustomDC);
+  const interval = setInterval(updateRequests, 500);
+  onDestroy(() => {
+    clearInterval(interval);
+    game.settings.set(MODULE_ID, "globalSaveRequests", []);
+  });
+  const severities = [
+    { id: "minimal", text: "Minimal (DC 8)" },
+    { id: "moderate", text: "Moderate (DC 12)" },
+    { id: "serious", text: "Serious (DC 16)" },
+    { id: "extreme", text: "Extreme (DC 20)" }
+  ];
+  function select_change_handler(each_value, request_index) {
+    each_value[request_index].selectedSeverity = select_value(this);
+    requestsStore.set($requestsStore);
+    $$invalidate(6, severities);
   }
-  function input1_input_handler() {
-    customDC = this.value;
-    $$invalidate(3, customDC);
+  function input0_change_handler(each_value, request_index) {
+    each_value[request_index].useCustomDC = this.checked;
+    requestsStore.set($requestsStore);
+    $$invalidate(6, severities);
   }
-  function input2_change_handler() {
-    useCustomLoss = this.checked;
-    $$invalidate(4, useCustomLoss);
+  function input1_input_handler(each_value, request_index) {
+    each_value[request_index].customDC = this.value;
+    requestsStore.set($requestsStore);
+    $$invalidate(6, severities);
   }
-  function input3_input_handler() {
-    loss = this.value;
-    $$invalidate(5, loss);
+  function input2_change_handler(each_value, request_index) {
+    each_value[request_index].useCustomLoss = this.checked;
+    requestsStore.set($requestsStore);
+    $$invalidate(6, severities);
   }
+  function input3_input_handler(each_value, request_index) {
+    each_value[request_index].loss = this.value;
+    requestsStore.set($requestsStore);
+    $$invalidate(6, severities);
+  }
+  const click_handler = (request) => handleRoll(request);
+  const click_handler_1 = (request) => handleCancel(request);
   function applicationshell_elementRoot_binding(value) {
     elementRoot = value;
     $$invalidate(0, elementRoot);
   }
   $$self.$$set = ($$props2) => {
-    if ("actorId" in $$props2)
-      $$invalidate(11, actorId = $$props2.actorId);
-    if ("type" in $$props2)
-      $$invalidate(12, type = $$props2.type);
-    if ("config" in $$props2)
-      $$invalidate(13, config = $$props2.config);
     if ("performRoll" in $$props2)
-      $$invalidate(14, performRoll = $$props2.performRoll);
+      $$invalidate(7, performRoll = $$props2.performRoll);
     if ("elementRoot" in $$props2)
       $$invalidate(0, elementRoot = $$props2.elementRoot);
   };
   return [
     elementRoot,
-    selectedSeverity,
-    useCustomDC,
-    customDC,
-    useCustomLoss,
-    loss,
+    $requestsStore,
     stylesContent,
-    severities,
+    requestsStore,
     handleRoll,
     handleCancel,
-    dialogTitle,
-    actorId,
-    type,
-    config,
+    severities,
     performRoll,
     select_change_handler,
-    change_handler,
     input0_change_handler,
     input1_input_handler,
     input2_change_handler,
     input3_input_handler,
+    click_handler,
+    click_handler_1,
     applicationshell_elementRoot_binding
   ];
 }
 class SanityApp extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance, create_fragment, safe_not_equal, {
-      actorId: 11,
-      type: 12,
-      config: 13,
-      performRoll: 14,
-      elementRoot: 0
-    });
-  }
-  get actorId() {
-    return this.$$.ctx[11];
-  }
-  set actorId(actorId) {
-    this.$$set({ actorId });
-    flush();
-  }
-  get type() {
-    return this.$$.ctx[12];
-  }
-  set type(type) {
-    this.$$set({ type });
-    flush();
-  }
-  get config() {
-    return this.$$.ctx[13];
-  }
-  set config(config) {
-    this.$$set({ config });
-    flush();
+    init(this, options, instance, create_fragment, safe_not_equal, { performRoll: 7, elementRoot: 0 });
   }
   get performRoll() {
-    return this.$$.ctx[14];
+    return this.$$.ctx[7];
   }
   set performRoll(performRoll) {
     this.$$set({ performRoll });
@@ -14942,28 +15072,49 @@ class SanityApp extends SvelteComponent {
 }
 class SanityApplication extends SvelteApplication {
   constructor(actor, type, config, performRoll) {
+    debugLog("SanityApplication | constructor called with:", actor, type);
+    const actorName = game.actors.get(actor.id)?.name;
+    const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    globalRequests.push({ actorId: actor.id, actorName, type, config });
+    game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
     super({
       title: "Sanity Dialog",
-      width: 280,
+      width: 630,
       height: "auto",
+      resizable: false,
       svelte: {
         class: SanityApp,
         target: document.body,
         props: {
-          actorId: actor.id,
-          type,
-          config,
           performRoll
         }
-      }
+      },
+      id: `sanity-dialog-${actor.id}`
     });
   }
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["sanity-dialog"],
-      resizable: true,
+      resizable: false,
       id: "sanity-dialog"
     });
+  }
+  static showSanityDialog(actorId, type, config) {
+    const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    console.log("showSanityDialog recieve", globalRequests);
+    if (globalRequests.length === 0) {
+      const actor = game.actors.get(actorId);
+      console.log("Fates Descent | actorId", actorId);
+      if (!actor) {
+        return;
+      }
+      const sanityApp = new SanityApplication(actor, type, config, FatesDescentRoll.performRoll);
+      sanityApp.render(true);
+    } else {
+      const actorName = game.actors.get(actorId)?.name;
+      globalRequests.push({ actorId, actorName, type, config });
+      game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+    }
   }
 }
 class FatesDescentRoll {
@@ -14972,12 +15123,12 @@ class FatesDescentRoll {
    */
   constructor() {
     this.styling = `
-            color:#D01B00;
-            background-color:#A3A6B4;
-            font-size:9pt;
-            font-weight:bold;
-            padding:1pt;
-        `;
+      color:#D01B00;
+      background-color:#A3A6B4;
+      font-size:9pt;
+      font-weight:bold;
+      padding:1pt;
+    `;
     this.socket = socketlib.registerModule("fates-descent");
     debugLog("FatesDescentRoll | Socket registered", this.styling);
     this.registerHooks();
@@ -14995,15 +15146,20 @@ class FatesDescentRoll {
    * Handles ability roll hooks to trigger sanity checks and saves.
    *
    * @param {Actor} actor - The actor performing the roll.
-   * @param {Object} config - Configuration options for the roll.
+   *
+   * @param {object} config - Configuration options for the roll.
+   *
    * @param {string} abilityId - The ID of the ability being rolled.
+   *
    * @param {string} type - The type of roll ('save' or 'test').
+   *
    * @returns {boolean} False to block the original roll, true otherwise.
    */
   handleAbilityRoll(actor, config, abilityId, type) {
     debugLog(`Pre-roll ability ${type} hook triggered.`, this.styling);
-    if (actor.type !== "character" || !actor.prototypeToken.actorLink)
+    if (actor.type !== "character" || !actor.prototypeToken.actorLink) {
       return true;
+    }
     debugLog("Actor:", this.styling, actor);
     debugLog("Config:", this.styling, config);
     debugLog("Ability ID:", this.styling, abilityId);
@@ -15023,32 +15179,39 @@ class FatesDescentRoll {
    * Displays a dialog for the user to perform a sanity check or save.
    *
    * @param {string} actorId - The ID of the actor.
+   *
    * @param {string} type - The type of roll ('save' or 'test').
-   * @param {Object} config - Configuration options for the roll.
+   *
+   * @param {object} config - Configuration options for the roll.
    */
   async showSanityDialog(actorId, type, config) {
-    const actor = game.actors.get(actorId);
-    if (!actor)
-      return;
-    new SanityApplication(actor, type, config, FatesDescentRoll.performRoll).render(true);
+    SanityApplication.showSanityDialog(actorId, type, config);
   }
   /**
    * Performs the sanity roll and updates actor's sanity points accordingly.
    *
    * @param {string} actorId - The ID of the actor.
+   *
    * @param {string} severity - The severity level of the sanity check.
+   *
    * @param {number} customDC - Custom difficulty class if used.
+   *
    * @param {string} type - The type of roll ('save' or 'test').
+   *
    * @param {number} loss - The sanity points lost.
-   * @param {Object} config - Configuration options for the roll.
+   *
+   * @param {object} config - Configuration options for the roll.
+   *
    * @param {boolean} useCustomDC - Whether a custom difficulty class is used.
-   * @param {boolean} useCustomLoss - Whether a custom loss value is used.
    */
-  static async performRoll(actorId, severity, customDC, type, loss, config, useCustomDC, useCustomLoss) {
+  static async performRoll(actorId, severity, customDC, type, loss, config, useCustomDC) {
     const actor = game.actors.get(actorId);
-    if (!actor)
+    if (!actor) {
       return;
-    let threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
+    }
+    const totalLoss = loss._total;
+    console.log(`Return from SanityApp loss: `, totalLoss);
+    const threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
     const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
     const rollOptions = {
       chatMessage: true,
@@ -15061,13 +15224,13 @@ class FatesDescentRoll {
     const resultText = roll.total >= threshold ? "maintained" : "lost";
     const textColor = roll.total >= threshold ? "green" : "red";
     let messageContent = `
-            <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-                <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-                Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
-            </div>
-        `;
+      <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
+        <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+        Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
+      </div>
+    `;
     if (roll.total < threshold) {
-      let currentSanity = actor.getFlag(MODULE_ID, "sanityPoints").current - loss;
+      const currentSanity = actor.getFlag(MODULE_ID, "sanityPoints").current - totalLoss;
       actor.setFlag(MODULE_ID, "sanityPoints", { current: Math.max(currentSanity, 0) });
       let madnessIncrement = 0;
       if (currentSanity <= 9) {
@@ -15076,15 +15239,15 @@ class FatesDescentRoll {
         madnessIncrement = 1;
       }
       if (madnessIncrement > 0) {
-        let currentMadness = actor.getFlag(MODULE_ID, "madness").current + madnessIncrement;
+        const currentMadness = actor.getFlag(MODULE_ID, "madness").current + madnessIncrement;
         actor.setFlag(MODULE_ID, "madness", { current: currentMadness });
       }
       messageContent = `
-                <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-                    <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-                    Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${loss})
-                </div>
-            `;
+        <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
+          <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+          Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
+        </div>
+      `;
     }
     ChatMessage.create({
       content: messageContent
@@ -15113,7 +15276,8 @@ class SanityMadnessHandler {
   /**
    * Checks if the update data includes sanity or madness updates.
    *
-   * @param {Object} updateData - The data being updated for the actor.
+   * @param {object} updateData - The data being updated for the actor.
+   *
    * @returns {boolean} True if the update data includes sanity or madness updates, false otherwise.
    */
   isSanityOrMadnessUpdate(updateData) {
@@ -15126,9 +15290,9 @@ class SanityMadnessHandler {
    */
   updateBarsForActor(actor) {
     const appId = `ActorSheet${actor.sheet?.constructor?.name}-${actor.id}`;
-    const app = Object.values(ui.windows).find((app2) => app2.options.id === appId);
-    if (app) {
-      app.render(true);
+    const appFD = Object.values(ui.windows).find((app) => app.options.id === appId);
+    if (appFD) {
+      appFD.render(true);
     }
   }
   /**
@@ -15137,8 +15301,9 @@ class SanityMadnessHandler {
    * @param {Actor} actor - The actor whose sanity and madness values need to be updated.
    */
   updateSanityAndMadness(actor) {
-    if (actor.type !== "character" || !actor.prototypeToken.actorLink)
+    if (actor.type !== "character" || !actor.prototypeToken.actorLink) {
       return;
+    }
     debugLog(`Updating sanity and madness for linked actor: ${actor.name}`, this.styling);
     if (!actor.system?.abilities?.san) {
       debugLog("San ability not defined for this linked actor.", this.styling);
@@ -15158,6 +15323,7 @@ class SanityMadnessHandler {
    * Adds sanity and madness bars to the dnd5e2 character sheet.
    *
    * @param {Actor} actor - The actor whose sheet is being rendered.
+   *
    * @param {jQuery} html - The jQuery HTML object of the sheet.
    */
   addSanityAndMadnessBarsDnd5e2(actor, html) {
@@ -15168,6 +15334,7 @@ class SanityMadnessHandler {
    * Adds sanity and madness bars to the dnd5e character sheet.
    *
    * @param {Actor} actor - The actor whose sheet is being rendered.
+   *
    * @param {jQuery} html - The jQuery HTML object of the sheet.
    */
   addSanityAndMadnessBarsDnd5e(actor, html) {
@@ -15178,6 +15345,7 @@ class SanityMadnessHandler {
    * Adds sanity and madness bars to the Tidy5e character sheet.
    *
    * @param {Actor} actor - The actor whose sheet is being rendered.
+   *
    * @param {jQuery} html - The jQuery HTML object of the sheet.
    */
   addSanityAndMadnessBarsTidy5e(actor, html) {
@@ -15188,7 +15356,8 @@ class SanityMadnessHandler {
    * Generates the HTML for sanity and madness meters for the dnd5e2 character sheet.
    *
    * @param {Actor} actor - The actor whose meters are being generated.
-   * @returns {Object} An object containing the HTML for the sanity and madness meters.
+   *
+   * @returns {object} An object containing the HTML for the sanity and madness meters.
    */
   generateMeterHTMLDnd5e2(actor) {
     const sanityPointsData = actor.getFlag(this.moduleId, "sanityPoints") || { current: 28, max: 28 };
@@ -15221,7 +15390,8 @@ class SanityMadnessHandler {
    * Generates the HTML for sanity and madness meters for the dnd5e character sheet.
    *
    * @param {Actor} actor - The actor whose meters are being generated.
-   * @returns {Object} An object containing the HTML for the sanity and madness meters.
+   *
+   * @returns {object} An object containing the HTML for the sanity and madness meters.
    */
   generateMeterHTMLDnd5e(actor) {
     const sanityPointsData = actor.getFlag(this.moduleId, "sanityPoints") || { current: 28, max: 28 };
@@ -15254,7 +15424,8 @@ class SanityMadnessHandler {
    * Generates the HTML for sanity and madness meters for the Tidy5e character sheet.
    *
    * @param {Actor} actor - The actor whose meters are being generated.
-   * @returns {Object} An object containing the HTML for the sanity and madness meters.
+   *
+   * @returns {object} An object containing the HTML for the sanity and madness meters.
    */
   generateMeterHTMLTidy5e(actor) {
     const sanityPointsData = actor.getFlag(this.moduleId, "sanityPoints") || { current: 28, max: 28 };
@@ -15335,34 +15506,34 @@ function FDregisterHooks() {
       console.error("%cFailed during ready hook:", styling$1, error);
     }
   });
-  Hooks.on("preUpdateActor", async (actor, changes, options, userId) => {
-    if (actor.type !== "character" || !actor.prototypeToken.actorLink)
+  Hooks.on("preUpdateActor", async (actor, changes) => {
+    if (actor.type !== "character" || !actor.prototypeToken.actorLink) {
       return;
+    }
     try {
       debugLog("Pre-update detected for linked actor.", styling$1);
-      if (changes.system?.abilities?.san?.mod !== void 0) {
-        debugLog("San mod is about to change, calculating new values.", styling$1);
-        const newSanMod = changes.system.abilities.san.mod;
-        const startingSanityPoints = game.settings.get(MODULE_ID, "startingSanityPoints");
-        const startingMadnessPoints = game.settings.get(MODULE_ID, "startingMadnessPoints");
-        const newSanityPointsMax = startingSanityPoints + newSanMod;
-        const newMadnessMax = startingMadnessPoints + newSanMod;
-        const existingSanity = actor.getFlag(MODULE_ID, "sanityPoints.current") || newSanityPointsMax;
-        const existingMadness = actor.getFlag(MODULE_ID, "madness.current") || 0;
-        const updates = {
-          [`flags.${MODULE_ID}.sanityPoints`]: { current: Math.max(existingSanity, 0), max: newSanityPointsMax },
-          [`flags.${MODULE_ID}.madness`]: { current: Math.max(existingMadness, 0), max: newMadnessMax }
-        };
-        await actor.update(updates);
-        debugLog("Sanity and madness updated successfully for linked actor.", styling$1);
+      const sanityPointsMax = actor.getFlag("fates-descent", "sanityPoints.max");
+      const madnessMax = actor.getFlag("fates-descent", "madness.max");
+      if (changes.flags?.["fates-descent"]?.sanityPoints?.current !== void 0) {
+        const newSanityCurrent = changes.flags["fates-descent"].sanityPoints.current;
+        const clampedSanity = Math.min(Math.max(newSanityCurrent, 0), sanityPointsMax);
+        changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.sanityPoints.current"]: clampedSanity });
+        debugLog(`Sanity points updated: ${newSanityCurrent} -> ${clampedSanity}`, styling$1);
+      }
+      if (changes.flags?.["fates-descent"]?.madness?.current !== void 0) {
+        const newMadnessCurrent = changes.flags["fates-descent"].madness.current;
+        const clampedMadness = Math.min(Math.max(newMadnessCurrent, 0), madnessMax);
+        changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: clampedMadness });
+        debugLog(`Madness points updated: ${newMadnessCurrent} -> ${clampedMadness}`, styling$1);
       }
     } catch (error) {
       console.error("%cFailed during preUpdateActor hook:", styling$1, error);
     }
   });
-  Hooks.on("renderActorSheet", (app, html, data) => {
-    if (app.actor.type !== "character" || !app.actor.prototypeToken.actorLink)
+  Hooks.on("renderActorSheet", (app, html) => {
+    if (app.actor.type !== "character" || !app.actor.prototypeToken.actorLink) {
       return;
+    }
     try {
       debugLog("Actor sheet rendered for linked actor, adding sanity and madness bars.", styling$1, app, html);
       const sheetType = app._element[0].id;
@@ -15397,5 +15568,7 @@ Hooks.on("init", () => {
   console.log("%cFate's Descent | Settings registered.", styling);
   FDregisterHooks();
   console.log("%cFate's Descent | Hooks registered.", styling);
+  game.settings.set("fates-descent", "globalSaveRequests", []);
+  game.settings.set("fates-descent", "globalTestRequests", []);
 });
 //# sourceMappingURL=fates-descent.js.map

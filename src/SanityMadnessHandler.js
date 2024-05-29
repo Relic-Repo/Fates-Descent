@@ -1,11 +1,14 @@
+// SanityMadnessHandler.js
 import { debugLog } from "./utils.js";
 import { MODULE_ID } from "./settings.js";
 
-export class SanityMadnessHandler {
+export class SanityMadnessHandler 
+{
     /**
      * Constructs an instance of SanityMadnessHandler, initializes styling, and sets up hooks.
      */
-    constructor() {
+    constructor() 
+{
         this.styling = `
             color:#D01B00;
             background-color:#A3A6B4;
@@ -15,8 +18,10 @@ export class SanityMadnessHandler {
         `;
         this.moduleId = MODULE_ID;
 
-        Hooks.on("updateActor", (actor, updateData) => {
-            if (actor.type === "character" && actor.prototypeToken.actorLink && this.isSanityOrMadnessUpdate(updateData)) {
+        Hooks.on("updateActor", (actor, updateData) => 
+{
+            if (actor.type === "character" && actor.prototypeToken.actorLink && this.isSanityOrMadnessUpdate(updateData)) 
+{
                 this.updateBarsForActor(actor);
             }
         });
@@ -25,10 +30,12 @@ export class SanityMadnessHandler {
     /**
      * Checks if the update data includes sanity or madness updates.
      *
-     * @param {Object} updateData - The data being updated for the actor.
+     * @param {object} updateData - The data being updated for the actor.
+     *
      * @returns {boolean} True if the update data includes sanity or madness updates, false otherwise.
      */
-    isSanityOrMadnessUpdate(updateData) {
+    isSanityOrMadnessUpdate(updateData) 
+{
         return updateData.flags?.[this.moduleId]?.sanityPoints || updateData.flags?.[this.moduleId]?.madness;
     }
 
@@ -37,11 +44,13 @@ export class SanityMadnessHandler {
      *
      * @param {Actor} actor - The actor whose bars need to be updated.
      */
-    updateBarsForActor(actor) {
+    updateBarsForActor(actor) 
+{
         const appId = `ActorSheet${actor.sheet?.constructor?.name}-${actor.id}`;
-        const app = Object.values(ui.windows).find(app => app.options.id === appId);
-        if (app) {
-            app.render(true);
+        const appFD = Object.values(ui.windows).find((app) => app.options.id === appId);
+        if (appFD) 
+{
+            appFD.render(true);
         }
     }
 
@@ -50,11 +59,13 @@ export class SanityMadnessHandler {
      *
      * @param {Actor} actor - The actor whose sanity and madness values need to be updated.
      */
-    updateSanityAndMadness(actor) {
-        if (actor.type !== "character" || !actor.prototypeToken.actorLink) return;
+    updateSanityAndMadness(actor) 
+{
+        if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return; }
         debugLog(`Updating sanity and madness for linked actor: ${actor.name}`, this.styling);
 
-        if (!actor.system?.abilities?.san) {
+        if (!actor.system?.abilities?.san) 
+{
             debugLog("San ability not defined for this linked actor.", this.styling);
             return;
         }
@@ -74,9 +85,11 @@ export class SanityMadnessHandler {
      * Adds sanity and madness bars to the dnd5e2 character sheet.
      *
      * @param {Actor} actor - The actor whose sheet is being rendered.
+     *
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
-    addSanityAndMadnessBarsDnd5e2(actor, html) {
+    addSanityAndMadnessBarsDnd5e2(actor, html) 
+{
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLDnd5e2(actor);
         html.find('.meter-group').last().after(sanityPointsHtml + madnessHtml);
     }
@@ -85,9 +98,11 @@ export class SanityMadnessHandler {
      * Adds sanity and madness bars to the dnd5e character sheet.
      *
      * @param {Actor} actor - The actor whose sheet is being rendered.
+     *
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
-    addSanityAndMadnessBarsDnd5e(actor, html) {
+    addSanityAndMadnessBarsDnd5e(actor, html) 
+{
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLDnd5e(actor);
         html.find('.counters').after(sanityPointsHtml + madnessHtml);
     }
@@ -96,9 +111,11 @@ export class SanityMadnessHandler {
      * Adds sanity and madness bars to the Tidy5e character sheet.
      *
      * @param {Actor} actor - The actor whose sheet is being rendered.
+     *
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
-    addSanityAndMadnessBarsTidy5e(actor, html) {
+    addSanityAndMadnessBarsTidy5e(actor, html) 
+{
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLTidy5e(actor);
         html.find('.main-panel .flex-column.small-gap').append(sanityPointsHtml + madnessHtml);
     }
@@ -107,9 +124,11 @@ export class SanityMadnessHandler {
      * Generates the HTML for sanity and madness meters for the dnd5e2 character sheet.
      *
      * @param {Actor} actor - The actor whose meters are being generated.
-     * @returns {Object} An object containing the HTML for the sanity and madness meters.
+     *
+     * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
-    generateMeterHTMLDnd5e2(actor) {
+    generateMeterHTMLDnd5e2(actor) 
+{
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 
@@ -144,9 +163,11 @@ export class SanityMadnessHandler {
      * Generates the HTML for sanity and madness meters for the dnd5e character sheet.
      *
      * @param {Actor} actor - The actor whose meters are being generated.
-     * @returns {Object} An object containing the HTML for the sanity and madness meters.
+     *
+     * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
-    generateMeterHTMLDnd5e(actor) {
+    generateMeterHTMLDnd5e(actor) 
+{
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 
@@ -181,9 +202,11 @@ export class SanityMadnessHandler {
      * Generates the HTML for sanity and madness meters for the Tidy5e character sheet.
      *
      * @param {Actor} actor - The actor whose meters are being generated.
-     * @returns {Object} An object containing the HTML for the sanity and madness meters.
+     *
+     * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
-    generateMeterHTMLTidy5e(actor) {
+    generateMeterHTMLTidy5e(actor) 
+{
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 

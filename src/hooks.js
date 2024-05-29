@@ -17,113 +17,131 @@ const styling = `
 /**
  * Registers the hooks for the Fate's Descent module.
  */
-export function FDregisterHooks() {
+export function FDregisterHooks() 
+{
     const sanityMadnessHandler = new SanityMadnessHandler(MODULE_ID);
+   
+    // eslint-disable-next-line no-shadow
     let socket;
 
-    Hooks.once("socketlib.ready", () => {
-        try {
+    Hooks.once("socketlib.ready", () => 
+    {
+        try 
+        {
+            // eslint-disable-next-line no-undef
             socket = socketlib.registerModule(MODULE_ID);
             socket.register("updateSanityMadness", sanityMadnessHandler.updateSanityAndMadness.bind(sanityMadnessHandler));
             debugLog("Socketlib registered successfully.", styling);
-        } catch (error) {
+        }
+        catch (error) 
+        {
             console.error("%cFailed to register socketlib:", styling, error);
         }
     });
 
-    Hooks.once("init", () => {
-        try {
+    Hooks.once("init", () => 
+    {
+        try 
+        {
             debugLog("Fate's Descent | Registering module settings.", styling);
             FDregisterSettings();
             debugLog("Settings registered successfully.", styling);
-        } catch (error) {
+        }
+        catch (error) 
+        {
             console.error("%cFailed to register settings:", styling, error);
         }
     });
 
-    Hooks.once('ready', () => {
-        try {
+    Hooks.once('ready', () => 
+    {
+        try 
+        {
             debugLog("Fate's Descent | Module is ready and initialized!", styling);
-            if (game.settings.get(MODULE_ID, 'enableModule')) {
+            if (game.settings.get(MODULE_ID, 'enableModule')) 
+            {
                 new FatesDescentRoll(); 
                 debugLog("FatesDescentRoll instance created successfully.", styling);
-            } else {
-                debugLog("Fate's Descent module is disabled in settings.", styling);
             }
-
-            game.actors.contents.forEach(actor => {
-                if (actor.type === "character" && actor.prototypeToken.actorLink) {
+            else 
+            {
+                debugLog("Fate's Descent module is disabled in settings.", styling);
+            }            
+            game.actors.contents.forEach((actor) => 
+            {
+                if (actor.type === "character" && actor.prototypeToken.actorLink) 
+                {
                     debugLog(`Initializing sanity and madness values for linked character ${actor.name}.`, styling);
                     sanityMadnessHandler.updateSanityAndMadness(actor);
                 }
             });
-        } catch (error) {
+        }
+        catch (error) 
+        {
             console.error("%cFailed during ready hook:", styling, error);
         }
     });
 
-    /**
-     * Hook to handle pre-update logic for actors.
-     *
-     * @param {Actor} actor - The actor being updated.
-     * @param {Object} changes - The changes being applied to the actor.
-     * @param {Object} options - Additional options for the update.
-     * @param {string} userId - The ID of the user making the update.
-     */
-    Hooks.on("preUpdateActor", async (actor, changes, options, userId) => {
-        if (actor.type !== "character" || !actor.prototypeToken.actorLink) return;
-        try {
+    Hooks.on("preUpdateActor", async (actor, changes) => 
+    {
+        if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return; }
+        
+        try 
+        {
             debugLog("Pre-update detected for linked actor.", styling);
-
-            if (changes.system?.abilities?.san?.mod !== undefined) {
-                debugLog("San mod is about to change, calculating new values.", styling);
-                const newSanMod = changes.system.abilities.san.mod;
-                const startingSanityPoints = game.settings.get(MODULE_ID, 'startingSanityPoints');
-                const startingMadnessPoints = game.settings.get(MODULE_ID, 'startingMadnessPoints');
-                const newSanityPointsMax = startingSanityPoints + newSanMod;
-                const newMadnessMax = startingMadnessPoints + newSanMod;
-                const existingSanity = actor.getFlag(MODULE_ID, "sanityPoints.current") || newSanityPointsMax;
-                const existingMadness = actor.getFlag(MODULE_ID, "madness.current") || 0;
-
-                const updates = {
-                    [`flags.${MODULE_ID}.sanityPoints`]: { current: Math.max(existingSanity, 0), max: newSanityPointsMax },
-                    [`flags.${MODULE_ID}.madness`]: { current: Math.max(existingMadness, 0), max: newMadnessMax }
-                };
-                await actor.update(updates);
-                debugLog("Sanity and madness updated successfully for linked actor.", styling);
+            const sanityPointsMax = actor.getFlag("fates-descent", "sanityPoints.max");
+            const madnessMax = actor.getFlag("fates-descent", "madness.max");
+            if (changes.flags?.["fates-descent"]?.sanityPoints?.current !== undefined) 
+            {
+                const newSanityCurrent = changes.flags["fates-descent"].sanityPoints.current;
+                const clampedSanity = Math.min(Math.max(newSanityCurrent, 0), sanityPointsMax);
+                changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.sanityPoints.current"]: clampedSanity });
+                debugLog(`Sanity points updated: ${newSanityCurrent} -> ${clampedSanity}`, styling);
             }
-        } catch (error) {
+            if (changes.flags?.["fates-descent"]?.madness?.current !== undefined) 
+            {
+                const newMadnessCurrent = changes.flags["fates-descent"].madness.current;
+                const clampedMadness = Math.min(Math.max(newMadnessCurrent, 0), madnessMax);
+                changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: clampedMadness });
+                debugLog(`Madness points updated: ${newMadnessCurrent} -> ${clampedMadness}`, styling);
+            }
+
+        }
+        catch (error) 
+        {
             console.error("%cFailed during preUpdateActor hook:", styling, error);
         }
     });
 
-    /**
-     * Hook to handle the rendering of actor sheets.
-     *
-     * @param {Object} app - The application object.
-     * @param {jQuery} html - The jQuery HTML object of the sheet.
-     * @param {Object} data - The data being rendered in the sheet.
-     */
-    Hooks.on("renderActorSheet", (app, html, data) => {
-        if (app.actor.type !== "character" || !app.actor.prototypeToken.actorLink) return;
-        try {
+    Hooks.on("renderActorSheet", (app, html) => 
+    {
+        if (app.actor.type !== "character" || !app.actor.prototypeToken.actorLink) { return; }
+        try 
+        {
             debugLog("Actor sheet rendered for linked actor, adding sanity and madness bars.", styling, app, html);
-
             const sheetType = app._element[0].id;
-
-            if (sheetType.includes('ActorSheet5eCharacter2-Actor')) {
+            if (sheetType.includes('ActorSheet5eCharacter2-Actor')) 
+            {
                 debugLog("Rendering for dnd5e2 character sheet.", styling);
                 sanityMadnessHandler.addSanityAndMadnessBarsDnd5e2(app.actor, html);
-            } else if (sheetType.includes('ActorSheet5eCharacter-Actor')) {
+            }
+            else if (sheetType.includes('ActorSheet5eCharacter-Actor')) 
+            {
                 debugLog("Rendering for dnd5e character sheet.", styling);
                 sanityMadnessHandler.addSanityAndMadnessBarsDnd5e(app.actor, html);
-            } else if (sheetType.includes('Tidy5eCharacterSheet-Actor')) {
+            }
+            else if (sheetType.includes('Tidy5eCharacterSheet-Actor')) 
+            {
                 debugLog("Rendering for tidy5e character sheet.", styling);
                 sanityMadnessHandler.addSanityAndMadnessBarsTidy5e(app.actor, html);
-            } else {
+            }
+            else 
+            {
                 debugLog("Unknown character sheet type.", styling);
             }
-        } catch (error) {
+        }
+        catch (error) 
+        {
             console.error("%cFailed during renderActorSheet hook:", styling, error);
         }
     });

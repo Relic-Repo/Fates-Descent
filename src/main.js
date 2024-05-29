@@ -16,10 +16,13 @@ console.log("%cFate's Descent | Initializing module.", styling);
 /**
  * Initializes the module by registering settings and hooks.
  */
-Hooks.on("init", () => {
+Hooks.on("init", () => 
+{
     console.log("%cFate's Descent | Registering settings.", styling);
     FDregisterSettings();
     console.log("%cFate's Descent | Settings registered.", styling);
     FDregisterHooks();
     console.log("%cFate's Descent | Hooks registered.", styling);
+    game.settings.set("fates-descent", "globalSaveRequests", []);
+    game.settings.set("fates-descent", "globalTestRequests", []);
 });

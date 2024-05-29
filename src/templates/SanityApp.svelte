@@ -1,40 +1,40 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext, onDestroy } from 'svelte';
+  import { writable } from 'svelte/store';
   import { ApplicationShell } from '#runtime/svelte/component/core';
   import { FatesDescentRoll } from '../FatesDescentRoll.js';
+  import { MODULE_ID } from '../settings.js';
 
-  export let actorId;
-  export let type;
-  export let config;
   export let performRoll = FatesDescentRoll.performRoll;
   export let elementRoot;
 
   const { application } = getContext('#external');
   const stylesContent = { padding: '0' };
 
-  let severities = [
-    { id: 'minimal', text: 'Minimal (DC 8)' },
-    { id: 'moderate', text: 'Moderate (DC 12)' },
-    { id: 'serious', text: 'Serious (DC 16)' },
-    { id: 'extreme', text: 'Extreme (DC 20)' }
-  ];
+  const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests"));
 
-  let selectedSeverity = severities[0];
-  let useCustomDC = false;
-  let customDC = 0;
-  let useCustomLoss = false;
-  let loss = 0;
-
-  
-
-  async function handleRoll() {
+  function handleRoll(request) {
+    const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const lossInput = useCustomLoss ? loss : { 'minimal': '1d4', 'moderate': '1d6', 'serious': '1d8', 'extreme': '1d10' }[selectedSeverity.id];
-    const rollResult = await new Roll(lossInput).evaluate({ async: true });
-    performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
-    application.close();
+    new Roll(lossInput).evaluate({ async: true }).then(rollResult => {
+      performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
+
+      let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+      const index = globalRequests.findIndex(r => r.actorId === actorId && r.type === type);
+      if (index > -1) {
+        globalRequests.splice(index, 1);
+        game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+        requestsStore.set(globalRequests);
+      }
+
+      if (globalRequests.length === 0) {
+        application.close();
+      }
+    });
   }
 
-  function handleCancel() {
+  function handleCancel(request) {
+    const { actorId, type, config } = request;
     const method = type === 'save' ? 'rollAbilitySave' : 'rollAbilityTest';
     const rollOptions = {
       chatMessage: true,
@@ -47,45 +47,87 @@
     if (actor) {
       actor[method]("san", rollOptions);
     }
-    application.close();
+
+    let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    const index = globalRequests.findIndex(r => r.actorId === actorId && r.type === type);
+    if (index > -1) {
+      globalRequests.splice(index, 1);
+      game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+      requestsStore.set(globalRequests);
+    }
+
+    if (globalRequests.length === 0) {
+      application.close();
+    }
   }
 
-  const dialogTitle = type === 'save' ? 'Sanity Save' : 'Sanity Check';
+  function updateRequests() {
+    const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    requestsStore.set(globalRequests);
+  }
+
+  const interval = setInterval(updateRequests, 500);
+
+  onDestroy(() => {
+    clearInterval(interval);
+    game.settings.set(MODULE_ID, "globalSaveRequests", []);
+  });
+
+  const severities = [
+    { id: 'minimal', text: 'Minimal (DC 8)' },
+    { id: 'moderate', text: 'Moderate (DC 12)' },
+    { id: 'serious', text: 'Serious (DC 16)' },
+    { id: 'extreme', text: 'Extreme (DC 20)' }
+  ];
 </script>
 
 <svelte:options accessors={true}/>
 
 <ApplicationShell bind:elementRoot {stylesContent}>
   <main>
-    <h2><i class="fas fa-dice"></i> {dialogTitle} <i class="fas fa-dice"></i></h2>
-
-    <form on:submit|preventDefault={handleRoll}>
-      <label>
-        Severity:
-        <select bind:value={selectedSeverity} on:change={() => { customDC = 0; loss = 0; }}>
-          {#each severities as severity}
-            <option value={severity}>{severity.text}</option>
-          {/each}
-        </select>
-      </label>
-
-      <label>
-        Custom DC: <input type="checkbox" bind:checked={useCustomDC} />
-        <input type="text" bind:value={customDC} placeholder="DC" disabled={!useCustomDC} />
-      </label>
-
-      <label>
-        Loss: <input type="checkbox" bind:checked={useCustomLoss} />
-        <input type="text" bind:value={loss} placeholder="Loss" disabled={!useCustomLoss} />
-      </label>
-
-      <button disabled={selectedSeverity === null} type="submit">Roll</button>
-      <button type="button" on:click={handleCancel}>Cancel</button>
-    </form>
-
-    <p>Selected severity: {selectedSeverity ? selectedSeverity.text : '[waiting...]'}</p>
+    <h2><i class="fas fa-dice"></i> Sanity <i class="fas fa-dice"></i></h2>
+    <div class="table">
+      <div class="row header">
+        <div class="cell">Character</div>
+        <div class="cell">Severity</div>
+        <div class="cell">Custom DC</div>
+        <div class="cell">Custom Loss</div>
+        <div class="cell">Confirm</div>
+      </div>
+      {#each $requestsStore as request (request.actorId)}
+        <div class="row">
+          <div class="cell">{request.actorName}</div>
+          <div class="cell">
+            <select bind:value={request.selectedSeverity}>
+              {#each severities as severity}
+                <option value={severity}>{severity.text}</option>
+              {/each}
+            </select>
+          </div>
+          <div class="cell">
+            <div class="custom-dc">
+              <input type="checkbox" bind:checked={request.useCustomDC} />
+              <input type="text" bind:value={request.customDC} placeholder="DC" disabled={!request.useCustomDC} />
+            </div>
+          </div>
+          <div class="cell">
+            <div class="custom-loss">
+              <input type="checkbox" bind:checked={request.useCustomLoss} />
+              <input type="text" bind:value={request.loss} placeholder="Loss" disabled={!request.useCustomLoss} />
+            </div>
+          </div>
+          <div class="cell">
+            <div class="buttons">
+              <button type="button" on:click={() => handleRoll(request)}>Roll</button>
+              <button type="button" on:click={() => handleCancel(request)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
   </main>
 </ApplicationShell>
+
 
 <style>
   main {
@@ -97,17 +139,29 @@
     flex-direction: column;
     align-items: center;
   }
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  h2 {
+    margin-bottom: 15px;
   }
-  label {
-    display: block;
-    margin: 10px 0;
-    font-size: 1.4em;
+  .table {
+    width: 100%;
+    display: table;
+    border-collapse: collapse;
   }
-  input[type='text'], input[type='checkbox'], select {
+  .row {
+    display: table-row;
+    justify-content: center;
+  }
+  .cell {
+    display: table-cell;
+    padding: 7px;
+    border: 0px solid #444;
+    text-align: center;
+  }
+  .header .cell {
+    font-weight: bold;
+    background: #333;
+  }
+  select {
     margin-left: 10px;
     background: #333; 
     color: #f8f8f8; 
@@ -115,22 +169,51 @@
     padding: 2px;
     border-radius: 4px;
     font-size: 12px;
+    text-align: center;
+  }
+  input[type='checkbox'] {
+    margin-left: 10px;
+    background: #333; 
+    color: #f8f8f8; 
+    border: 1px solid #444;
+    padding: 2px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
   }
   input[type='text'] {
-    width: 100px;
+    width: 50px;
+    margin-left: 10px;
+    background: #333; 
+    color: #f8f8f8; 
+    border: 1px solid #444;
+    padding: 2px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
   }
   button {
     background: #f8f8f8;
     color: #222;
     border: none;
-    padding: 10px 20px;
+    padding: 1px 5px;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 16px;
-    margin: 10px 0;
+    font-size: 12px;
     cursor: pointer;
   }
   button:hover {
     background: #95f853;
+  }
+  .custom-dc, .custom-loss {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
   }
 </style>
