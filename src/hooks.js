@@ -80,6 +80,8 @@ export function FDregisterHooks()
         {
             console.error("%cFailed during ready hook:", styling, error);
         }
+        game.settings.set("fates-descent", "globalSaveRequests", []);
+        game.settings.set("fates-descent", "globalTestRequests", []);
     });
 
     Hooks.on("preUpdateActor", async (actor, changes) => 

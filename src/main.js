@@ -23,6 +23,5 @@ Hooks.on("init", () =>
     console.log("%cFate's Descent | Settings registered.", styling);
     FDregisterHooks();
     console.log("%cFate's Descent | Hooks registered.", styling);
-    game.settings.set("fates-descent", "globalSaveRequests", []);
-    game.settings.set("fates-descent", "globalTestRequests", []);
+  
 });

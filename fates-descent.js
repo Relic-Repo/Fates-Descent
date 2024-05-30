@@ -154,6 +154,9 @@ function get_all_dirty_from_scope($$scope) {
   }
   return -1;
 }
+function null_to_empty(value) {
+  return value == null ? "" : value;
+}
 function action_destroyer(action_result) {
   return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
 }
@@ -14429,21 +14432,26 @@ cssVariables.setProperties({
 const SanityApp_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[19] = list[i];
-  child_ctx[20] = list;
-  child_ctx[21] = i;
+  child_ctx[36] = list[i];
+  child_ctx[37] = list;
+  child_ctx[38] = i;
   return child_ctx;
 }
 function get_each_context_1(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[22] = list[i];
+  child_ctx[39] = list[i];
   return child_ctx;
 }
-function create_each_block_1(ctx) {
+function get_each_context_2(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[39] = list[i];
+  return child_ctx;
+}
+function create_each_block_2(ctx) {
   let option;
   let t_value = (
     /*severity*/
-    ctx[22].text + ""
+    ctx[39].text + ""
   );
   let t;
   return {
@@ -14451,7 +14459,34 @@ function create_each_block_1(ctx) {
       option = element("option");
       t = text(t_value);
       option.__value = /*severity*/
-      ctx[22];
+      ctx[39].id;
+      set_input_value(option, option.__value);
+    },
+    m(target, anchor) {
+      insert(target, option, anchor);
+      append(option, t);
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(option);
+      }
+    }
+  };
+}
+function create_each_block_1(ctx) {
+  let option;
+  let t_value = (
+    /*severity*/
+    ctx[39].text + ""
+  );
+  let t;
+  return {
+    c() {
+      option = element("option");
+      t = text(t_value);
+      option.__value = /*severity*/
+      ctx[39].id;
       set_input_value(option, option.__value);
     },
     m(target, anchor) {
@@ -14469,11 +14504,13 @@ function create_each_block_1(ctx) {
 function create_each_block(key_1, ctx) {
   let div8;
   let div0;
+  let button0;
   let t0_value = (
     /*request*/
-    ctx[19].actorName + ""
+    ctx[36].actorName + ""
   );
   let t0;
+  let button0_class_value;
   let t1;
   let div1;
   let select;
@@ -14483,6 +14520,7 @@ function create_each_block(key_1, ctx) {
   let input0;
   let t3;
   let input1;
+  let input1_placeholder_value;
   let input1_disabled_value;
   let t4;
   let div5;
@@ -14490,84 +14528,144 @@ function create_each_block(key_1, ctx) {
   let input2;
   let t5;
   let input3;
+  let input3_placeholder_value;
   let input3_disabled_value;
   let t6;
   let div7;
   let div6;
-  let button0;
-  let t8;
   let button1;
+  let t8;
+  let button2;
   let t10;
   let mounted;
   let dispose;
+  function click_handler() {
+    return (
+      /*click_handler*/
+      ctx[17](
+        /*request*/
+        ctx[36]
+      )
+    );
+  }
   let each_value_1 = ensure_array_like(
-    /*severities*/
-    ctx[6]
+    /*defaultSeverities*/
+    ctx[4]
   );
   let each_blocks = [];
   for (let i = 0; i < each_value_1.length; i += 1) {
     each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
   }
   function select_change_handler() {
-    ctx[8].call(
+    ctx[18].call(
       select,
       /*each_value*/
-      ctx[20],
+      ctx[37],
       /*request_index*/
-      ctx[21]
+      ctx[38]
+    );
+  }
+  function change_handler(...args) {
+    return (
+      /*change_handler*/
+      ctx[19](
+        /*request*/
+        ctx[36],
+        ...args
+      )
     );
   }
   function input0_change_handler() {
-    ctx[9].call(
+    ctx[20].call(
       input0,
       /*each_value*/
-      ctx[20],
+      ctx[37],
       /*request_index*/
-      ctx[21]
+      ctx[38]
+    );
+  }
+  function change_handler_1(...args) {
+    return (
+      /*change_handler_1*/
+      ctx[21](
+        /*request*/
+        ctx[36],
+        ...args
+      )
     );
   }
   function input1_input_handler() {
-    ctx[10].call(
+    ctx[22].call(
       input1,
       /*each_value*/
-      ctx[20],
+      ctx[37],
       /*request_index*/
-      ctx[21]
+      ctx[38]
+    );
+  }
+  function input_handler(...args) {
+    return (
+      /*input_handler*/
+      ctx[23](
+        /*request*/
+        ctx[36],
+        ...args
+      )
     );
   }
   function input2_change_handler() {
-    ctx[11].call(
+    ctx[24].call(
       input2,
       /*each_value*/
-      ctx[20],
+      ctx[37],
       /*request_index*/
-      ctx[21]
+      ctx[38]
+    );
+  }
+  function change_handler_2(...args) {
+    return (
+      /*change_handler_2*/
+      ctx[25](
+        /*request*/
+        ctx[36],
+        ...args
+      )
     );
   }
   function input3_input_handler() {
-    ctx[12].call(
+    ctx[26].call(
       input3,
       /*each_value*/
-      ctx[20],
+      ctx[37],
       /*request_index*/
-      ctx[21]
+      ctx[38]
     );
   }
-  function click_handler() {
+  function input_handler_1(...args) {
     return (
-      /*click_handler*/
-      ctx[13](
+      /*input_handler_1*/
+      ctx[27](
         /*request*/
-        ctx[19]
+        ctx[36],
+        ...args
       )
     );
   }
   function click_handler_1() {
     return (
       /*click_handler_1*/
-      ctx[14](
+      ctx[28](
         /*request*/
-        ctx[19]
+        ctx[36]
+      )
+    );
+  }
+  function click_handler_2() {
+    return (
+      /*click_handler_2*/
+      ctx[29](
+        /*request*/
+        ctx[36]
       )
     );
   }
@@ -14577,6 +14675,7 @@ function create_each_block(key_1, ctx) {
     c() {
       div8 = element("div");
       div0 = element("div");
+      button0 = element("button");
       t0 = text(t0_value);
       t1 = space();
       div1 = element("div");
@@ -14599,51 +14698,59 @@ function create_each_block(key_1, ctx) {
       t6 = space();
       div7 = element("div");
       div6 = element("div");
-      button0 = element("button");
-      button0.textContent = "Roll";
-      t8 = space();
       button1 = element("button");
-      button1.textContent = "Cancel";
+      button1.textContent = "Roll";
+      t8 = space();
+      button2 = element("button");
+      button2.textContent = "Cancel";
       t10 = space();
-      attr(div0, "class", "cell svelte-fdcss-bb2ux6");
-      attr(select, "class", "svelte-fdcss-bb2ux6");
+      attr(button0, "type", "button");
+      attr(button0, "class", button0_class_value = null_to_empty(getButtonClass(
+        /*request*/
+        ctx[36].type
+      )) + " svelte-fdcss-4dsh82");
+      attr(div0, "class", "cell svelte-fdcss-4dsh82");
+      attr(select, "class", "svelte-fdcss-4dsh82");
       if (
         /*request*/
-        ctx[19].selectedSeverity === void 0
+        ctx[36].selectedSeverity.id === void 0
       )
         add_render_callback(select_change_handler);
-      attr(div1, "class", "cell svelte-fdcss-bb2ux6");
+      attr(div1, "class", "cell svelte-fdcss-4dsh82");
       attr(input0, "type", "checkbox");
-      attr(input0, "class", "svelte-fdcss-bb2ux6");
+      attr(input0, "class", "svelte-fdcss-4dsh82");
       attr(input1, "type", "text");
-      attr(input1, "placeholder", "DC");
+      attr(input1, "placeholder", input1_placeholder_value = /*request*/
+      ctx[36].selectedSeverity.dc);
       input1.disabled = input1_disabled_value = !/*request*/
-      ctx[19].useCustomDC;
-      attr(input1, "class", "svelte-fdcss-bb2ux6");
-      attr(div2, "class", "custom-dc svelte-fdcss-bb2ux6");
-      attr(div3, "class", "cell svelte-fdcss-bb2ux6");
+      ctx[36].useCustomDC;
+      attr(input1, "class", "svelte-fdcss-4dsh82");
+      attr(div2, "class", "custom-dc svelte-fdcss-4dsh82");
+      attr(div3, "class", "cell svelte-fdcss-4dsh82");
       attr(input2, "type", "checkbox");
-      attr(input2, "class", "svelte-fdcss-bb2ux6");
+      attr(input2, "class", "svelte-fdcss-4dsh82");
       attr(input3, "type", "text");
-      attr(input3, "placeholder", "Loss");
+      attr(input3, "placeholder", input3_placeholder_value = /*request*/
+      ctx[36].selectedSeverity.loss);
       input3.disabled = input3_disabled_value = !/*request*/
-      ctx[19].useCustomLoss;
-      attr(input3, "class", "svelte-fdcss-bb2ux6");
-      attr(div4, "class", "custom-loss svelte-fdcss-bb2ux6");
-      attr(div5, "class", "cell svelte-fdcss-bb2ux6");
-      attr(button0, "type", "button");
-      attr(button0, "class", "svelte-fdcss-bb2ux6");
+      ctx[36].useCustomLoss;
+      attr(input3, "class", "svelte-fdcss-4dsh82");
+      attr(div4, "class", "custom-loss svelte-fdcss-4dsh82");
+      attr(div5, "class", "cell svelte-fdcss-4dsh82");
       attr(button1, "type", "button");
-      attr(button1, "class", "svelte-fdcss-bb2ux6");
-      attr(div6, "class", "buttons svelte-fdcss-bb2ux6");
-      attr(div7, "class", "cell svelte-fdcss-bb2ux6");
-      attr(div8, "class", "row svelte-fdcss-bb2ux6");
+      attr(button1, "class", "svelte-fdcss-4dsh82");
+      attr(button2, "type", "button");
+      attr(button2, "class", "svelte-fdcss-4dsh82");
+      attr(div6, "class", "buttons svelte-fdcss-4dsh82");
+      attr(div7, "class", "cell svelte-fdcss-4dsh82");
+      attr(div8, "class", "row svelte-fdcss-4dsh82");
       this.first = div8;
     },
     m(target, anchor) {
       insert(target, div8, anchor);
       append(div8, div0);
-      append(div0, t0);
+      append(div0, button0);
+      append(button0, t0);
       append(div8, t1);
       append(div8, div1);
       append(div1, select);
@@ -14655,7 +14762,7 @@ function create_each_block(key_1, ctx) {
       select_option(
         select,
         /*request*/
-        ctx[19].selectedSeverity,
+        ctx[36].selectedSeverity.id,
         true
       );
       append(div8, t2);
@@ -14663,58 +14770,71 @@ function create_each_block(key_1, ctx) {
       append(div3, div2);
       append(div2, input0);
       input0.checked = /*request*/
-      ctx[19].useCustomDC;
+      ctx[36].useCustomDC;
       append(div2, t3);
       append(div2, input1);
       set_input_value(
         input1,
         /*request*/
-        ctx[19].customDC
+        ctx[36].customDC
       );
       append(div8, t4);
       append(div8, div5);
       append(div5, div4);
       append(div4, input2);
       input2.checked = /*request*/
-      ctx[19].useCustomLoss;
+      ctx[36].useCustomLoss;
       append(div4, t5);
       append(div4, input3);
       set_input_value(
         input3,
         /*request*/
-        ctx[19].loss
+        ctx[36].loss
       );
       append(div8, t6);
       append(div8, div7);
       append(div7, div6);
-      append(div6, button0);
-      append(div6, t8);
       append(div6, button1);
+      append(div6, t8);
+      append(div6, button2);
       append(div8, t10);
       if (!mounted) {
         dispose = [
-          listen(select, "change", select_change_handler),
-          listen(input0, "change", input0_change_handler),
-          listen(input1, "input", input1_input_handler),
-          listen(input2, "change", input2_change_handler),
-          listen(input3, "input", input3_input_handler),
           listen(button0, "click", click_handler),
-          listen(button1, "click", click_handler_1)
+          listen(select, "change", select_change_handler),
+          listen(select, "change", change_handler),
+          listen(input0, "change", input0_change_handler),
+          listen(input0, "change", change_handler_1),
+          listen(input1, "input", input1_input_handler),
+          listen(input1, "input", input_handler),
+          listen(input2, "change", input2_change_handler),
+          listen(input2, "change", change_handler_2),
+          listen(input3, "input", input3_input_handler),
+          listen(input3, "input", input_handler_1),
+          listen(button1, "click", click_handler_1),
+          listen(button2, "click", click_handler_2)
         ];
         mounted = true;
       }
     },
     p(new_ctx, dirty) {
       ctx = new_ctx;
-      if (dirty & /*$requestsStore*/
-      2 && t0_value !== (t0_value = /*request*/
-      ctx[19].actorName + ""))
+      if (dirty[0] & /*$requestsStore*/
+      4 && t0_value !== (t0_value = /*request*/
+      ctx[36].actorName + ""))
         set_data(t0, t0_value);
-      if (dirty & /*severities*/
-      64) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && button0_class_value !== (button0_class_value = null_to_empty(getButtonClass(
+        /*request*/
+        ctx[36].type
+      )) + " svelte-fdcss-4dsh82")) {
+        attr(button0, "class", button0_class_value);
+      }
+      if (dirty[0] & /*defaultSeverities*/
+      16) {
         each_value_1 = ensure_array_like(
-          /*severities*/
-          ctx[6]
+          /*defaultSeverities*/
+          ctx[4]
         );
         let i;
         for (i = 0; i < each_value_1.length; i += 1) {
@@ -14732,50 +14852,60 @@ function create_each_block(key_1, ctx) {
         }
         each_blocks.length = each_value_1.length;
       }
-      if (dirty & /*$requestsStore, severities*/
-      66) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20) {
         select_option(
           select,
           /*request*/
-          ctx[19].selectedSeverity
+          ctx[36].selectedSeverity.id
         );
       }
-      if (dirty & /*$requestsStore, severities*/
-      66) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20) {
         input0.checked = /*request*/
-        ctx[19].useCustomDC;
+        ctx[36].useCustomDC;
       }
-      if (dirty & /*$requestsStore, severities*/
-      66 && input1_disabled_value !== (input1_disabled_value = !/*request*/
-      ctx[19].useCustomDC)) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input1_placeholder_value !== (input1_placeholder_value = /*request*/
+      ctx[36].selectedSeverity.dc)) {
+        attr(input1, "placeholder", input1_placeholder_value);
+      }
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input1_disabled_value !== (input1_disabled_value = !/*request*/
+      ctx[36].useCustomDC)) {
         input1.disabled = input1_disabled_value;
       }
-      if (dirty & /*$requestsStore, severities*/
-      66 && input1.value !== /*request*/
-      ctx[19].customDC) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input1.value !== /*request*/
+      ctx[36].customDC) {
         set_input_value(
           input1,
           /*request*/
-          ctx[19].customDC
+          ctx[36].customDC
         );
       }
-      if (dirty & /*$requestsStore, severities*/
-      66) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20) {
         input2.checked = /*request*/
-        ctx[19].useCustomLoss;
+        ctx[36].useCustomLoss;
       }
-      if (dirty & /*$requestsStore, severities*/
-      66 && input3_disabled_value !== (input3_disabled_value = !/*request*/
-      ctx[19].useCustomLoss)) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input3_placeholder_value !== (input3_placeholder_value = /*request*/
+      ctx[36].selectedSeverity.loss)) {
+        attr(input3, "placeholder", input3_placeholder_value);
+      }
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input3_disabled_value !== (input3_disabled_value = !/*request*/
+      ctx[36].useCustomLoss)) {
         input3.disabled = input3_disabled_value;
       }
-      if (dirty & /*$requestsStore, severities*/
-      66 && input3.value !== /*request*/
-      ctx[19].loss) {
+      if (dirty[0] & /*$requestsStore, defaultSeverities*/
+      20 && input3.value !== /*request*/
+      ctx[36].loss) {
         set_input_value(
           input3,
           /*request*/
-          ctx[19].loss
+          ctx[36].loss
         );
       }
     },
@@ -14793,72 +14923,275 @@ function create_default_slot(ctx) {
   let main;
   let h2;
   let t1;
-  let div6;
+  let div15;
   let div5;
   let t11;
+  let div14;
+  let div6;
+  let button0;
+  let t12;
+  let button0_class_value;
+  let t13;
+  let div7;
+  let select;
+  let t14;
+  let div9;
+  let div8;
+  let input0;
+  let t15;
+  let input1;
+  let t16;
+  let div11;
+  let div10;
+  let input2;
+  let t17;
+  let input3;
+  let t18;
+  let div13;
+  let div12;
+  let button1;
+  let t20;
+  let button2;
+  let t22;
   let each_blocks = [];
-  let each_1_lookup = /* @__PURE__ */ new Map();
+  let each1_lookup = /* @__PURE__ */ new Map();
+  let mounted;
+  let dispose;
+  let each_value_2 = ensure_array_like(
+    /*defaultSeverities*/
+    ctx[4]
+  );
+  let each_blocks_1 = [];
+  for (let i = 0; i < each_value_2.length; i += 1) {
+    each_blocks_1[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+  }
   let each_value = ensure_array_like(
     /*$requestsStore*/
-    ctx[1]
+    ctx[2]
   );
   const get_key = (ctx2) => (
     /*request*/
-    ctx2[19].actorId
+    ctx2[36].actorId
   );
   for (let i = 0; i < each_value.length; i += 1) {
     let child_ctx = get_each_context(ctx, each_value, i);
     let key = get_key(child_ctx);
-    each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+    each1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
   }
   return {
     c() {
       main = element("main");
       h2 = element("h2");
-      h2.innerHTML = `<i class="fas fa-dice"></i> Sanity <i class="fas fa-dice"></i>`;
+      h2.innerHTML = `<i class="fas fa-dice"></i> Sanity Roller <i class="fas fa-dice"></i>`;
       t1 = space();
-      div6 = element("div");
+      div15 = element("div");
       div5 = element("div");
-      div5.innerHTML = `<div class="cell svelte-fdcss-bb2ux6">Character</div> <div class="cell svelte-fdcss-bb2ux6">Severity</div> <div class="cell svelte-fdcss-bb2ux6">Custom DC</div> <div class="cell svelte-fdcss-bb2ux6">Custom Loss</div> <div class="cell svelte-fdcss-bb2ux6">Confirm</div>`;
+      div5.innerHTML = `<div class="cell svelte-fdcss-4dsh82">Character</div> <div class="cell svelte-fdcss-4dsh82">Severity</div> <div class="cell svelte-fdcss-4dsh82">Custom DC</div> <div class="cell svelte-fdcss-4dsh82">Custom Loss</div> <div class="cell svelte-fdcss-4dsh82">Confirm</div>`;
       t11 = space();
+      div14 = element("div");
+      div6 = element("div");
+      button0 = element("button");
+      t12 = text("All");
+      t13 = space();
+      div7 = element("div");
+      select = element("select");
+      for (let i = 0; i < each_blocks_1.length; i += 1) {
+        each_blocks_1[i].c();
+      }
+      t14 = space();
+      div9 = element("div");
+      div8 = element("div");
+      input0 = element("input");
+      t15 = space();
+      input1 = element("input");
+      t16 = space();
+      div11 = element("div");
+      div10 = element("div");
+      input2 = element("input");
+      t17 = space();
+      input3 = element("input");
+      t18 = space();
+      div13 = element("div");
+      div12 = element("div");
+      button1 = element("button");
+      button1.textContent = "Roll All";
+      t20 = space();
+      button2 = element("button");
+      button2.textContent = "Cancel";
+      t22 = space();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      attr(h2, "class", "svelte-fdcss-bb2ux6");
-      attr(div5, "class", "row header svelte-fdcss-bb2ux6");
-      attr(div6, "class", "table svelte-fdcss-bb2ux6");
-      attr(main, "class", "svelte-fdcss-bb2ux6");
+      attr(h2, "class", "svelte-fdcss-4dsh82");
+      attr(div5, "class", "row header svelte-fdcss-4dsh82");
+      attr(button0, "type", "button");
+      attr(button0, "class", button0_class_value = null_to_empty(getButtonClass(
+        /*allRollType*/
+        ctx[1]
+      )) + " svelte-fdcss-4dsh82");
+      attr(div6, "class", "cell svelte-fdcss-4dsh82");
+      attr(select, "class", "svelte-fdcss-4dsh82");
+      attr(div7, "class", "cell svelte-fdcss-4dsh82");
+      attr(input0, "type", "checkbox");
+      attr(input0, "class", "svelte-fdcss-4dsh82");
+      attr(input1, "type", "text");
+      attr(input1, "placeholder", "DC");
+      input1.disabled = true;
+      attr(input1, "class", "svelte-fdcss-4dsh82");
+      attr(div8, "class", "custom-dc svelte-fdcss-4dsh82");
+      attr(div9, "class", "cell svelte-fdcss-4dsh82");
+      attr(input2, "type", "checkbox");
+      attr(input2, "class", "svelte-fdcss-4dsh82");
+      attr(input3, "type", "text");
+      attr(input3, "placeholder", "Loss");
+      input3.disabled = true;
+      attr(input3, "class", "svelte-fdcss-4dsh82");
+      attr(div10, "class", "custom-loss svelte-fdcss-4dsh82");
+      attr(div11, "class", "cell svelte-fdcss-4dsh82");
+      attr(button1, "type", "button");
+      attr(button1, "class", "svelte-fdcss-4dsh82");
+      attr(button2, "type", "button");
+      attr(button2, "class", "svelte-fdcss-4dsh82");
+      attr(div12, "class", "buttons svelte-fdcss-4dsh82");
+      attr(div13, "class", "cell svelte-fdcss-4dsh82");
+      attr(div14, "class", "row svelte-fdcss-4dsh82");
+      attr(div15, "class", "table svelte-fdcss-4dsh82");
+      attr(main, "class", "svelte-fdcss-4dsh82");
     },
     m(target, anchor) {
       insert(target, main, anchor);
       append(main, h2);
       append(main, t1);
-      append(main, div6);
-      append(div6, div5);
-      append(div6, t11);
+      append(main, div15);
+      append(div15, div5);
+      append(div15, t11);
+      append(div15, div14);
+      append(div14, div6);
+      append(div6, button0);
+      append(button0, t12);
+      append(div14, t13);
+      append(div14, div7);
+      append(div7, select);
+      for (let i = 0; i < each_blocks_1.length; i += 1) {
+        if (each_blocks_1[i]) {
+          each_blocks_1[i].m(select, null);
+        }
+      }
+      append(div14, t14);
+      append(div14, div9);
+      append(div9, div8);
+      append(div8, input0);
+      append(div8, t15);
+      append(div8, input1);
+      append(div14, t16);
+      append(div14, div11);
+      append(div11, div10);
+      append(div10, input2);
+      append(div10, t17);
+      append(div10, input3);
+      append(div14, t18);
+      append(div14, div13);
+      append(div13, div12);
+      append(div12, button1);
+      append(div12, t20);
+      append(div12, button2);
+      append(div15, t22);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
-          each_blocks[i].m(div6, null);
+          each_blocks[i].m(div15, null);
         }
+      }
+      if (!mounted) {
+        dispose = [
+          listen(
+            button0,
+            "click",
+            /*setAllRollType*/
+            ctx[15]
+          ),
+          listen(
+            select,
+            "change",
+            /*setAllSelectedSeverity*/
+            ctx[10]
+          ),
+          listen(
+            input0,
+            "change",
+            /*setAllCustomDC*/
+            ctx[11]
+          ),
+          listen(
+            input2,
+            "change",
+            /*setAllCustomLoss*/
+            ctx[12]
+          ),
+          listen(
+            button1,
+            "click",
+            /*handleRollAll*/
+            ctx[7]
+          ),
+          listen(
+            button2,
+            "click",
+            /*handleCancelAll*/
+            ctx[9]
+          )
+        ];
+        mounted = true;
       }
     },
     p(ctx2, dirty) {
-      if (dirty & /*handleCancel, $requestsStore, handleRoll, severities*/
-      114) {
+      if (dirty[0] & /*allRollType*/
+      2 && button0_class_value !== (button0_class_value = null_to_empty(getButtonClass(
+        /*allRollType*/
+        ctx2[1]
+      )) + " svelte-fdcss-4dsh82")) {
+        attr(button0, "class", button0_class_value);
+      }
+      if (dirty[0] & /*defaultSeverities*/
+      16) {
+        each_value_2 = ensure_array_like(
+          /*defaultSeverities*/
+          ctx2[4]
+        );
+        let i;
+        for (i = 0; i < each_value_2.length; i += 1) {
+          const child_ctx = get_each_context_2(ctx2, each_value_2, i);
+          if (each_blocks_1[i]) {
+            each_blocks_1[i].p(child_ctx, dirty);
+          } else {
+            each_blocks_1[i] = create_each_block_2(child_ctx);
+            each_blocks_1[i].c();
+            each_blocks_1[i].m(select, null);
+          }
+        }
+        for (; i < each_blocks_1.length; i += 1) {
+          each_blocks_1[i].d(1);
+        }
+        each_blocks_1.length = each_value_2.length;
+      }
+      if (dirty[0] & /*handleCancel, $requestsStore, handleRoll, updateRequestProperty, defaultSeverities, toggleRollType*/
+      24916) {
         each_value = ensure_array_like(
           /*$requestsStore*/
-          ctx2[1]
+          ctx2[2]
         );
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div6, destroy_block, create_each_block, null, get_each_context);
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each1_lookup, div15, destroy_block, create_each_block, null, get_each_context);
       }
     },
     d(detaching) {
       if (detaching) {
         detach(main);
       }
+      destroy_each(each_blocks_1, detaching);
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].d();
       }
+      mounted = false;
+      run_all(dispose);
     }
   };
 }
@@ -14867,12 +15200,12 @@ function create_fragment(ctx) {
   let updating_elementRoot;
   let current;
   function applicationshell_elementRoot_binding(value) {
-    ctx[15](value);
+    ctx[30](value);
   }
   let applicationshell_props = {
     stylesContent: (
       /*stylesContent*/
-      ctx[2]
+      ctx[3]
     ),
     $$slots: { default: [create_default_slot] },
     $$scope: { ctx }
@@ -14894,13 +15227,14 @@ function create_fragment(ctx) {
       mount_component(applicationshell, target, anchor);
       current = true;
     },
-    p(ctx2, [dirty]) {
+    p(ctx2, dirty) {
       const applicationshell_changes = {};
-      if (dirty & /*$$scope, $requestsStore*/
-      33554434) {
+      if (dirty[0] & /*$requestsStore, allRollType*/
+      6 | dirty[1] & /*$$scope*/
+      8192) {
         applicationshell_changes.$$scope = { dirty, ctx: ctx2 };
       }
-      if (!updating_elementRoot && dirty & /*elementRoot*/
+      if (!updating_elementRoot && dirty[0] & /*elementRoot*/
       1) {
         updating_elementRoot = true;
         applicationshell_changes.elementRoot = /*elementRoot*/
@@ -14924,50 +15258,62 @@ function create_fragment(ctx) {
     }
   };
 }
+function getButtonClass(type) {
+  if (type === "save")
+    return "button-save";
+  if (type === "test")
+    return "button-test";
+  return "button-all";
+}
 function instance($$self, $$props, $$invalidate) {
   let $requestsStore;
   let { performRoll = FatesDescentRoll.performRoll } = $$props;
   let { elementRoot } = $$props;
   const { application } = getContext("#external");
   const stylesContent = { padding: "0" };
-  const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests"));
-  component_subscribe($$self, requestsStore, (value) => $$invalidate(1, $requestsStore = value));
-  function handleRoll(request) {
+  const defaultSeverities = [
+    {
+      id: "minimal",
+      text: "Minimal (DC 8)",
+      dc: 8,
+      loss: "1d4"
+    },
+    {
+      id: "moderate",
+      text: "Moderate (DC 12)",
+      dc: 12,
+      loss: "1d6"
+    },
+    {
+      id: "serious",
+      text: "Serious (DC 16)",
+      dc: 16,
+      loss: "1d8"
+    },
+    {
+      id: "extreme",
+      text: "Extreme (DC 20)",
+      dc: 20,
+      loss: "1d10"
+    }
+  ];
+  const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests").map((request) => ({
+    ...request,
+    selectedSeverity: request.selectedSeverity || defaultSeverities[0]
+  })));
+  component_subscribe($$self, requestsStore, (value) => $$invalidate(2, $requestsStore = value));
+  let previousRequests = JSON.stringify(game.settings.get(MODULE_ID, "globalSaveRequests"));
+  let allRollType = "save";
+  async function handleRoll(request) {
     const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
+    const severityId = selectedSeverity?.id || "minimal";
     const lossInput = useCustomLoss ? loss : {
       "minimal": "1d4",
       "moderate": "1d6",
       "serious": "1d8",
       "extreme": "1d10"
-    }[selectedSeverity.id];
-    new Roll(lossInput).evaluate({ async: true }).then((rollResult) => {
-      performRoll(actorId, selectedSeverity.id, customDC, type, rollResult, config, useCustomDC, useCustomLoss);
-      let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-      const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
-      if (index > -1) {
-        globalRequests.splice(index, 1);
-        game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
-        requestsStore.set(globalRequests);
-      }
-      if (globalRequests.length === 0) {
-        application.close();
-      }
-    });
-  }
-  function handleCancel(request) {
-    const { actorId, type, config } = request;
-    const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
-    const rollOptions = {
-      chatMessage: true,
-      fastForward: true,
-      fromDialog: true,
-      advantage: config?.advantage || false,
-      disadvantage: config?.disadvantage || false
-    };
-    const actor = game.actors.get(actorId);
-    if (actor) {
-      actor[method]("san", rollOptions);
-    }
+    }[severityId];
+    await performRoll(actorId, severityId, customDC, type, lossInput, config, useCustomDC, useCustomLoss);
     let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
     const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
     if (index > -1) {
@@ -14979,84 +15325,206 @@ function instance($$self, $$props, $$invalidate) {
       application.close();
     }
   }
-  function updateRequests() {
+  async function handleRollAll() {
+    clearInterval(interval);
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-    requestsStore.set(globalRequests);
+    await Promise.all(globalRequests.map((request) => handleRoll(request)));
+    interval = setInterval(updateRequests, 500);
   }
-  const interval = setInterval(updateRequests, 500);
+  function handleCancel(request) {
+    return new Promise((resolve) => {
+      const { actorId, type, config } = request;
+      const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
+      const rollOptions = {
+        chatMessage: true,
+        fastForward: true,
+        fromDialog: true,
+        advantage: config?.advantage || false,
+        disadvantage: config?.disadvantage || false
+      };
+      const actor = game.actors.get(actorId);
+      if (actor) {
+        actor[method]("san", rollOptions).then(() => {
+          let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+          const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
+          if (index > -1) {
+            globalRequests.splice(index, 1);
+            game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+            requestsStore.set(globalRequests);
+          }
+          if (globalRequests.length === 0) {
+            application.close();
+          }
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
+  async function handleCancelAll() {
+    clearInterval(interval);
+    const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    await Promise.all(globalRequests.map((request) => handleCancel(request)));
+    interval = setInterval(updateRequests, 500);
+  }
+  function updateRequests() {
+    const globalRequests = JSON.stringify(game.settings.get(MODULE_ID, "globalSaveRequests").map((request) => ({
+      ...request,
+      selectedSeverity: request.selectedSeverity || defaultSeverities[0]
+    })));
+    if (globalRequests !== previousRequests) {
+      requestsStore.set(JSON.parse(globalRequests));
+      previousRequests = globalRequests;
+    }
+  }
+  let interval = setInterval(updateRequests, 500);
   onDestroy(() => {
     clearInterval(interval);
     game.settings.set(MODULE_ID, "globalSaveRequests", []);
   });
-  const severities = [
-    { id: "minimal", text: "Minimal (DC 8)" },
-    { id: "moderate", text: "Moderate (DC 12)" },
-    { id: "serious", text: "Serious (DC 16)" },
-    { id: "extreme", text: "Extreme (DC 20)" }
-  ];
-  function select_change_handler(each_value, request_index) {
-    each_value[request_index].selectedSeverity = select_value(this);
-    requestsStore.set($requestsStore);
-    $$invalidate(6, severities);
+  function setAllSelectedSeverity(event) {
+    const selectedSeverity = defaultSeverities.find((severity) => severity.id === event.target.value);
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => ({ ...request, selectedSeverity }));
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
   }
+  function setAllCustomDC(event) {
+    const useCustomDC = event.target.checked;
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => ({ ...request, useCustomDC }));
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
+  }
+  function setAllCustomLoss(event) {
+    const useCustomLoss = event.target.checked;
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => ({ ...request, useCustomLoss }));
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
+  }
+  function updateRequestProperty(actorId, type, property, value) {
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => {
+        if (request.actorId === actorId && request.type === type) {
+          return { ...request, [property]: value };
+        }
+        return request;
+      });
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
+  }
+  function toggleRollType(actorId) {
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => {
+        if (request.actorId === actorId) {
+          const newType = request.type === "save" ? "test" : "save";
+          return { ...request, type: newType };
+        }
+        return request;
+      });
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
+  }
+  function setAllRollType() {
+    const newType = allRollType === "save" ? "test" : "save";
+    $$invalidate(1, allRollType = newType);
+    requestsStore.update((requests) => {
+      const updatedRequests = requests.map((request) => ({ ...request, type: newType }));
+      game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
+      return updatedRequests;
+    });
+  }
+  const click_handler = (request) => toggleRollType(request.actorId);
+  function select_change_handler(each_value, request_index) {
+    each_value[request_index].selectedSeverity.id = select_value(this);
+    requestsStore.set($requestsStore);
+    $$invalidate(4, defaultSeverities);
+  }
+  const change_handler = (request, e) => updateRequestProperty(request.actorId, request.type, "selectedSeverity", defaultSeverities.find((severity) => severity.id === e.target.value));
   function input0_change_handler(each_value, request_index) {
     each_value[request_index].useCustomDC = this.checked;
     requestsStore.set($requestsStore);
-    $$invalidate(6, severities);
+    $$invalidate(4, defaultSeverities);
   }
+  const change_handler_1 = (request, e) => updateRequestProperty(request.actorId, request.type, "useCustomDC", e.target.checked);
   function input1_input_handler(each_value, request_index) {
     each_value[request_index].customDC = this.value;
     requestsStore.set($requestsStore);
-    $$invalidate(6, severities);
+    $$invalidate(4, defaultSeverities);
   }
+  const input_handler = (request, e) => updateRequestProperty(request.actorId, request.type, "customDC", e.target.value);
   function input2_change_handler(each_value, request_index) {
     each_value[request_index].useCustomLoss = this.checked;
     requestsStore.set($requestsStore);
-    $$invalidate(6, severities);
+    $$invalidate(4, defaultSeverities);
   }
+  const change_handler_2 = (request, e) => updateRequestProperty(request.actorId, request.type, "useCustomLoss", e.target.checked);
   function input3_input_handler(each_value, request_index) {
     each_value[request_index].loss = this.value;
     requestsStore.set($requestsStore);
-    $$invalidate(6, severities);
+    $$invalidate(4, defaultSeverities);
   }
-  const click_handler = (request) => handleRoll(request);
-  const click_handler_1 = (request) => handleCancel(request);
+  const input_handler_1 = (request, e) => updateRequestProperty(request.actorId, request.type, "loss", e.target.value);
+  const click_handler_1 = (request) => handleRoll(request);
+  const click_handler_2 = (request) => handleCancel(request);
   function applicationshell_elementRoot_binding(value) {
     elementRoot = value;
     $$invalidate(0, elementRoot);
   }
   $$self.$$set = ($$props2) => {
     if ("performRoll" in $$props2)
-      $$invalidate(7, performRoll = $$props2.performRoll);
+      $$invalidate(16, performRoll = $$props2.performRoll);
     if ("elementRoot" in $$props2)
       $$invalidate(0, elementRoot = $$props2.elementRoot);
   };
   return [
     elementRoot,
+    allRollType,
     $requestsStore,
     stylesContent,
+    defaultSeverities,
     requestsStore,
     handleRoll,
+    handleRollAll,
     handleCancel,
-    severities,
+    handleCancelAll,
+    setAllSelectedSeverity,
+    setAllCustomDC,
+    setAllCustomLoss,
+    updateRequestProperty,
+    toggleRollType,
+    setAllRollType,
     performRoll,
-    select_change_handler,
-    input0_change_handler,
-    input1_input_handler,
-    input2_change_handler,
-    input3_input_handler,
     click_handler,
+    select_change_handler,
+    change_handler,
+    input0_change_handler,
+    change_handler_1,
+    input1_input_handler,
+    input_handler,
+    input2_change_handler,
+    change_handler_2,
+    input3_input_handler,
+    input_handler_1,
     click_handler_1,
+    click_handler_2,
     applicationshell_elementRoot_binding
   ];
 }
 class SanityApp extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance, create_fragment, safe_not_equal, { performRoll: 7, elementRoot: 0 });
+    init(this, options, instance, create_fragment, safe_not_equal, { performRoll: 16, elementRoot: 0 }, null, [-1, -1]);
   }
   get performRoll() {
-    return this.$$.ctx[7];
+    return this.$$.ctx[16];
   }
   set performRoll(performRoll) {
     this.$$set({ performRoll });
@@ -15209,7 +15677,20 @@ class FatesDescentRoll {
     if (!actor) {
       return;
     }
-    const totalLoss = loss._total;
+    let totalLoss;
+    if (loss === null || loss === void 0 || loss.trim() === "") {
+      totalLoss = 0;
+    } else if (!isNaN(loss)) {
+      totalLoss = Number(loss);
+    } else {
+      try {
+        const rollResult = await new Roll(loss).evaluate({ async: true });
+        totalLoss = rollResult.total;
+      } catch (error) {
+        console.error("Error evaluating loss input:", error);
+        totalLoss = 0;
+      }
+    }
     console.log(`Return from SanityApp loss: `, totalLoss);
     const threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
     const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
@@ -15225,7 +15706,7 @@ class FatesDescentRoll {
     const textColor = roll.total >= threshold ? "green" : "red";
     let messageContent = `
       <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-        <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+        <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
         Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
       </div>
     `;
@@ -15244,7 +15725,7 @@ class FatesDescentRoll {
       }
       messageContent = `
         <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-          <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+          <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
           Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
         </div>
       `;
@@ -15505,6 +15986,8 @@ function FDregisterHooks() {
     } catch (error) {
       console.error("%cFailed during ready hook:", styling$1, error);
     }
+    game.settings.set("fates-descent", "globalSaveRequests", []);
+    game.settings.set("fates-descent", "globalTestRequests", []);
   });
   Hooks.on("preUpdateActor", async (actor, changes) => {
     if (actor.type !== "character" || !actor.prototypeToken.actorLink) {
@@ -15568,7 +16051,5 @@ Hooks.on("init", () => {
   console.log("%cFate's Descent | Settings registered.", styling);
   FDregisterHooks();
   console.log("%cFate's Descent | Hooks registered.", styling);
-  game.settings.set("fates-descent", "globalSaveRequests", []);
-  game.settings.set("fates-descent", "globalTestRequests", []);
 });
 //# sourceMappingURL=fates-descent.js.map

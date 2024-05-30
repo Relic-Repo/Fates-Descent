@@ -110,7 +110,32 @@ export class FatesDescentRoll
   {
     const actor = game.actors.get(actorId);
     if (!actor) { return; }
-    const totalLoss = loss._total;
+
+    let totalLoss;
+
+    // Process loss input
+    if (loss === null || loss === undefined || loss.trim() === "") 
+    {
+      totalLoss = 0;
+    }
+    else if (!isNaN(loss)) 
+    {
+      totalLoss = Number(loss);
+    }
+    else 
+    {
+      try 
+      {
+        const rollResult = await new Roll(loss).evaluate({ async: true });
+        totalLoss = rollResult.total;
+      }
+      catch (error) 
+      {
+        console.error("Error evaluating loss input:", error);
+        totalLoss = 0;
+      }
+    }
+
     console.log(`Return from SanityApp loss: `, totalLoss);
 
     const threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
@@ -128,7 +153,7 @@ export class FatesDescentRoll
     const textColor = roll.total >= threshold ? "green" : "red";
     let messageContent = `
       <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-        <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+        <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
         Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
       </div>
     `;
@@ -154,7 +179,7 @@ export class FatesDescentRoll
       }
       messageContent = `
         <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-          <strong>${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+          <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
           Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
         </div>
       `;
@@ -165,3 +190,4 @@ export class FatesDescentRoll
     });
   }
 }
+
