@@ -45,9 +45,6 @@
   "esmodules": [
     "fates-descent.js"
   ],
-  "styles": [
-    "style.css"
-  ],
   "flags": {
     "hotReload": {
       "extensions": ["json"],
