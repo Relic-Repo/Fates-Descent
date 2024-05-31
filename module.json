@@ -1,7 +1,7 @@
 {
   "id": "fates-descent",
   "title": "Fate's Descent",
-  "version": "1.0.1",  
+  "version": "1.0.8",  
   "compatibility": {
     "minimum": "10",
     "verified": "11"
