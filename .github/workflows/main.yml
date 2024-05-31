@@ -1,9 +1,8 @@
-name: Push Event Workflow
+name: Release Workflow
 
 on: 
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -11,8 +10,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Print Hello World
-      run: echo "Hello, World!"
+    - name: Print Release Info
+      run: echo "Release triggered for version ${{ github.event.release.tag_name }}"
     - name: List Files
       run: ls -la
     - name: Print Environment Variables
