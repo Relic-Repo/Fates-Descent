@@ -8,7 +8,4 @@ node_modules/
 .eslintignore
 .editorconfig
 scripts/
-LICENSE-CC0
-LICENSE-MIT
-LICENSE-UNLICENSE
 .vscode
