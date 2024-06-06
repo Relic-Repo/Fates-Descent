@@ -1,6 +1,7 @@
 <script>
   import { getContext, onDestroy } from 'svelte';
   import { ApplicationShell } from '#runtime/svelte/component/core';
+  import RequestLine from './RequestLine.svelte';
   import { FatesDescentRoll } from '../FatesDescentRoll.js';
   import { MODULE_ID } from '../settings.js';
   import { writable } from 'svelte/store';
@@ -33,13 +34,7 @@
     return 'button-all';
   }
 
-  function updateRequestInStore(updatedRequest) {
-    requestsStore.update(requests => {
-      return requests.map(request => request.actorId === updatedRequest.actorId && request.type === updatedRequest.type ? updatedRequest : request);
-    });
-  }
-
-  async function handleRoll(request) {
+  async function handleRoll({ detail: request }) {
     const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const severityId = selectedSeverity?.id || 'minimal';
     const lossInput = useCustomLoss ? loss : { 'minimal': '1d4', 'moderate': '1d6', 'serious': '1d8', 'extreme': '1d10' }[severityId];
@@ -62,47 +57,42 @@
   async function handleRollAll() {
     clearInterval(interval);
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-    await Promise.all(globalRequests.map(request => handleRoll(request)));
+    await Promise.all(globalRequests.map(request => handleRoll({ detail: request })));
     interval = setInterval(updateRequests, 500);
   }
 
-  function handleCancel(request) {
-    return new Promise((resolve) => {
-      const { actorId, type, config } = request;
-      const method = type === 'save' ? 'rollAbilitySave' : 'rollAbilityTest';
-      const rollOptions = {
-        chatMessage: true,
-        fastForward: true,
-        fromDialog: true,
-        advantage: config?.advantage || false,
-        disadvantage: config?.disadvantage || false
-      };
-      const actor = game.actors.get(actorId);
-      if (actor) {
-        actor[method]("san", rollOptions).then(() => {
-          let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-          const index = globalRequests.findIndex(r => r.actorId === actorId && r.type === type);
-          if (index > -1) {
-            globalRequests.splice(index, 1);
-            game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
-            requestsStore.set(globalRequests);
-          }
+  async function handleCancel({ detail: request }) {
+    const { actorId, type, config } = request;
+    const method = type === 'save' ? 'rollAbilitySave' : 'rollAbilityTest';
+    const rollOptions = {
+      chatMessage: true,
+      fastForward: true,
+      fromDialog: true,
+      advantage: config?.advantage || false,
+      disadvantage: config?.disadvantage || false
+    };
+    const actor = game.actors.get(actorId);
+    if (actor) {
+      await actor[method]("san", rollOptions);
+    }
 
-          if (globalRequests.length === 0) {
-            application.close();
-          }
-          resolve();
-        });
-      } else {
-        resolve();
-      }
-    });
+    let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    const index = globalRequests.findIndex(r => r.actorId === actorId && r.type === type);
+    if (index > -1) {
+      globalRequests.splice(index, 1);
+      game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+      requestsStore.set(globalRequests);
+    }
+
+    if (globalRequests.length === 0) {
+      application.close();
+    }
   }
 
   async function handleCancelAll() {
     clearInterval(interval);
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-    await Promise.all(globalRequests.map(request => handleCancel(request)));
+    await Promise.all(globalRequests.map(request => handleCancel({ detail: request })));
     interval = setInterval(updateRequests, 500);
   }
 
@@ -151,7 +141,8 @@
     });
   }
 
-  function updateRequestProperty(actorId, type, property, value) {
+  function updateRequestProperty({ detail }) {
+    const { actorId, type, property, value } = detail;
     requestsStore.update(requests => {
       const updatedRequests = requests.map(request => {
         if (request.actorId === actorId && request.type === type) {
@@ -164,12 +155,12 @@
     });
   }
 
-  function toggleRollType(actorId) {
+  function toggleRollType({ detail }) {
+    const { actorId, type } = detail;
     requestsStore.update(requests => {
       const updatedRequests = requests.map(request => {
         if (request.actorId === actorId) {
-          const newType = request.type === 'save' ? 'test' : 'save';
-          return { ...request, type: newType };
+          return { ...request, type };
         }
         return request;
       });
@@ -194,6 +185,10 @@
 <ApplicationShell bind:elementRoot {stylesContent}>
   <main>
     <h2><i class="fas fa-dice"></i> Sanity Roller <i class="fas fa-dice"></i></h2>
+    <div class="color-key">
+      <span class="color-key-item"><span class="color-pip save"></span>Save</span>
+      <span class="color-key-item"><span class="color-pip test"></span>Check</span>
+    </div>
     <div class="table">
       <div class="row header">
         <div class="cell">Character</div>
@@ -229,41 +224,20 @@
         <div class="cell">
           <div class="buttons">
             <button type="button" on:click={handleRollAll}>Roll All</button>
-            <button type="button" on:click={handleCancelAll}>Cancel</button>
+            <button type="button" on:click={handleCancelAll}>Cancel All</button>
           </div>
         </div>
       </div>
       {#each $requestsStore as request (request.actorId)}
-        <div class="row">
-          <div class="cell">
-            <button type="button" on:click={() => toggleRollType(request.actorId)} class={getButtonClass(request.type)}>{request.actorName}</button>
-          </div>
-          <div class="cell">
-            <select bind:value={request.selectedSeverity.id} on:change={e => updateRequestProperty(request.actorId, request.type, 'selectedSeverity', defaultSeverities.find(severity => severity.id === e.target.value))}>
-              {#each defaultSeverities as severity}
-                <option value={severity.id}>{severity.text}</option>
-              {/each}
-            </select>
-          </div>
-          <div class="cell">
-            <div class="custom-dc">
-              <input type="checkbox" bind:checked={request.useCustomDC} on:change={e => updateRequestProperty(request.actorId, request.type, 'useCustomDC', e.target.checked)} />
-              <input type="text" bind:value={request.customDC} placeholder={request.selectedSeverity.dc} disabled={!request.useCustomDC} on:input={e => updateRequestProperty(request.actorId, request.type, 'customDC', e.target.value)} />
-            </div>
-          </div>
-          <div class="cell">
-            <div class="custom-loss">
-              <input type="checkbox" bind:checked={request.useCustomLoss} on:change={e => updateRequestProperty(request.actorId, request.type, 'useCustomLoss', e.target.checked)} />
-              <input type="text" bind:value={request.loss} placeholder={request.selectedSeverity.loss} disabled={!request.useCustomLoss} on:input={e => updateRequestProperty(request.actorId, request.type, 'loss', e.target.value)} />
-            </div>
-          </div>
-          <div class="cell">
-            <div class="buttons">
-              <button type="button" on:click={() => handleRoll(request)}>Roll</button>
-              <button type="button" on:click={() => handleCancel(request)}>Cancel</button>
-            </div>
-          </div>
-        </div>
+        <RequestLine
+          {request}
+          {defaultSeverities}
+          {performRoll}
+          on:updateRequestProperty={updateRequestProperty}
+          on:toggleRollType={toggleRollType}
+          on:handleRoll={handleRoll}
+          on:handleCancel={handleCancel}
+        />
       {/each}
     </div>
   </main>
@@ -280,7 +254,7 @@
     align-items: center;
   }
   h2 {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
   .table {
     width: 100%;
@@ -333,7 +307,31 @@
     text-align: center;
   }
   input::placeholder {
-  color: #f8f8f8;
+    color: #f8f8f8;
+  }
+  .color-key {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1px;
+  }
+  .color-key-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    font-size: 12px;
+  }
+  .color-pip {
+    width: 30px;
+    height: 10px;
+    border-radius: 15%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .color-pip.save {
+    background-color: orange;
+  }
+  .color-pip.test {
+    background-color: rgb(53, 116, 254);
   }
   button {
     background: #f8f8f8;
@@ -369,5 +367,7 @@
     background-color: grey;
   }
 </style>
+
+
 
 

@@ -23,5 +23,8 @@ Hooks.on("init", () =>
     console.log("%cFate's Descent | Settings registered.", styling);
     FDregisterHooks();
     console.log("%cFate's Descent | Hooks registered.", styling);
-  
-});
+    CONFIG.DND5E.damageTypes.sanity = {
+        label: "Sanity",
+        isPhysical: false
+      };
+  });

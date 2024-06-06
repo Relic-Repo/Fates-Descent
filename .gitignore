@@ -10,3 +10,5 @@ node_modules/
 scripts/
 .vscode
 .gitattributes
+templates/BasicAppShell.svelte
+BasicApplication.js

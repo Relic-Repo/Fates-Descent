@@ -18,7 +18,7 @@ export default class SanityApplication extends SvelteApplication
 
     super({
       title: 'Sanity Dialog',
-      width: 630,
+      width: 730,
       height: 'auto',
       resizable: false,
       svelte: {

@@ -473,6 +473,25 @@ function onMount(fn) {
 function onDestroy(fn) {
   get_current_component().$$.on_destroy.push(fn);
 }
+function createEventDispatcher() {
+  const component = get_current_component();
+  return (type, detail, { cancelable = false } = {}) => {
+    const callbacks = component.$$.callbacks[type];
+    if (callbacks) {
+      const event = custom_event(
+        /** @type {string} */
+        type,
+        detail,
+        { cancelable }
+      );
+      callbacks.slice().forEach((fn) => {
+        fn.call(component, event);
+      });
+      return !event.defaultPrevented;
+    }
+    return true;
+  };
+}
 function setContext(key, context) {
   get_current_component().$$.context.set(key, context);
   return context;
@@ -750,9 +769,10 @@ function create_out_transition(node, fn, params) {
 function ensure_array_like(array_like_or_iterator) {
   return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
 }
-function destroy_block(block, lookup) {
-  block.d(1);
-  lookup.delete(block.key);
+function outro_and_destroy_block(block, lookup) {
+  transition_out(block, 1, 1, () => {
+    lookup.delete(block.key);
+  });
 }
 function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block2, next, get_context) {
   let o = old_blocks.length;
@@ -12194,7 +12214,7 @@ function create_if_block$2(ctx) {
     }
   };
 }
-function create_fragment$5(ctx) {
+function create_fragment$6(ctx) {
   let a;
   let html_tag;
   let html_anchor;
@@ -12340,7 +12360,7 @@ function create_fragment$5(ctx) {
   };
 }
 const s_REGEX_HTML = /^\s*<.*>$/;
-function instance$5($$self, $$props, $$invalidate) {
+function instance$6($$self, $$props, $$invalidate) {
   let title;
   let icon;
   let label;
@@ -12425,7 +12445,7 @@ function instance$5($$self, $$props, $$invalidate) {
 class TJSHeaderButton extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$5, create_fragment$5, safe_not_equal, { button: 0 });
+    init(this, options, instance$6, create_fragment$6, safe_not_equal, { button: 0 });
   }
   get button() {
     return this.$$.ctx[0];
@@ -12437,7 +12457,7 @@ class TJSHeaderButton extends SvelteComponent {
 }
 const TJSHeaderButton$1 = TJSHeaderButton;
 const TJSApplicationHeader_svelte_svelte_type_style_lang = "";
-function get_each_context$1(ctx, list, i) {
+function get_each_context$2(ctx, list, i) {
   const child_ctx = ctx.slice();
   child_ctx[31] = list[i];
   return child_ctx;
@@ -12567,7 +12587,7 @@ function create_each_block_1$1(ctx) {
     }
   };
 }
-function create_each_block$1(ctx) {
+function create_each_block$2(ctx) {
   let switch_instance;
   let switch_instance_anchor;
   let current;
@@ -12695,7 +12715,7 @@ function create_key_block(ctx) {
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
   }
   const out_1 = (i) => transition_out(each_blocks[i], 1, 1, () => {
     each_blocks[i] = null;
@@ -12838,12 +12858,12 @@ function create_key_block(ctx) {
         );
         let i;
         for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context$1(ctx2, each_value, i);
+          const child_ctx = get_each_context$2(ctx2, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
             transition_in(each_blocks[i], 1);
           } else {
-            each_blocks[i] = create_each_block$1(child_ctx);
+            each_blocks[i] = create_each_block$2(child_ctx);
             each_blocks[i].c();
             transition_in(each_blocks[i], 1);
             each_blocks[i].m(header, null);
@@ -12905,7 +12925,7 @@ function create_key_block(ctx) {
     }
   };
 }
-function create_fragment$4(ctx) {
+function create_fragment$5(ctx) {
   let previous_key = (
     /*draggable*/
     ctx[0]
@@ -12956,7 +12976,7 @@ function create_fragment$4(ctx) {
     }
   };
 }
-function instance$4($$self, $$props, $$invalidate) {
+function instance$5($$self, $$props, $$invalidate) {
   let $focusKeep;
   let $focusAuto;
   let $elementRoot;
@@ -13114,12 +13134,12 @@ function instance$4($$self, $$props, $$invalidate) {
 class TJSApplicationHeader extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$4, create_fragment$4, safe_not_equal, { draggable: 0, draggableOptions: 20 }, null, [-1, -1]);
+    init(this, options, instance$5, create_fragment$5, safe_not_equal, { draggable: 0, draggableOptions: 20 }, null, [-1, -1]);
   }
 }
 const TJSApplicationHeader$1 = TJSApplicationHeader;
 const TJSFocusWrap_svelte_svelte_type_style_lang = "";
-function create_fragment$3(ctx) {
+function create_fragment$4(ctx) {
   let div;
   let mounted;
   let dispose;
@@ -13155,7 +13175,7 @@ function create_fragment$3(ctx) {
     }
   };
 }
-function instance$3($$self, $$props, $$invalidate) {
+function instance$4($$self, $$props, $$invalidate) {
   let { elementRoot = void 0 } = $$props;
   let { enabled = true } = $$props;
   let ignoreElements, wrapEl;
@@ -13197,12 +13217,12 @@ function instance$3($$self, $$props, $$invalidate) {
 class TJSFocusWrap extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$3, create_fragment$3, safe_not_equal, { elementRoot: 2, enabled: 3 });
+    init(this, options, instance$4, create_fragment$4, safe_not_equal, { elementRoot: 2, enabled: 3 });
   }
 }
 const TJSFocusWrap$1 = TJSFocusWrap;
 const ResizableHandle_svelte_svelte_type_style_lang = "";
-function create_fragment$2(ctx) {
+function create_fragment$3(ctx) {
   let div;
   let resizable_action;
   let mounted;
@@ -13257,7 +13277,7 @@ function create_fragment$2(ctx) {
     }
   };
 }
-function instance$2($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
   let $storeElementRoot;
   let $storeMinimized;
   let $storeResizable;
@@ -13386,7 +13406,7 @@ function instance$2($$self, $$props, $$invalidate) {
 class ResizableHandle extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$2, create_fragment$2, safe_not_equal, { isResizable: 7 });
+    init(this, options, instance$3, create_fragment$3, safe_not_equal, { isResizable: 7 });
   }
 }
 const ResizableHandle$1 = ResizableHandle;
@@ -13921,7 +13941,7 @@ function create_if_block(ctx) {
     }
   };
 }
-function create_fragment$1(ctx) {
+function create_fragment$2(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
@@ -13989,7 +14009,7 @@ function create_fragment$1(ctx) {
     }
   };
 }
-function instance$1($$self, $$props, $$invalidate) {
+function instance$2($$self, $$props, $$invalidate) {
   let $focusKeep;
   let $focusAuto;
   let $minimized;
@@ -14284,8 +14304,8 @@ class ApplicationShell extends SvelteComponent {
     init(
       this,
       options,
-      instance$1,
-      create_fragment$1,
+      instance$2,
+      create_fragment$2,
       safe_not_equal,
       {
         elementContent: 0,
@@ -14429,44 +14449,44 @@ cssVariables.setProperties({
   // TJSApplicationShell app background.
   "--tjs-app-background": `url("${globalThis.foundry.utils.getRoute("/ui/denim075.png")}")`
 }, false);
-const SanityApp_svelte_svelte_type_style_lang = "";
-function get_each_context(ctx, list, i) {
+const RequestLine_svelte_svelte_type_style_lang = "";
+function get_each_context$1(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[36] = list[i];
-  child_ctx[37] = list;
-  child_ctx[38] = i;
+  child_ctx[17] = list[i];
   return child_ctx;
 }
-function get_each_context_1(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[39] = list[i];
-  return child_ctx;
-}
-function get_each_context_2(ctx, list, i) {
-  const child_ctx = ctx.slice();
-  child_ctx[39] = list[i];
-  return child_ctx;
-}
-function create_each_block_2(ctx) {
+function create_each_block$1(ctx) {
   let option;
   let t_value = (
     /*severity*/
-    ctx[39].text + ""
+    ctx[17].text + ""
   );
   let t;
+  let option_value_value;
   return {
     c() {
       option = element("option");
       t = text(t_value);
-      option.__value = /*severity*/
-      ctx[39].id;
+      option.__value = option_value_value = /*severity*/
+      ctx[17].id;
       set_input_value(option, option.__value);
     },
     m(target, anchor) {
       insert(target, option, anchor);
       append(option, t);
     },
-    p: noop,
+    p(ctx2, dirty) {
+      if (dirty & /*defaultSeverities*/
+      2 && t_value !== (t_value = /*severity*/
+      ctx2[17].text + ""))
+        set_data(t, t_value);
+      if (dirty & /*defaultSeverities*/
+      2 && option_value_value !== (option_value_value = /*severity*/
+      ctx2[17].id)) {
+        option.__value = option_value_value;
+        set_input_value(option, option.__value);
+      }
+    },
     d(detaching) {
       if (detaching) {
         detach(option);
@@ -14474,40 +14494,13 @@ function create_each_block_2(ctx) {
     }
   };
 }
-function create_each_block_1(ctx) {
-  let option;
-  let t_value = (
-    /*severity*/
-    ctx[39].text + ""
-  );
-  let t;
-  return {
-    c() {
-      option = element("option");
-      t = text(t_value);
-      option.__value = /*severity*/
-      ctx[39].id;
-      set_input_value(option, option.__value);
-    },
-    m(target, anchor) {
-      insert(target, option, anchor);
-      append(option, t);
-    },
-    p: noop,
-    d(detaching) {
-      if (detaching) {
-        detach(option);
-      }
-    }
-  };
-}
-function create_each_block(key_1, ctx) {
+function create_fragment$1(ctx) {
   let div8;
   let div0;
   let button0;
   let t0_value = (
     /*request*/
-    ctx[36].actorName + ""
+    ctx[0].actorName.split(" ")[0] + ""
   );
   let t0;
   let button0_class_value;
@@ -14536,142 +14529,17 @@ function create_each_block(key_1, ctx) {
   let button1;
   let t8;
   let button2;
-  let t10;
   let mounted;
   let dispose;
-  function click_handler() {
-    return (
-      /*click_handler*/
-      ctx[17](
-        /*request*/
-        ctx[36]
-      )
-    );
-  }
-  let each_value_1 = ensure_array_like(
+  let each_value = ensure_array_like(
     /*defaultSeverities*/
-    ctx[4]
+    ctx[1]
   );
   let each_blocks = [];
-  for (let i = 0; i < each_value_1.length; i += 1) {
-    each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
-  }
-  function select_change_handler() {
-    ctx[18].call(
-      select,
-      /*each_value*/
-      ctx[37],
-      /*request_index*/
-      ctx[38]
-    );
-  }
-  function change_handler(...args) {
-    return (
-      /*change_handler*/
-      ctx[19](
-        /*request*/
-        ctx[36],
-        ...args
-      )
-    );
-  }
-  function input0_change_handler() {
-    ctx[20].call(
-      input0,
-      /*each_value*/
-      ctx[37],
-      /*request_index*/
-      ctx[38]
-    );
-  }
-  function change_handler_1(...args) {
-    return (
-      /*change_handler_1*/
-      ctx[21](
-        /*request*/
-        ctx[36],
-        ...args
-      )
-    );
-  }
-  function input1_input_handler() {
-    ctx[22].call(
-      input1,
-      /*each_value*/
-      ctx[37],
-      /*request_index*/
-      ctx[38]
-    );
-  }
-  function input_handler(...args) {
-    return (
-      /*input_handler*/
-      ctx[23](
-        /*request*/
-        ctx[36],
-        ...args
-      )
-    );
-  }
-  function input2_change_handler() {
-    ctx[24].call(
-      input2,
-      /*each_value*/
-      ctx[37],
-      /*request_index*/
-      ctx[38]
-    );
-  }
-  function change_handler_2(...args) {
-    return (
-      /*change_handler_2*/
-      ctx[25](
-        /*request*/
-        ctx[36],
-        ...args
-      )
-    );
-  }
-  function input3_input_handler() {
-    ctx[26].call(
-      input3,
-      /*each_value*/
-      ctx[37],
-      /*request_index*/
-      ctx[38]
-    );
-  }
-  function input_handler_1(...args) {
-    return (
-      /*input_handler_1*/
-      ctx[27](
-        /*request*/
-        ctx[36],
-        ...args
-      )
-    );
-  }
-  function click_handler_1() {
-    return (
-      /*click_handler_1*/
-      ctx[28](
-        /*request*/
-        ctx[36]
-      )
-    );
-  }
-  function click_handler_2() {
-    return (
-      /*click_handler_2*/
-      ctx[29](
-        /*request*/
-        ctx[36]
-      )
-    );
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
   }
   return {
-    key: key_1,
-    first: null,
     c() {
       div8 = element("div");
       div0 = element("div");
@@ -14703,48 +14571,49 @@ function create_each_block(key_1, ctx) {
       t8 = space();
       button2 = element("button");
       button2.textContent = "Cancel";
-      t10 = space();
       attr(button0, "type", "button");
-      attr(button0, "class", button0_class_value = null_to_empty(getButtonClass(
+      attr(button0, "class", button0_class_value = null_to_empty(
         /*request*/
-        ctx[36].type
-      )) + " svelte-fdcss-4dsh82");
-      attr(div0, "class", "cell svelte-fdcss-4dsh82");
-      attr(select, "class", "svelte-fdcss-4dsh82");
+        ctx[0].type === "save" ? "button-save" : "button-test"
+      ) + " svelte-fdcss-nff0uu");
+      attr(div0, "class", "cell svelte-fdcss-nff0uu");
+      attr(select, "class", "svelte-fdcss-nff0uu");
       if (
         /*request*/
-        ctx[36].selectedSeverity.id === void 0
+        ctx[0].selectedSeverity.id === void 0
       )
-        add_render_callback(select_change_handler);
-      attr(div1, "class", "cell svelte-fdcss-4dsh82");
+        add_render_callback(() => (
+          /*select_change_handler*/
+          ctx[6].call(select)
+        ));
+      attr(div1, "class", "cell svelte-fdcss-nff0uu");
       attr(input0, "type", "checkbox");
-      attr(input0, "class", "svelte-fdcss-4dsh82");
+      attr(input0, "class", "svelte-fdcss-nff0uu");
       attr(input1, "type", "text");
       attr(input1, "placeholder", input1_placeholder_value = /*request*/
-      ctx[36].selectedSeverity.dc);
+      ctx[0].selectedSeverity.dc);
       input1.disabled = input1_disabled_value = !/*request*/
-      ctx[36].useCustomDC;
-      attr(input1, "class", "svelte-fdcss-4dsh82");
-      attr(div2, "class", "custom-dc svelte-fdcss-4dsh82");
-      attr(div3, "class", "cell svelte-fdcss-4dsh82");
+      ctx[0].useCustomDC;
+      attr(input1, "class", "svelte-fdcss-nff0uu");
+      attr(div2, "class", "custom-dc svelte-fdcss-nff0uu");
+      attr(div3, "class", "cell svelte-fdcss-nff0uu");
       attr(input2, "type", "checkbox");
-      attr(input2, "class", "svelte-fdcss-4dsh82");
+      attr(input2, "class", "svelte-fdcss-nff0uu");
       attr(input3, "type", "text");
       attr(input3, "placeholder", input3_placeholder_value = /*request*/
-      ctx[36].selectedSeverity.loss);
+      ctx[0].selectedSeverity.loss);
       input3.disabled = input3_disabled_value = !/*request*/
-      ctx[36].useCustomLoss;
-      attr(input3, "class", "svelte-fdcss-4dsh82");
-      attr(div4, "class", "custom-loss svelte-fdcss-4dsh82");
-      attr(div5, "class", "cell svelte-fdcss-4dsh82");
+      ctx[0].useCustomLoss;
+      attr(input3, "class", "svelte-fdcss-nff0uu");
+      attr(div4, "class", "custom-loss svelte-fdcss-nff0uu");
+      attr(div5, "class", "cell svelte-fdcss-nff0uu");
       attr(button1, "type", "button");
-      attr(button1, "class", "svelte-fdcss-4dsh82");
+      attr(button1, "class", "svelte-fdcss-nff0uu");
       attr(button2, "type", "button");
-      attr(button2, "class", "svelte-fdcss-4dsh82");
-      attr(div6, "class", "buttons svelte-fdcss-4dsh82");
-      attr(div7, "class", "cell svelte-fdcss-4dsh82");
-      attr(div8, "class", "row svelte-fdcss-4dsh82");
-      this.first = div8;
+      attr(button2, "class", "svelte-fdcss-nff0uu");
+      attr(div6, "class", "buttons svelte-fdcss-nff0uu");
+      attr(div7, "class", "cell svelte-fdcss-nff0uu");
+      attr(div8, "class", "row svelte-fdcss-nff0uu");
     },
     m(target, anchor) {
       insert(target, div8, anchor);
@@ -14762,7 +14631,7 @@ function create_each_block(key_1, ctx) {
       select_option(
         select,
         /*request*/
-        ctx[36].selectedSeverity.id,
+        ctx[0].selectedSeverity.id,
         true
       );
       append(div8, t2);
@@ -14770,26 +14639,26 @@ function create_each_block(key_1, ctx) {
       append(div3, div2);
       append(div2, input0);
       input0.checked = /*request*/
-      ctx[36].useCustomDC;
+      ctx[0].useCustomDC;
       append(div2, t3);
       append(div2, input1);
       set_input_value(
         input1,
         /*request*/
-        ctx[36].customDC
+        ctx[0].customDC
       );
       append(div8, t4);
       append(div8, div5);
       append(div5, div4);
       append(div4, input2);
       input2.checked = /*request*/
-      ctx[36].useCustomLoss;
+      ctx[0].useCustomLoss;
       append(div4, t5);
       append(div4, input3);
       set_input_value(
         input3,
         /*request*/
-        ctx[36].loss
+        ctx[0].loss
       );
       append(div8, t6);
       append(div8, div7);
@@ -14797,52 +14666,115 @@ function create_each_block(key_1, ctx) {
       append(div6, button1);
       append(div6, t8);
       append(div6, button2);
-      append(div8, t10);
       if (!mounted) {
         dispose = [
-          listen(button0, "click", click_handler),
-          listen(select, "change", select_change_handler),
-          listen(select, "change", change_handler),
-          listen(input0, "change", input0_change_handler),
-          listen(input0, "change", change_handler_1),
-          listen(input1, "input", input1_input_handler),
-          listen(input1, "input", input_handler),
-          listen(input2, "change", input2_change_handler),
-          listen(input2, "change", change_handler_2),
-          listen(input3, "input", input3_input_handler),
-          listen(input3, "input", input_handler_1),
-          listen(button1, "click", click_handler_1),
-          listen(button2, "click", click_handler_2)
+          listen(
+            button0,
+            "click",
+            /*toggleRollType*/
+            ctx[4]
+          ),
+          listen(
+            select,
+            "change",
+            /*select_change_handler*/
+            ctx[6]
+          ),
+          listen(
+            select,
+            "change",
+            /*change_handler*/
+            ctx[7]
+          ),
+          listen(
+            input0,
+            "change",
+            /*input0_change_handler*/
+            ctx[8]
+          ),
+          listen(
+            input0,
+            "change",
+            /*change_handler_1*/
+            ctx[9]
+          ),
+          listen(
+            input1,
+            "input",
+            /*input1_input_handler*/
+            ctx[10]
+          ),
+          listen(
+            input1,
+            "input",
+            /*input_handler*/
+            ctx[11]
+          ),
+          listen(
+            input2,
+            "change",
+            /*input2_change_handler*/
+            ctx[12]
+          ),
+          listen(
+            input2,
+            "change",
+            /*change_handler_2*/
+            ctx[13]
+          ),
+          listen(
+            input3,
+            "input",
+            /*input3_input_handler*/
+            ctx[14]
+          ),
+          listen(
+            input3,
+            "input",
+            /*input_handler_1*/
+            ctx[15]
+          ),
+          listen(
+            button1,
+            "click",
+            /*handleRoll*/
+            ctx[2]
+          ),
+          listen(
+            button2,
+            "click",
+            /*handleCancel*/
+            ctx[3]
+          )
         ];
         mounted = true;
       }
     },
-    p(new_ctx, dirty) {
-      ctx = new_ctx;
-      if (dirty[0] & /*$requestsStore*/
-      4 && t0_value !== (t0_value = /*request*/
-      ctx[36].actorName + ""))
+    p(ctx2, [dirty]) {
+      if (dirty & /*request*/
+      1 && t0_value !== (t0_value = /*request*/
+      ctx2[0].actorName.split(" ")[0] + ""))
         set_data(t0, t0_value);
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && button0_class_value !== (button0_class_value = null_to_empty(getButtonClass(
+      if (dirty & /*request, defaultSeverities*/
+      3 && button0_class_value !== (button0_class_value = null_to_empty(
         /*request*/
-        ctx[36].type
-      )) + " svelte-fdcss-4dsh82")) {
+        ctx2[0].type === "save" ? "button-save" : "button-test"
+      ) + " svelte-fdcss-nff0uu")) {
         attr(button0, "class", button0_class_value);
       }
-      if (dirty[0] & /*defaultSeverities*/
-      16) {
-        each_value_1 = ensure_array_like(
+      if (dirty & /*defaultSeverities*/
+      2) {
+        each_value = ensure_array_like(
           /*defaultSeverities*/
-          ctx[4]
+          ctx2[1]
         );
         let i;
-        for (i = 0; i < each_value_1.length; i += 1) {
-          const child_ctx = get_each_context_1(ctx, each_value_1, i);
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context$1(ctx2, each_value, i);
           if (each_blocks[i]) {
             each_blocks[i].p(child_ctx, dirty);
           } else {
-            each_blocks[i] = create_each_block_1(child_ctx);
+            each_blocks[i] = create_each_block$1(child_ctx);
             each_blocks[i].c();
             each_blocks[i].m(select, null);
           }
@@ -14850,65 +14782,67 @@ function create_each_block(key_1, ctx) {
         for (; i < each_blocks.length; i += 1) {
           each_blocks[i].d(1);
         }
-        each_blocks.length = each_value_1.length;
+        each_blocks.length = each_value.length;
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20) {
+      if (dirty & /*request, defaultSeverities*/
+      3) {
         select_option(
           select,
           /*request*/
-          ctx[36].selectedSeverity.id
+          ctx2[0].selectedSeverity.id
         );
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20) {
+      if (dirty & /*request, defaultSeverities*/
+      3) {
         input0.checked = /*request*/
-        ctx[36].useCustomDC;
+        ctx2[0].useCustomDC;
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input1_placeholder_value !== (input1_placeholder_value = /*request*/
-      ctx[36].selectedSeverity.dc)) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input1_placeholder_value !== (input1_placeholder_value = /*request*/
+      ctx2[0].selectedSeverity.dc)) {
         attr(input1, "placeholder", input1_placeholder_value);
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input1_disabled_value !== (input1_disabled_value = !/*request*/
-      ctx[36].useCustomDC)) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input1_disabled_value !== (input1_disabled_value = !/*request*/
+      ctx2[0].useCustomDC)) {
         input1.disabled = input1_disabled_value;
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input1.value !== /*request*/
-      ctx[36].customDC) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input1.value !== /*request*/
+      ctx2[0].customDC) {
         set_input_value(
           input1,
           /*request*/
-          ctx[36].customDC
+          ctx2[0].customDC
         );
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20) {
+      if (dirty & /*request, defaultSeverities*/
+      3) {
         input2.checked = /*request*/
-        ctx[36].useCustomLoss;
+        ctx2[0].useCustomLoss;
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input3_placeholder_value !== (input3_placeholder_value = /*request*/
-      ctx[36].selectedSeverity.loss)) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input3_placeholder_value !== (input3_placeholder_value = /*request*/
+      ctx2[0].selectedSeverity.loss)) {
         attr(input3, "placeholder", input3_placeholder_value);
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input3_disabled_value !== (input3_disabled_value = !/*request*/
-      ctx[36].useCustomLoss)) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input3_disabled_value !== (input3_disabled_value = !/*request*/
+      ctx2[0].useCustomLoss)) {
         input3.disabled = input3_disabled_value;
       }
-      if (dirty[0] & /*$requestsStore, defaultSeverities*/
-      20 && input3.value !== /*request*/
-      ctx[36].loss) {
+      if (dirty & /*request, defaultSeverities*/
+      3 && input3.value !== /*request*/
+      ctx2[0].loss) {
         set_input_value(
           input3,
           /*request*/
-          ctx[36].loss
+          ctx2[0].loss
         );
       }
     },
+    i: noop,
+    o: noop,
     d(detaching) {
       if (detaching) {
         detach(div8);
@@ -14919,59 +14853,267 @@ function create_each_block(key_1, ctx) {
     }
   };
 }
+function instance$1($$self, $$props, $$invalidate) {
+  let { request } = $$props;
+  let { defaultSeverities } = $$props;
+  const dispatch2 = createEventDispatcher();
+  function handleRoll() {
+    dispatch2("handleRoll", request);
+  }
+  function handleCancel() {
+    dispatch2("handleCancel", request);
+  }
+  function toggleRollType() {
+    const newType = request.type === "save" ? "test" : "save";
+    dispatch2("toggleRollType", { actorId: request.actorId, type: newType });
+  }
+  function updateRequestProperty(property, value) {
+    dispatch2("updateRequestProperty", {
+      actorId: request.actorId,
+      type: request.type,
+      property,
+      value
+    });
+  }
+  function select_change_handler() {
+    request.selectedSeverity.id = select_value(this);
+    $$invalidate(0, request);
+    $$invalidate(1, defaultSeverities);
+  }
+  const change_handler = (e) => updateRequestProperty("selectedSeverity", defaultSeverities.find((severity) => severity.id === e.target.value));
+  function input0_change_handler() {
+    request.useCustomDC = this.checked;
+    $$invalidate(0, request);
+    $$invalidate(1, defaultSeverities);
+  }
+  const change_handler_1 = (e) => updateRequestProperty("useCustomDC", e.target.checked);
+  function input1_input_handler() {
+    request.customDC = this.value;
+    $$invalidate(0, request);
+    $$invalidate(1, defaultSeverities);
+  }
+  const input_handler = (e) => updateRequestProperty("customDC", e.target.value);
+  function input2_change_handler() {
+    request.useCustomLoss = this.checked;
+    $$invalidate(0, request);
+    $$invalidate(1, defaultSeverities);
+  }
+  const change_handler_2 = (e) => updateRequestProperty("useCustomLoss", e.target.checked);
+  function input3_input_handler() {
+    request.loss = this.value;
+    $$invalidate(0, request);
+    $$invalidate(1, defaultSeverities);
+  }
+  const input_handler_1 = (e) => updateRequestProperty("loss", e.target.value);
+  $$self.$$set = ($$props2) => {
+    if ("request" in $$props2)
+      $$invalidate(0, request = $$props2.request);
+    if ("defaultSeverities" in $$props2)
+      $$invalidate(1, defaultSeverities = $$props2.defaultSeverities);
+  };
+  return [
+    request,
+    defaultSeverities,
+    handleRoll,
+    handleCancel,
+    toggleRollType,
+    updateRequestProperty,
+    select_change_handler,
+    change_handler,
+    input0_change_handler,
+    change_handler_1,
+    input1_input_handler,
+    input_handler,
+    input2_change_handler,
+    change_handler_2,
+    input3_input_handler,
+    input_handler_1
+  ];
+}
+class RequestLine extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance$1, create_fragment$1, safe_not_equal, { request: 0, defaultSeverities: 1 });
+  }
+}
+const SanityApp_svelte_svelte_type_style_lang = "";
+function get_each_context(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[22] = list[i];
+  return child_ctx;
+}
+function get_each_context_1(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[25] = list[i];
+  return child_ctx;
+}
+function create_each_block_1(ctx) {
+  let option;
+  let t_value = (
+    /*severity*/
+    ctx[25].text + ""
+  );
+  let t;
+  return {
+    c() {
+      option = element("option");
+      t = text(t_value);
+      option.__value = /*severity*/
+      ctx[25].id;
+      set_input_value(option, option.__value);
+    },
+    m(target, anchor) {
+      insert(target, option, anchor);
+      append(option, t);
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(option);
+      }
+    }
+  };
+}
+function create_each_block(key_1, ctx) {
+  let first;
+  let requestline;
+  let current;
+  requestline = new RequestLine({
+    props: {
+      request: (
+        /*request*/
+        ctx[22]
+      ),
+      defaultSeverities: (
+        /*defaultSeverities*/
+        ctx[5]
+      ),
+      performRoll: (
+        /*performRoll*/
+        ctx[1]
+      )
+    }
+  });
+  requestline.$on(
+    "updateRequestProperty",
+    /*updateRequestProperty*/
+    ctx[14]
+  );
+  requestline.$on(
+    "toggleRollType",
+    /*toggleRollType*/
+    ctx[15]
+  );
+  requestline.$on(
+    "handleRoll",
+    /*handleRoll*/
+    ctx[7]
+  );
+  requestline.$on(
+    "handleCancel",
+    /*handleCancel*/
+    ctx[9]
+  );
+  return {
+    key: key_1,
+    first: null,
+    c() {
+      first = empty();
+      create_component(requestline.$$.fragment);
+      this.first = first;
+    },
+    m(target, anchor) {
+      insert(target, first, anchor);
+      mount_component(requestline, target, anchor);
+      current = true;
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      const requestline_changes = {};
+      if (dirty & /*$requestsStore*/
+      8)
+        requestline_changes.request = /*request*/
+        ctx[22];
+      if (dirty & /*performRoll*/
+      2)
+        requestline_changes.performRoll = /*performRoll*/
+        ctx[1];
+      requestline.$set(requestline_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(requestline.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(requestline.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(first);
+      }
+      destroy_component(requestline, detaching);
+    }
+  };
+}
 function create_default_slot(ctx) {
   let main;
   let h2;
   let t1;
-  let div15;
-  let div5;
-  let t11;
-  let div14;
+  let div0;
+  let t5;
+  let div16;
   let div6;
-  let button0;
-  let t12;
-  let button0_class_value;
-  let t13;
-  let div7;
-  let select;
-  let t14;
-  let div9;
-  let div8;
-  let input0;
   let t15;
-  let input1;
+  let div15;
+  let div7;
+  let button0;
   let t16;
-  let div11;
-  let div10;
-  let input2;
+  let button0_class_value;
   let t17;
-  let input3;
+  let div8;
+  let select;
   let t18;
-  let div13;
-  let div12;
-  let button1;
+  let div10;
+  let div9;
+  let input0;
+  let t19;
+  let input1;
   let t20;
-  let button2;
+  let div12;
+  let div11;
+  let input2;
+  let t21;
+  let input3;
   let t22;
+  let div14;
+  let div13;
+  let button1;
+  let t24;
+  let button2;
+  let t26;
   let each_blocks = [];
   let each1_lookup = /* @__PURE__ */ new Map();
+  let current;
   let mounted;
   let dispose;
-  let each_value_2 = ensure_array_like(
+  let each_value_1 = ensure_array_like(
     /*defaultSeverities*/
-    ctx[4]
+    ctx[5]
   );
   let each_blocks_1 = [];
-  for (let i = 0; i < each_value_2.length; i += 1) {
-    each_blocks_1[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+  for (let i = 0; i < each_value_1.length; i += 1) {
+    each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
   }
   let each_value = ensure_array_like(
     /*$requestsStore*/
-    ctx[2]
+    ctx[3]
   );
   const get_key = (ctx2) => (
     /*request*/
-    ctx2[36].actorId
+    ctx2[22].actorId
   );
   for (let i = 0; i < each_value.length; i += 1) {
     let child_ctx = get_each_context(ctx, each_value, i);
@@ -14984,186 +15126,193 @@ function create_default_slot(ctx) {
       h2 = element("h2");
       h2.innerHTML = `<i class="fas fa-dice"></i> Sanity Roller <i class="fas fa-dice"></i>`;
       t1 = space();
-      div15 = element("div");
-      div5 = element("div");
-      div5.innerHTML = `<div class="cell svelte-fdcss-4dsh82">Character</div> <div class="cell svelte-fdcss-4dsh82">Severity</div> <div class="cell svelte-fdcss-4dsh82">Custom DC</div> <div class="cell svelte-fdcss-4dsh82">Custom Loss</div> <div class="cell svelte-fdcss-4dsh82">Confirm</div>`;
-      t11 = space();
-      div14 = element("div");
+      div0 = element("div");
+      div0.innerHTML = `<span class="color-key-item svelte-fdcss-1jb2b4"><span class="color-pip save svelte-fdcss-1jb2b4"></span>Save</span> <span class="color-key-item svelte-fdcss-1jb2b4"><span class="color-pip test svelte-fdcss-1jb2b4"></span>Check</span>`;
+      t5 = space();
+      div16 = element("div");
       div6 = element("div");
-      button0 = element("button");
-      t12 = text("All");
-      t13 = space();
+      div6.innerHTML = `<div class="cell svelte-fdcss-1jb2b4">Character</div> <div class="cell svelte-fdcss-1jb2b4">Severity</div> <div class="cell svelte-fdcss-1jb2b4">Custom DC</div> <div class="cell svelte-fdcss-1jb2b4">Custom Loss</div> <div class="cell svelte-fdcss-1jb2b4">Confirm</div>`;
+      t15 = space();
+      div15 = element("div");
       div7 = element("div");
+      button0 = element("button");
+      t16 = text("All");
+      t17 = space();
+      div8 = element("div");
       select = element("select");
       for (let i = 0; i < each_blocks_1.length; i += 1) {
         each_blocks_1[i].c();
       }
-      t14 = space();
-      div9 = element("div");
-      div8 = element("div");
-      input0 = element("input");
-      t15 = space();
-      input1 = element("input");
-      t16 = space();
-      div11 = element("div");
-      div10 = element("div");
-      input2 = element("input");
-      t17 = space();
-      input3 = element("input");
       t18 = space();
-      div13 = element("div");
+      div10 = element("div");
+      div9 = element("div");
+      input0 = element("input");
+      t19 = space();
+      input1 = element("input");
+      t20 = space();
       div12 = element("div");
+      div11 = element("div");
+      input2 = element("input");
+      t21 = space();
+      input3 = element("input");
+      t22 = space();
+      div14 = element("div");
+      div13 = element("div");
       button1 = element("button");
       button1.textContent = "Roll All";
-      t20 = space();
+      t24 = space();
       button2 = element("button");
-      button2.textContent = "Cancel";
-      t22 = space();
+      button2.textContent = "Cancel All";
+      t26 = space();
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      attr(h2, "class", "svelte-fdcss-4dsh82");
-      attr(div5, "class", "row header svelte-fdcss-4dsh82");
+      attr(h2, "class", "svelte-fdcss-1jb2b4");
+      attr(div0, "class", "color-key svelte-fdcss-1jb2b4");
+      attr(div6, "class", "row header svelte-fdcss-1jb2b4");
       attr(button0, "type", "button");
       attr(button0, "class", button0_class_value = null_to_empty(getButtonClass(
         /*allRollType*/
-        ctx[1]
-      )) + " svelte-fdcss-4dsh82");
-      attr(div6, "class", "cell svelte-fdcss-4dsh82");
-      attr(select, "class", "svelte-fdcss-4dsh82");
-      attr(div7, "class", "cell svelte-fdcss-4dsh82");
+        ctx[2]
+      )) + " svelte-fdcss-1jb2b4");
+      attr(div7, "class", "cell svelte-fdcss-1jb2b4");
+      attr(select, "class", "svelte-fdcss-1jb2b4");
+      attr(div8, "class", "cell svelte-fdcss-1jb2b4");
       attr(input0, "type", "checkbox");
-      attr(input0, "class", "svelte-fdcss-4dsh82");
+      attr(input0, "class", "svelte-fdcss-1jb2b4");
       attr(input1, "type", "text");
       attr(input1, "placeholder", "DC");
       input1.disabled = true;
-      attr(input1, "class", "svelte-fdcss-4dsh82");
-      attr(div8, "class", "custom-dc svelte-fdcss-4dsh82");
-      attr(div9, "class", "cell svelte-fdcss-4dsh82");
+      attr(input1, "class", "svelte-fdcss-1jb2b4");
+      attr(div9, "class", "custom-dc svelte-fdcss-1jb2b4");
+      attr(div10, "class", "cell svelte-fdcss-1jb2b4");
       attr(input2, "type", "checkbox");
-      attr(input2, "class", "svelte-fdcss-4dsh82");
+      attr(input2, "class", "svelte-fdcss-1jb2b4");
       attr(input3, "type", "text");
       attr(input3, "placeholder", "Loss");
       input3.disabled = true;
-      attr(input3, "class", "svelte-fdcss-4dsh82");
-      attr(div10, "class", "custom-loss svelte-fdcss-4dsh82");
-      attr(div11, "class", "cell svelte-fdcss-4dsh82");
+      attr(input3, "class", "svelte-fdcss-1jb2b4");
+      attr(div11, "class", "custom-loss svelte-fdcss-1jb2b4");
+      attr(div12, "class", "cell svelte-fdcss-1jb2b4");
       attr(button1, "type", "button");
-      attr(button1, "class", "svelte-fdcss-4dsh82");
+      attr(button1, "class", "svelte-fdcss-1jb2b4");
       attr(button2, "type", "button");
-      attr(button2, "class", "svelte-fdcss-4dsh82");
-      attr(div12, "class", "buttons svelte-fdcss-4dsh82");
-      attr(div13, "class", "cell svelte-fdcss-4dsh82");
-      attr(div14, "class", "row svelte-fdcss-4dsh82");
-      attr(div15, "class", "table svelte-fdcss-4dsh82");
-      attr(main, "class", "svelte-fdcss-4dsh82");
+      attr(button2, "class", "svelte-fdcss-1jb2b4");
+      attr(div13, "class", "buttons svelte-fdcss-1jb2b4");
+      attr(div14, "class", "cell svelte-fdcss-1jb2b4");
+      attr(div15, "class", "row svelte-fdcss-1jb2b4");
+      attr(div16, "class", "table svelte-fdcss-1jb2b4");
+      attr(main, "class", "svelte-fdcss-1jb2b4");
     },
     m(target, anchor) {
       insert(target, main, anchor);
       append(main, h2);
       append(main, t1);
-      append(main, div15);
-      append(div15, div5);
-      append(div15, t11);
-      append(div15, div14);
-      append(div14, div6);
-      append(div6, button0);
-      append(button0, t12);
-      append(div14, t13);
-      append(div14, div7);
-      append(div7, select);
+      append(main, div0);
+      append(main, t5);
+      append(main, div16);
+      append(div16, div6);
+      append(div16, t15);
+      append(div16, div15);
+      append(div15, div7);
+      append(div7, button0);
+      append(button0, t16);
+      append(div15, t17);
+      append(div15, div8);
+      append(div8, select);
       for (let i = 0; i < each_blocks_1.length; i += 1) {
         if (each_blocks_1[i]) {
           each_blocks_1[i].m(select, null);
         }
       }
-      append(div14, t14);
-      append(div14, div9);
-      append(div9, div8);
-      append(div8, input0);
-      append(div8, t15);
-      append(div8, input1);
-      append(div14, t16);
-      append(div14, div11);
-      append(div11, div10);
-      append(div10, input2);
-      append(div10, t17);
-      append(div10, input3);
-      append(div14, t18);
-      append(div14, div13);
-      append(div13, div12);
-      append(div12, button1);
-      append(div12, t20);
-      append(div12, button2);
+      append(div15, t18);
+      append(div15, div10);
+      append(div10, div9);
+      append(div9, input0);
+      append(div9, t19);
+      append(div9, input1);
+      append(div15, t20);
+      append(div15, div12);
+      append(div12, div11);
+      append(div11, input2);
+      append(div11, t21);
+      append(div11, input3);
       append(div15, t22);
+      append(div15, div14);
+      append(div14, div13);
+      append(div13, button1);
+      append(div13, t24);
+      append(div13, button2);
+      append(div16, t26);
       for (let i = 0; i < each_blocks.length; i += 1) {
         if (each_blocks[i]) {
-          each_blocks[i].m(div15, null);
+          each_blocks[i].m(div16, null);
         }
       }
+      current = true;
       if (!mounted) {
         dispose = [
           listen(
             button0,
             "click",
             /*setAllRollType*/
-            ctx[15]
+            ctx[16]
           ),
           listen(
             select,
             "change",
             /*setAllSelectedSeverity*/
-            ctx[10]
+            ctx[11]
           ),
           listen(
             input0,
             "change",
             /*setAllCustomDC*/
-            ctx[11]
+            ctx[12]
           ),
           listen(
             input2,
             "change",
             /*setAllCustomLoss*/
-            ctx[12]
+            ctx[13]
           ),
           listen(
             button1,
             "click",
             /*handleRollAll*/
-            ctx[7]
+            ctx[8]
           ),
           listen(
             button2,
             "click",
             /*handleCancelAll*/
-            ctx[9]
+            ctx[10]
           )
         ];
         mounted = true;
       }
     },
     p(ctx2, dirty) {
-      if (dirty[0] & /*allRollType*/
-      2 && button0_class_value !== (button0_class_value = null_to_empty(getButtonClass(
+      if (!current || dirty & /*allRollType*/
+      4 && button0_class_value !== (button0_class_value = null_to_empty(getButtonClass(
         /*allRollType*/
-        ctx2[1]
-      )) + " svelte-fdcss-4dsh82")) {
+        ctx2[2]
+      )) + " svelte-fdcss-1jb2b4")) {
         attr(button0, "class", button0_class_value);
       }
-      if (dirty[0] & /*defaultSeverities*/
-      16) {
-        each_value_2 = ensure_array_like(
+      if (dirty & /*defaultSeverities*/
+      32) {
+        each_value_1 = ensure_array_like(
           /*defaultSeverities*/
-          ctx2[4]
+          ctx2[5]
         );
         let i;
-        for (i = 0; i < each_value_2.length; i += 1) {
-          const child_ctx = get_each_context_2(ctx2, each_value_2, i);
+        for (i = 0; i < each_value_1.length; i += 1) {
+          const child_ctx = get_each_context_1(ctx2, each_value_1, i);
           if (each_blocks_1[i]) {
             each_blocks_1[i].p(child_ctx, dirty);
           } else {
-            each_blocks_1[i] = create_each_block_2(child_ctx);
+            each_blocks_1[i] = create_each_block_1(child_ctx);
             each_blocks_1[i].c();
             each_blocks_1[i].m(select, null);
           }
@@ -15171,16 +15320,32 @@ function create_default_slot(ctx) {
         for (; i < each_blocks_1.length; i += 1) {
           each_blocks_1[i].d(1);
         }
-        each_blocks_1.length = each_value_2.length;
+        each_blocks_1.length = each_value_1.length;
       }
-      if (dirty[0] & /*handleCancel, $requestsStore, handleRoll, updateRequestProperty, defaultSeverities, toggleRollType*/
-      24916) {
+      if (dirty & /*$requestsStore, defaultSeverities, performRoll, updateRequestProperty, toggleRollType, handleRoll, handleCancel*/
+      49834) {
         each_value = ensure_array_like(
           /*$requestsStore*/
-          ctx2[2]
+          ctx2[3]
         );
-        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each1_lookup, div15, destroy_block, create_each_block, null, get_each_context);
+        group_outros();
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each1_lookup, div16, outro_and_destroy_block, create_each_block, null, get_each_context);
+        check_outros();
       }
+    },
+    i(local) {
+      if (current)
+        return;
+      for (let i = 0; i < each_value.length; i += 1) {
+        transition_in(each_blocks[i]);
+      }
+      current = true;
+    },
+    o(local) {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        transition_out(each_blocks[i]);
+      }
+      current = false;
     },
     d(detaching) {
       if (detaching) {
@@ -15200,12 +15365,12 @@ function create_fragment(ctx) {
   let updating_elementRoot;
   let current;
   function applicationshell_elementRoot_binding(value) {
-    ctx[30](value);
+    ctx[17](value);
   }
   let applicationshell_props = {
     stylesContent: (
       /*stylesContent*/
-      ctx[3]
+      ctx[4]
     ),
     $$slots: { default: [create_default_slot] },
     $$scope: { ctx }
@@ -15227,14 +15392,13 @@ function create_fragment(ctx) {
       mount_component(applicationshell, target, anchor);
       current = true;
     },
-    p(ctx2, dirty) {
+    p(ctx2, [dirty]) {
       const applicationshell_changes = {};
-      if (dirty[0] & /*$requestsStore, allRollType*/
-      6 | dirty[1] & /*$$scope*/
-      8192) {
+      if (dirty & /*$$scope, $requestsStore, performRoll, allRollType*/
+      268435470) {
         applicationshell_changes.$$scope = { dirty, ctx: ctx2 };
       }
-      if (!updating_elementRoot && dirty[0] & /*elementRoot*/
+      if (!updating_elementRoot && dirty & /*elementRoot*/
       1) {
         updating_elementRoot = true;
         applicationshell_changes.elementRoot = /*elementRoot*/
@@ -15301,10 +15465,10 @@ function instance($$self, $$props, $$invalidate) {
     ...request,
     selectedSeverity: request.selectedSeverity || defaultSeverities[0]
   })));
-  component_subscribe($$self, requestsStore, (value) => $$invalidate(2, $requestsStore = value));
+  component_subscribe($$self, requestsStore, (value) => $$invalidate(3, $requestsStore = value));
   let previousRequests = JSON.stringify(game.settings.get(MODULE_ID, "globalSaveRequests"));
   let allRollType = "save";
-  async function handleRoll(request) {
+  async function handleRoll({ detail: request }) {
     const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const severityId = selectedSeverity?.id || "minimal";
     const lossInput = useCustomLoss ? loss : {
@@ -15328,44 +15492,38 @@ function instance($$self, $$props, $$invalidate) {
   async function handleRollAll() {
     clearInterval(interval);
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-    await Promise.all(globalRequests.map((request) => handleRoll(request)));
+    await Promise.all(globalRequests.map((request) => handleRoll({ detail: request })));
     interval = setInterval(updateRequests, 500);
   }
-  function handleCancel(request) {
-    return new Promise((resolve) => {
-      const { actorId, type, config } = request;
-      const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
-      const rollOptions = {
-        chatMessage: true,
-        fastForward: true,
-        fromDialog: true,
-        advantage: config?.advantage || false,
-        disadvantage: config?.disadvantage || false
-      };
-      const actor = game.actors.get(actorId);
-      if (actor) {
-        actor[method]("san", rollOptions).then(() => {
-          let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-          const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
-          if (index > -1) {
-            globalRequests.splice(index, 1);
-            game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
-            requestsStore.set(globalRequests);
-          }
-          if (globalRequests.length === 0) {
-            application.close();
-          }
-          resolve();
-        });
-      } else {
-        resolve();
-      }
-    });
+  async function handleCancel({ detail: request }) {
+    const { actorId, type, config } = request;
+    const method = type === "save" ? "rollAbilitySave" : "rollAbilityTest";
+    const rollOptions = {
+      chatMessage: true,
+      fastForward: true,
+      fromDialog: true,
+      advantage: config?.advantage || false,
+      disadvantage: config?.disadvantage || false
+    };
+    const actor = game.actors.get(actorId);
+    if (actor) {
+      await actor[method]("san", rollOptions);
+    }
+    let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
+    const index = globalRequests.findIndex((r) => r.actorId === actorId && r.type === type);
+    if (index > -1) {
+      globalRequests.splice(index, 1);
+      game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
+      requestsStore.set(globalRequests);
+    }
+    if (globalRequests.length === 0) {
+      application.close();
+    }
   }
   async function handleCancelAll() {
     clearInterval(interval);
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-    await Promise.all(globalRequests.map((request) => handleCancel(request)));
+    await Promise.all(globalRequests.map((request) => handleCancel({ detail: request })));
     interval = setInterval(updateRequests, 500);
   }
   function updateRequests() {
@@ -15407,7 +15565,8 @@ function instance($$self, $$props, $$invalidate) {
       return updatedRequests;
     });
   }
-  function updateRequestProperty(actorId, type, property, value) {
+  function updateRequestProperty({ detail }) {
+    const { actorId, type, property, value } = detail;
     requestsStore.update((requests) => {
       const updatedRequests = requests.map((request) => {
         if (request.actorId === actorId && request.type === type) {
@@ -15419,12 +15578,12 @@ function instance($$self, $$props, $$invalidate) {
       return updatedRequests;
     });
   }
-  function toggleRollType(actorId) {
+  function toggleRollType({ detail }) {
+    const { actorId, type } = detail;
     requestsStore.update((requests) => {
       const updatedRequests = requests.map((request) => {
         if (request.actorId === actorId) {
-          const newType = request.type === "save" ? "test" : "save";
-          return { ...request, type: newType };
+          return { ...request, type };
         }
         return request;
       });
@@ -15434,58 +15593,26 @@ function instance($$self, $$props, $$invalidate) {
   }
   function setAllRollType() {
     const newType = allRollType === "save" ? "test" : "save";
-    $$invalidate(1, allRollType = newType);
+    $$invalidate(2, allRollType = newType);
     requestsStore.update((requests) => {
       const updatedRequests = requests.map((request) => ({ ...request, type: newType }));
       game.settings.set(MODULE_ID, "globalSaveRequests", updatedRequests);
       return updatedRequests;
     });
   }
-  const click_handler = (request) => toggleRollType(request.actorId);
-  function select_change_handler(each_value, request_index) {
-    each_value[request_index].selectedSeverity.id = select_value(this);
-    requestsStore.set($requestsStore);
-    $$invalidate(4, defaultSeverities);
-  }
-  const change_handler = (request, e) => updateRequestProperty(request.actorId, request.type, "selectedSeverity", defaultSeverities.find((severity) => severity.id === e.target.value));
-  function input0_change_handler(each_value, request_index) {
-    each_value[request_index].useCustomDC = this.checked;
-    requestsStore.set($requestsStore);
-    $$invalidate(4, defaultSeverities);
-  }
-  const change_handler_1 = (request, e) => updateRequestProperty(request.actorId, request.type, "useCustomDC", e.target.checked);
-  function input1_input_handler(each_value, request_index) {
-    each_value[request_index].customDC = this.value;
-    requestsStore.set($requestsStore);
-    $$invalidate(4, defaultSeverities);
-  }
-  const input_handler = (request, e) => updateRequestProperty(request.actorId, request.type, "customDC", e.target.value);
-  function input2_change_handler(each_value, request_index) {
-    each_value[request_index].useCustomLoss = this.checked;
-    requestsStore.set($requestsStore);
-    $$invalidate(4, defaultSeverities);
-  }
-  const change_handler_2 = (request, e) => updateRequestProperty(request.actorId, request.type, "useCustomLoss", e.target.checked);
-  function input3_input_handler(each_value, request_index) {
-    each_value[request_index].loss = this.value;
-    requestsStore.set($requestsStore);
-    $$invalidate(4, defaultSeverities);
-  }
-  const input_handler_1 = (request, e) => updateRequestProperty(request.actorId, request.type, "loss", e.target.value);
-  const click_handler_1 = (request) => handleRoll(request);
-  const click_handler_2 = (request) => handleCancel(request);
   function applicationshell_elementRoot_binding(value) {
     elementRoot = value;
     $$invalidate(0, elementRoot);
   }
   $$self.$$set = ($$props2) => {
     if ("performRoll" in $$props2)
-      $$invalidate(16, performRoll = $$props2.performRoll);
+      $$invalidate(1, performRoll = $$props2.performRoll);
     if ("elementRoot" in $$props2)
       $$invalidate(0, elementRoot = $$props2.elementRoot);
   };
   return [
     elementRoot,
+    performRoll,
     allRollType,
     $requestsStore,
     stylesContent,
@@ -15501,30 +15628,16 @@ function instance($$self, $$props, $$invalidate) {
     updateRequestProperty,
     toggleRollType,
     setAllRollType,
-    performRoll,
-    click_handler,
-    select_change_handler,
-    change_handler,
-    input0_change_handler,
-    change_handler_1,
-    input1_input_handler,
-    input_handler,
-    input2_change_handler,
-    change_handler_2,
-    input3_input_handler,
-    input_handler_1,
-    click_handler_1,
-    click_handler_2,
     applicationshell_elementRoot_binding
   ];
 }
 class SanityApp extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance, create_fragment, safe_not_equal, { performRoll: 16, elementRoot: 0 }, null, [-1, -1]);
+    init(this, options, instance, create_fragment, safe_not_equal, { performRoll: 1, elementRoot: 0 });
   }
   get performRoll() {
-    return this.$$.ctx[16];
+    return this.$$.ctx[1];
   }
   set performRoll(performRoll) {
     this.$$set({ performRoll });
@@ -15547,7 +15660,7 @@ class SanityApplication extends SvelteApplication {
     game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
     super({
       title: "Sanity Dialog",
-      width: 630,
+      width: 730,
       height: "auto",
       resizable: false,
       svelte: {
@@ -16037,6 +16150,34 @@ function FDregisterHooks() {
     }
   });
 }
+Hooks.on("midi-qol.RollComplete", async (workflow) => {
+  debugLog("Roll Complete Hook:", styling$1, workflow);
+  if (!workflow.damageDetail || !Array.isArray(workflow.damageDetail)) {
+    console.warn("No damage detail found or not in the expected format:", workflow.damageDetail);
+    return;
+  }
+  for (const damageInfo of workflow.damageDetail) {
+    debugLog("Processing Damage Info:", styling$1, damageInfo);
+    if (damageInfo.type === "sanity") {
+      for (const target of workflow.targets) {
+        const targetActor = target.actor;
+        const sanityPoints = getProperty(targetActor, "flags.fates-descent.sanityPoints.current");
+        debugLog(`Sanity Points for ${targetActor.name}:`, styling$1, sanityPoints);
+        if (sanityPoints !== void 0) {
+          const newSanityPoints = Math.max(0, sanityPoints - damageInfo.damage);
+          await targetActor.setFlag("fates-descent", "sanityPoints.current", newSanityPoints);
+          debugLog(`Sanity Points for ${targetActor.name} reduced from ${sanityPoints} to ${newSanityPoints}`, styling$1);
+        } else {
+          console.warn(`Sanity Points attribute not found on the target actor ${targetActor.name}.`);
+        }
+        const currentHP = targetActor.system.attributes.hp.value;
+        const newHP = currentHP + damageInfo.damage;
+        await targetActor.update({ "system.attributes.hp.value": newHP });
+        debugLog(`HP for ${targetActor.name} increased by ${damageInfo.damage}`, styling$1);
+      }
+    }
+  }
+});
 const styling = `
     color:#D01B00;
     background-color:#A3A6B4;
@@ -16051,5 +16192,9 @@ Hooks.on("init", () => {
   console.log("%cFate's Descent | Settings registered.", styling);
   FDregisterHooks();
   console.log("%cFate's Descent | Hooks registered.", styling);
+  CONFIG.DND5E.damageTypes.sanity = {
+    label: "Sanity",
+    isPhysical: false
+  };
 });
 //# sourceMappingURL=fates-descent.js.map

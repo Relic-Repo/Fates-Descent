@@ -148,3 +148,41 @@ export function FDregisterHooks()
         }
     });
 }
+
+Hooks.on("midi-qol.RollComplete", async (workflow) => 
+{
+    debugLog("Roll Complete Hook:", styling, workflow);  
+    if (!workflow.damageDetail || !Array.isArray(workflow.damageDetail)) 
+    {
+      console.warn("No damage detail found or not in the expected format:", workflow.damageDetail);
+      return;
+    }
+  
+    for (const damageInfo of workflow.damageDetail) 
+    {
+        debugLog("Processing Damage Info:", styling, damageInfo);
+        if (damageInfo.type === "sanity") 
+        {
+            for (const target of workflow.targets) 
+            {
+                const targetActor = target.actor;
+                const sanityPoints = getProperty(targetActor, "flags.fates-descent.sanityPoints.current");
+                debugLog(`Sanity Points for ${targetActor.name}:`, styling, sanityPoints);    
+                if (sanityPoints !== undefined) 
+                {
+                    const newSanityPoints = Math.max(0, sanityPoints - damageInfo.damage);
+                    await targetActor.setFlag("fates-descent", "sanityPoints.current", newSanityPoints);
+                    debugLog(`Sanity Points for ${targetActor.name} reduced from ${sanityPoints} to ${newSanityPoints}`, styling);
+                } 
+                else 
+                {
+                    console.warn(`Sanity Points attribute not found on the target actor ${targetActor.name}.`);
+                }
+                const currentHP = targetActor.system.attributes.hp.value;
+                const newHP = currentHP + damageInfo.damage;
+                await targetActor.update({ "system.attributes.hp.value": newHP });
+                debugLog(`HP for ${targetActor.name} increased by ${damageInfo.damage}`, styling);
+            }
+        }
+    }
+}); 
