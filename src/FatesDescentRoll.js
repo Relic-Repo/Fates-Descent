@@ -52,7 +52,7 @@ export class FatesDescentRoll
   {
     debugLog(`Pre-roll ability ${type} hook triggered.`, this.styling);
 
-    if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return true; }
+    if (actor.type !== "character" || !actor.prototypeToken.actorLink || 'targetValue' in config) { return true; }
 
     debugLog("Actor:", this.styling, actor);
     debugLog("Config:", this.styling, config);

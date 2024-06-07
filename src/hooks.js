@@ -186,3 +186,161 @@ Hooks.on("midi-qol.RollComplete", async (workflow) =>
         }
     }
 }); 
+
+/**
+ * Registers hooks for dnd5e.preShortRest and dnd5e.preLongRest to handle sanity point recovery.
+ */
+Hooks.on("dnd5e.preShortRest", async (actor, config) => 
+{
+    return await handleSanityRest(actor, config);
+  });
+  
+  Hooks.on("dnd5e.preLongRest", async (actor, config) => 
+{
+    return await handleSanityRest(actor, config);
+  });
+  
+  /**
+   * Handles sanity point recovery during short or long rests.
+   * Prompts the user to select hit dice to use for recovering sanity points.
+   *
+   * @param {Actor5e} actor - The actor that is being rested.
+   *
+   * @returns {Promise<boolean>} - Returns true to continue with the rest, false otherwise.
+   */
+  async function handleSanityRest(actor) 
+{
+    const hitDiceLeft = Object.values(actor.classes).reduce((acc, classItem) => 
+{
+      if (classItem.system.hitDiceUsed < classItem.system.levels) 
+{
+        if (!acc[classItem.system.hitDice]) 
+{
+ acc[classItem.system.hitDice] = {
+          remaining: 0,
+          class: null,
+        }; 
+}
+        acc[classItem.system.hitDice].remaining += classItem.system.levels - classItem.system.hitDiceUsed;
+        acc[classItem.system.hitDice].class = classItem.identifier; 
+      }
+      return acc;
+    }, {});
+  
+    const options = Object.entries(hitDiceLeft).map(([hitDice, data]) => `<option value="${hitDice}">${hitDice} (${data.remaining} left)</option>`);
+    if (!options.length) { return true; }  // No hit dice left, continue with the rest
+  
+    const selected = await new Promise((resolve) => 
+{
+      const dialog = new Dialog({
+        title: "Sanity Points HitDie Recovery",
+        content: `
+        <style>
+          .sanity-dialog {
+            background: #222;
+            color: #f8f8f8;
+            padding: 5px;
+            border-radius: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+          .sanity-dialog p {
+            margin-bottom: 5px;
+          }
+          .sanity-dialog select, .sanity-dialog input {
+            margin-left: 10px;
+            background: #333; 
+            color: #f8f8f8; 
+            border: 1px solid #444;
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+          }
+          .sanity-dialog button {
+            background: #f8f8f8;
+            color: #222;
+            border: none;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+          }
+          .sanity-dialog button:hover {
+            background: #95f853;
+          }
+          .custom-dialog-position {
+            top: 20% !important;
+          }
+        </style>
+        <div class="sanity-dialog">
+          <h3>Select Hit Dice to Recover Sanity</h3>
+          <p>
+            <select name="hitDice">${options.join("")}</select>
+            <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
+          </p>
+        </div>
+        `,
+        buttons: {
+          yes: {
+            label: "Confirm",
+            callback: (html) => 
+{
+              const selectedValue = html.find("select").val();
+              const numDice = parseInt(html.find('input[name="numDice"]').val(), 10);
+              resolve({
+                class: hitDiceLeft[selectedValue].class,
+                hitDice: selectedValue,
+                numDice
+              });
+            },
+          },
+          no: {
+            label: "Cancel",
+            callback: () => resolve(null),
+          },
+        },
+        default: "no",
+      }, {
+        classes: ["custom-dialog-position"]
+      });
+      dialog.render(true);
+    });
+  
+    if (!selected) { return true; }  // User canceled, continue with the rest
+  
+    const rollDice = await new Roll(`${selected.numDice}${selected.hitDice}`).evaluate({ async: true });
+    const sanityPoints = getProperty(actor, "flags.fates-descent.sanityPoints.current");
+    const maxSanity = getProperty(actor, "flags.fates-descent.sanityPoints.max");
+  
+    if (sanityPoints < maxSanity) 
+{
+      const newValue = Math.min(sanityPoints + rollDice.total, maxSanity);
+      await actor.setFlag("fates-descent", "sanityPoints.current", newValue);
+      rollDice.toMessage();
+      const regainedSanity = newValue - sanityPoints;
+      ChatMessage.create({ content: `${actor.name} has regained ${regainedSanity} Sanity!` });
+    }
+ else 
+{
+      return true;  // No sanity points to recover, continue with the rest
+    }
+  
+    if (selected.class) 
+{
+      for (const classItem of Object.values(actor.classes)) 
+{
+        if (classItem.identifier === selected.class) 
+{
+          classItem.system.hitDiceUsed += selected.numDice;
+          await classItem.update({ 'system.hitDiceUsed': classItem.system.hitDiceUsed });
+          break;
+        }
+      }
+    }
+  
+    return true;
+  }
+  
