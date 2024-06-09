@@ -56,4 +56,48 @@ export function FDregisterSettings()
         type: Array,
         default: []
     });
+
+    // New settings for madness point additions
+    for (let i = 1; i <= 3; i++) 
+{
+        game.settings.register(MODULE_ID, `enableMadnessRange${i}`, {
+            name: `Enable Sanity Points Range ${i}`,
+            hint: `Enable or disable the addition of madness points for range ${i}.`,
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true
+        });
+
+        game.settings.register(MODULE_ID, `madnessRange${i}Start`, {
+            name: `Sanity Points Range ${i} Start`,
+            hint: `The starting sanity point for range ${i}.`,
+            scope: "world",
+            config: true,
+            type: Number,
+            default: i === 1 ? 0 : i === 2 ? 10 : 20 // Default values based on current logic
+        });
+
+        // Only register the end range for the first two ranges
+        if (i < 3) 
+{
+            game.settings.register(MODULE_ID, `madnessRange${i}End`, {
+                name: `Sanity Points Range ${i} End`,
+                hint: `The ending sanity point for range ${i}.`,
+                scope: "world",
+                config: true,
+                type: Number,
+                default: i === 1 ? 9 : 19 // Default values based on current logic
+            });
+        }
+
+        game.settings.register(MODULE_ID, `madnessRange${i}Increment`, {
+            name: `Madness Points ${i} Increment`,
+            hint: `The amount of madness points to add for range ${i}.`,
+            scope: "world",
+            config: true,
+            type: Number,
+            default: i === 1 ? 3 : i === 2 ? 2 : 1 // Default values based on current logic
+        });
+    }
 }

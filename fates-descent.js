@@ -44,6 +44,45 @@ function FDregisterSettings() {
     type: Array,
     default: []
   });
+  for (let i = 1; i <= 3; i++) {
+    game.settings.register(MODULE_ID, `enableMadnessRange${i}`, {
+      name: `Enable Sanity Points Range ${i}`,
+      hint: `Enable or disable the addition of madness points for range ${i}.`,
+      scope: "world",
+      config: true,
+      type: Boolean,
+      default: true
+    });
+    game.settings.register(MODULE_ID, `madnessRange${i}Start`, {
+      name: `Sanity Points Range ${i} Start`,
+      hint: `The starting sanity point for range ${i}.`,
+      scope: "world",
+      config: true,
+      type: Number,
+      default: i === 1 ? 0 : i === 2 ? 10 : 20
+      // Default values based on current logic
+    });
+    if (i < 3) {
+      game.settings.register(MODULE_ID, `madnessRange${i}End`, {
+        name: `Sanity Points Range ${i} End`,
+        hint: `The ending sanity point for range ${i}.`,
+        scope: "world",
+        config: true,
+        type: Number,
+        default: i === 1 ? 9 : 19
+        // Default values based on current logic
+      });
+    }
+    game.settings.register(MODULE_ID, `madnessRange${i}Increment`, {
+      name: `Madness Points ${i} Increment`,
+      hint: `The amount of madness points to add for range ${i}.`,
+      scope: "world",
+      config: true,
+      type: Number,
+      default: i === 1 ? 3 : i === 2 ? 2 : 1
+      // Default values based on current logic
+    });
+  }
 }
 function debugLog(message, styling2, additionalData = null) {
   if (game.settings.get(MODULE_ID, "debug")) {
@@ -15818,30 +15857,20 @@ class FatesDescentRoll {
     const resultText = roll.total >= threshold ? "maintained" : "lost";
     const textColor = roll.total >= threshold ? "green" : "red";
     let messageContent = `
-      <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-        <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-        Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
-      </div>
-    `;
+        <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
+          <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+          Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
+        </div>
+      `;
     if (roll.total < threshold) {
       const currentSanity = actor.getFlag(MODULE_ID, "sanityPoints").current - totalLoss;
       actor.setFlag(MODULE_ID, "sanityPoints", { current: Math.max(currentSanity, 0) });
-      let madnessIncrement = 0;
-      if (currentSanity <= 9) {
-        madnessIncrement = 2;
-      } else if (currentSanity <= 19) {
-        madnessIncrement = 1;
-      }
-      if (madnessIncrement > 0) {
-        const currentMadness = actor.getFlag(MODULE_ID, "madness").current + madnessIncrement;
-        actor.setFlag(MODULE_ID, "madness", { current: currentMadness });
-      }
       messageContent = `
-        <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-          <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-          Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
-        </div>
-      `;
+            <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
+              <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+              Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
+            </div>
+          `;
     }
     ChatMessage.create({
       content: messageContent
@@ -16115,17 +16144,333 @@ function FDregisterHooks() {
         const clampedSanity = Math.min(Math.max(newSanityCurrent, 0), sanityPointsMax);
         changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.sanityPoints.current"]: clampedSanity });
         debugLog(`Sanity points updated: ${newSanityCurrent} -> ${clampedSanity}`, styling$1);
+        let madnessIncrement = 0;
+        for (let i = 1; i <= 3; i++) {
+          const enabled = game.settings.get(MODULE_ID, `enableMadnessRange${i}`);
+          if (enabled) {
+            const rangeStart = game.settings.get(MODULE_ID, `madnessRange${i}Start`);
+            const rangeEnd = i < 3 ? game.settings.get(MODULE_ID, `madnessRange${i}End`) : sanityPointsMax;
+            const increment = game.settings.get(MODULE_ID, `madnessRange${i}Increment`);
+            if (clampedSanity >= rangeStart && clampedSanity <= rangeEnd) {
+              madnessIncrement = increment;
+              break;
+            }
+          }
+        }
+        if (madnessIncrement > 0) {
+          const currentMadness = actor.getFlag("fates-descent", "madness").current + madnessIncrement;
+          changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: Math.min(currentMadness, madnessMax) });
+          debugLog(`Madness points incremented by ${madnessIncrement}. New madness: ${currentMadness}`, styling$1);
+        }
       }
       if (changes.flags?.["fates-descent"]?.madness?.current !== void 0) {
         const newMadnessCurrent = changes.flags["fates-descent"].madness.current;
         const clampedMadness = Math.min(Math.max(newMadnessCurrent, 0), madnessMax);
         changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: clampedMadness });
         debugLog(`Madness points updated: ${newMadnessCurrent} -> ${clampedMadness}`, styling$1);
+        applyMadnessPenalties(actor, clampedMadness);
       }
     } catch (error) {
       console.error("%cFailed during preUpdateActor hook:", styling$1, error);
     }
   });
+  async function applyMadnessPenalties(actor, madnessPoints) {
+    const sanityModifier = actor.system.abilities.san.mod;
+    const startingMadnessPoints = game.settings.get(MODULE_ID, "startingMadnessPoints");
+    const scaleFactor = startingMadnessPoints / 10;
+    const baseLevels = {
+      1: Math.round(startingMadnessPoints * 0.2),
+      2: Math.round(startingMadnessPoints * 0.4),
+      3: Math.round(startingMadnessPoints * 0.6),
+      4: Math.round(startingMadnessPoints * 0.8),
+      5: startingMadnessPoints
+    };
+    const adjustedSanityModifier = Math.round(sanityModifier * scaleFactor);
+    const adjustedLevels = {
+      1: Math.max(1, baseLevels[1] + adjustedSanityModifier),
+      2: Math.max(1, baseLevels[2] + adjustedSanityModifier),
+      3: Math.max(1, baseLevels[3] + adjustedSanityModifier),
+      4: Math.max(1, baseLevels[4] + adjustedSanityModifier),
+      5: Math.max(1, baseLevels[5] + adjustedSanityModifier)
+    };
+    debugLog(`Adjusted Madness Levels: ${JSON.stringify(adjustedLevels)}`, styling$1);
+    const penalties = {
+      1: {
+        effect: "Disturbance",
+        message: (character, action) => `
+                    <h3>${character} has ${action}</h3>
+                    <h1>Disturbance</h1>
+                    <ul style="text-align: left;">
+                        <li>Disadvantage on Wisdom (Insight) checks.</li>
+                        <li>Disadvantage on Charisma (Persuasion) checks.</li>
+                        <li>Disadvantage on Initiative roll.</li>
+                    </ul>
+                `,
+        image: "modules/fates-descent/img/madnesschatbackgroundp1.webp",
+        aspectRatio: 512 / 512 * 100,
+        icon: "modules/fates-descent/img/effectIcon/disturbance.webp",
+        changes: [
+          {
+            key: "system.skills.ins.roll.mode",
+            mode: 5,
+            value: "-1",
+            priority: 20
+          },
+          {
+            key: "system.skills.per.roll.mode",
+            mode: 5,
+            value: "-1",
+            priority: 20
+          },
+          {
+            key: "flags.dnd5e.initiativeDisadv",
+            mode: 0,
+            value: "1",
+            priority: 20
+          }
+        ]
+      },
+      2: {
+        effect: "Disorientation",
+        message: (character, action) => `
+                    <h3>${character} has ${action}</h3>    
+                    <h1>Disorientation</h1>
+                    <ul style="text-align: left;">
+                        <li>Disadvantage on Intelligence checks.</li>
+                        <li>Disadvantage on Wisdom saving throws.</li>
+                        <li>Disadvantage on Dexterity (Acrobatics) checks due to disordered movement from hallucinations.</li>
+                    </ul>
+                `,
+        image: "modules/fates-descent/img/madnesschatbackgroundp2.webp",
+        aspectRatio: 512 / 512 * 100,
+        icon: "modules/fates-descent/img/effectIcon/disorientation.webp",
+        changes: [
+          {
+            key: "flags.midi-qol.disadvantage.ability.check.int",
+            mode: 0,
+            value: "1",
+            priority: 20
+          },
+          {
+            key: "flags.midi-qol.disadvantage.ability.save.wis",
+            mode: 0,
+            value: "1",
+            priority: 20
+          },
+          {
+            key: "flags.midi-qol.disadvantage.skill.acr",
+            mode: 0,
+            value: "1",
+            priority: 20
+          }
+        ]
+      },
+      3: {
+        effect: "Delirium",
+        message: (character, action) => `
+                    <h3>${character} has ${action}</h3> 
+                    <h1>Delirium</h1>
+                    <ul style="text-align: left;">
+                        <li>Vulnerable to Psychic damage.</li>
+                        <li>Disadvantage on Constitution saving throws to maintain concentration.</li>
+                        <li>Movement speed reduced by 10 feet due to severe disorientation.</li>
+                    </ul>
+                `,
+        image: "modules/fates-descent/img/madnesschatbackgroundp3.webp",
+        aspectRatio: 512 / 512 * 100,
+        icon: "modules/fates-descent/img/effectIcon/delirium.webp",
+        changes: [
+          {
+            key: "system.traits.dv.value",
+            mode: 0,
+            value: "psychic",
+            priority: 20
+          },
+          {
+            key: "system.attributes.concentration.roll.mode",
+            mode: 5,
+            value: "-1",
+            priority: 20
+          },
+          {
+            key: "system.attributes.movement.walk",
+            mode: 2,
+            value: "-10",
+            priority: 20
+          }
+        ]
+      },
+      4: {
+        effect: "Cataclysm",
+        message: (character, action) => `
+                    <h3>${character} has ${action}</h3> 
+                    <h1>Cataclysm</h1>
+                    <ul style="text-align: left;">
+                        <li>Disadvantage on all Wisdom and Charisma checks.</li>
+                        <li>Disadvantage on all Intelligence, Wisdom, and Charisma saving throws.</li>
+                        <li>Unable to benefit from long rests.</li>
+                        <li>Automatic failure on concentration checks.</li>
+                    </ul>
+                `,
+        image: "modules/fates-descent/img/madnesschatbackgroundp4.webp",
+        aspectRatio: 512 / 512 * 100,
+        icon: "modules/fates-descent/img/effectIcon/cataclysm.webp",
+        changes: [
+          {
+            key: "flags.midi-qol.disadvantage.ability.check.cha",
+            mode: 0,
+            value: "1",
+            priority: 20
+          },
+          {
+            key: "flags.midi-qol.disadvantage.ability.check.wis",
+            mode: 0,
+            value: "1",
+            priority: 20
+          },
+          {
+            key: "flags.midi-qol.disadvantage.skill.acr",
+            mode: 0,
+            value: "1",
+            priority: 20
+          },
+          {
+            key: "flags.midi-qol.max.ability.save.concentration",
+            mode: 5,
+            priority: 20,
+            value: "1"
+          }
+        ]
+      },
+      5: {
+        effect: "Oblivion",
+        message: (character) => `
+                    <h3>${character} Surrendered to</h3> 
+                    <h1>Oblivion</h1>
+                    <p>The character's mind is irreparably shattered, rendering them permanently lost to the depths of their own madness.</p>
+                `,
+        image: "modules/fates-descent/img/madnesschatbackgroundp5.webp",
+        aspectRatio: 512 / 512 * 100,
+        icon: "modules/fates-descent/img/effectIcon/oblivion.webp",
+        changes: [
+          {
+            key: "type",
+            mode: 5,
+            value: "npc",
+            priority: 20
+          }
+        ]
+      }
+    };
+    const actorEffects = actor.effects.map((e) => e.data.label);
+    const currentEffects = [];
+    for (let i = 1; i <= 5; i++) {
+      if (actorEffects.includes(penalties[i].effect)) {
+        currentEffects.push(i);
+      }
+    }
+    debugLog(`Current Madness Effects: ${currentEffects}`, styling$1);
+    for (let i = 1; i <= 5; i++) {
+      if (madnessPoints >= adjustedLevels[i]) {
+        if (!currentEffects.includes(i)) {
+          await addMadnessEffect(actor, penalties[i].effect, penalties[i].message, penalties[i].image, penalties[i].aspectRatio, penalties[i].icon, penalties[i].changes, true);
+        }
+      } else {
+        if (currentEffects.includes(i)) {
+          await removeMadnessEffect(actor, penalties[i].effect, penalties[i].message, penalties[i].image, penalties[i].aspectRatio);
+        }
+      }
+    }
+  }
+  async function addMadnessEffect(actor, effectName, messageTemplate, imagePath, aspectRatio, iconPath, changes, isGain) {
+    const effectData = {
+      label: effectName,
+      icon: iconPath,
+      changes,
+      origin: `Actor.${actor.id}`,
+      disabled: false,
+      duration: { rounds: 0, turns: 0 },
+      flags: { core: { statusId: effectName } }
+    };
+    await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    debugLog(`Effect ${effectName} added to actor ${actor.name}`, styling$1);
+    const characterName = actor.name.split(" ")[0];
+    const action = isGain ? "Gained" : "Lost";
+    const updatedMessage = messageTemplate(characterName, action);
+    const chatMessageContent = `
+          <div style="
+            position: relative; 
+            width: 100%; 
+            padding-bottom: ${aspectRatio}%; 
+            background-image: url('${imagePath}'); 
+            background-size: cover; 
+            border-radius: 4px; 
+            color: white; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;">
+            <div style="
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                width: 100%; 
+                height: 72%; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: flex-start; 
+                padding: 10px; 
+                background-color: rgba(0, 0, 0, 0.5); 
+                margin-top: 13%;">
+              ${updatedMessage}
+            </div>
+          </div>
+        `;
+    ChatMessage.create({ content: chatMessageContent });
+  }
+  async function removeMadnessEffect(actor, effectName, messageTemplate, imagePath, aspectRatio) {
+    const effect = actor.effects.find((e) => e.data.label === effectName);
+    if (effect) {
+      await effect.delete();
+      debugLog(`Effect ${effectName} removed from actor ${actor.name}`, styling$1);
+      const characterName = actor.name.split(" ")[0];
+      const updatedMessage = messageTemplate(characterName, "Lost");
+      const chatMessageContent = `
+              <div style="
+                position: relative; 
+                width: 100%; 
+                padding-bottom: ${aspectRatio}%; 
+                background-image: url('${imagePath}'); 
+                background-size: cover; 
+                border-radius: 4px; 
+                color: white; 
+                font-weight: bold; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                text-align: center;">
+                <div style="
+                    position: absolute; 
+                    top: 0; 
+                    left: 0; 
+                    width: 100%; 
+                    height: 72%; 
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: center; 
+                    justify-content: flex-start; 
+                    padding: 10px; 
+                    background-color: rgba(0, 0, 0, 0.5); 
+                    margin-top: 13%;">
+                  ${updatedMessage}
+                </div>
+              </div>
+            `;
+      ChatMessage.create({ content: chatMessageContent });
+    }
+  }
   Hooks.on("renderActorSheet", (app, html) => {
     if (app.actor.type !== "character" || !app.actor.prototypeToken.actorLink) {
       return;
@@ -16182,6 +16527,11 @@ Hooks.on("dnd5e.preShortRest", async (actor, config) => {
   return await handleSanityRest(actor);
 });
 Hooks.on("dnd5e.preLongRest", async (actor, config) => {
+  const hasCataclysm = actor.effects.find((e) => e.data.label === "Cataclysm");
+  if (hasCataclysm) {
+    ChatMessage.create({ content: `${actor.name} cannot benefit from a long rest due to their madness.` });
+    return false;
+  }
   return await handleSanityRest(actor);
 });
 async function handleSanityRest(actor) {
@@ -16206,54 +16556,64 @@ async function handleSanityRest(actor) {
     const dialog = new Dialog({
       title: "Sanity Points HitDie Recovery",
       content: `
-        <style>
-          .sanity-dialog {
-            background: #222;
-            color: #f8f8f8;
-            padding: 5px;
-            border-radius: 0px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
-          .sanity-dialog p {
-            margin-bottom: 5px;
-          }
-          .sanity-dialog select, .sanity-dialog input {
-            margin-left: 10px;
-            background: #333; 
-            color: #f8f8f8; 
-            border: 1px solid #444;
-            padding: 2px;
-            border-radius: 4px;
-            font-size: 12px;
-            text-align: center;
-          }
-          .sanity-dialog button {
-            background: #f8f8f8;
-            color: #222;
-            border: none;
-            padding: 1px 5px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-          }
-          .sanity-dialog button:hover {
-            background: #95f853;
-          }
-          .custom-dialog-position {
-            top: 20% !important;
-          }
-        </style>
-        <div class="sanity-dialog">
-          <h3>Select Hit Dice to Recover Sanity</h3>
-          <p>
-            <select name="hitDice">${options.join("")}</select>
-            <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
-          </p>
-        </div>
-        `,
+      <style>
+        .sanity-dialog {
+          background: #222;
+          color: #f8f8f8;
+          padding: 5px;
+          border-radius: 0px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .sanity-dialog p {
+          margin-bottom: 5px;
+        }
+        .sanity-dialog select {
+          margin-left: 10px;
+          background: #333; 
+          color: #f8f8f8; 
+          border: 1px solid #444;
+          padding: 2px;
+          border-radius: 4px;
+          font-size: 12px;
+          text-align: center;
+        }
+        .sanity-dialog input {
+          margin-left: 10px;
+          background: #333; 
+          color: #f8f8f8; 
+          border: 1px solid #444;
+          padding: 2px;
+          border-radius: 4px;
+          font-size: 12px;
+          text-align: center;
+        }  
+        .sanity-dialog button {
+          background: #f8f8f8;
+          color: #222;
+          border: none;
+          padding: 1px 5px;
+          border-radius: 4px;
+          font-weight: bold;
+          font-size: 12px;
+          cursor: pointer;
+        }
+        .sanity-dialog button:hover {
+          background: #95f853;
+        }
+        .custom-dialog-position {
+          top: 20% !important;
+        }
+      </style>
+      <div class="sanity-dialog">
+        <h3>Select Hit Dice to Recover Sanity</h3>
+        <p>
+          <select name="hitDice" style="width: 100px;>${options.join("")}</select>
+          <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
+        </p>
+      </div>
+      `,
       buttons: {
         yes: {
           label: "Confirm",

@@ -108,86 +108,72 @@ export class FatesDescentRoll
    */
   static async performRoll(actorId, severity, customDC, type, loss, config, useCustomDC) 
   {
-    const actor = game.actors.get(actorId);
-    if (!actor) { return; }
+      const actor = game.actors.get(actorId);
+      if (!actor) { return; }
 
-    let totalLoss;
+      let totalLoss;
 
-    // Process loss input
-    if (loss === null || loss === undefined || loss.trim() === "") 
-    {
-      totalLoss = 0;
-    }
-    else if (!isNaN(loss)) 
-    {
-      totalLoss = Number(loss);
-    }
-    else 
-    {
-      try 
+      // Process loss input
+      if (loss === null || loss === undefined || loss.trim() === "") 
       {
-        const rollResult = await new Roll(loss).evaluate({ async: true });
-        totalLoss = rollResult.total;
+          totalLoss = 0;
       }
-      catch (error) 
+      else if (!isNaN(loss)) 
       {
-        console.error("Error evaluating loss input:", error);
-        totalLoss = 0;
+          totalLoss = Number(loss);
       }
-    }
-
-    console.log(`Return from SanityApp loss: `, totalLoss);
-
-    const threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
-    const method = type === 'save' ? 'rollAbilitySave' : 'rollAbilityTest';
-    const rollOptions = {
-      chatMessage: true,
-      fastForward: true,
-      fromDialog: true,
-      advantage: config?.advantage || false,
-      disadvantage: config?.disadvantage || false
-    };
-
-    const roll = await actor[method]("san", rollOptions);
-    const resultText = roll.total >= threshold ? "maintained" : "lost";
-    const textColor = roll.total >= threshold ? "green" : "red";
-    let messageContent = `
-      <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
-        <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-        Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
-      </div>
-    `;
-
-    if (roll.total < threshold) 
-    {
-      const currentSanity = actor.getFlag(MODULE_ID, 'sanityPoints').current - totalLoss;
-      actor.setFlag(MODULE_ID, 'sanityPoints', { current: Math.max(currentSanity, 0) });
-      let madnessIncrement = 0;
-      if (currentSanity <= 9) 
+      else 
       {
-        madnessIncrement = 2;
-      }
-      else if (currentSanity <= 19) 
-      {
-        madnessIncrement = 1;
+          try 
+          {
+              const rollResult = await new Roll(loss).evaluate({ async: true });
+              totalLoss = rollResult.total;
+          }
+          catch (error) 
+          {
+              console.error("Error evaluating loss input:", error);
+              totalLoss = 0;
+          }
       }
 
-      if (madnessIncrement > 0) 
-      {
-        const currentMadness = actor.getFlag(MODULE_ID, 'madness').current + madnessIncrement;
-        actor.setFlag(MODULE_ID, 'madness', { current: currentMadness });
-      }
-      messageContent = `
+      console.log(`Return from SanityApp loss: `, totalLoss);
+
+      const threshold = useCustomDC ? customDC : { minimal: 8, moderate: 12, serious: 16, extreme: 20 }[severity];
+      const method = type === 'save' ? 'rollAbilitySave' : 'rollAbilityTest';
+      const rollOptions = {
+          chatMessage: true,
+          fastForward: true,
+          fromDialog: true,
+          advantage: config?.advantage || false,
+          disadvantage: config?.disadvantage || false
+      };
+
+      const roll = await actor[method]("san", rollOptions);
+      const resultText = roll.total >= threshold ? "maintained" : "lost";
+      const textColor = roll.total >= threshold ? "green" : "red";
+      let messageContent = `
         <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
           <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
-          Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
+          Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText}
         </div>
       `;
-    }
 
-    ChatMessage.create({
-      content: messageContent
-    });
+      if (roll.total < threshold) 
+      {
+          const currentSanity = actor.getFlag(MODULE_ID, 'sanityPoints').current - totalLoss;
+          actor.setFlag(MODULE_ID, 'sanityPoints', { current: Math.max(currentSanity, 0) });
+          messageContent = `
+            <div style="background-color: #222; padding: 10px; border-radius: 4px; border: 1px solid #444; margin-bottom: 5px; color: ${textColor}; font-weight: bold;">
+              <strong>${actor.name} - ${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity:</strong><br>
+              Result: ${roll.total} (Threshold: ${threshold}) - Sanity ${resultText} (Loss: ${totalLoss})
+            </div>
+          `;
+      }
+
+      ChatMessage.create({
+        content: messageContent
+      });
   }
+
 }
 
