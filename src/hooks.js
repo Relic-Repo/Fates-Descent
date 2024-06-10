@@ -317,7 +317,19 @@ export function FDregisterHooks()
                         priority: 20
                     },
                     {
-                        key: "flags.midi-qol.disadvantage.skill.acr",                     
+                        key: "flags.midi-qol.disadvantage.save.int",                     
+                        mode: 0,
+                        value: "1", 
+                        priority: 20
+                    },
+                    {
+                        key: "flags.midi-qol.disadvantage.save.wis",                     
+                        mode: 0,
+                        value: "1", 
+                        priority: 20
+                    },
+                    {
+                        key: "flags.midi-qol.disadvantage.save.cha",                     
                         mode: 0,
                         value: "1", 
                         priority: 20
