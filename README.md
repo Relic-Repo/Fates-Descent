@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fate's Descent</title>
 </head>
 <body>
-  <h1 style="text-align: center;">Fate's Descent</h1>
+  <h1 align="center">Fate's Descent</h1>
   <div style="text-align: center;">
     <a href="https://drive.google.com/uc?export=view&id=1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG">
       <img src="https://drive.google.com/uc?export=view&id=1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG" style="width: 1280px; max-width: 100%; height: auto;" title="Fate's Descent Banner" />
