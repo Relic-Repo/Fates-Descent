@@ -1,10 +1,9 @@
-// hooks.js for "Fate's Descent"
-
 import { FatesDescentRoll } from "./FatesDescentRoll.js";
 import { MODULE_ID } from "./settings.js";
 import { SanityMadnessHandler } from "./SanityMadnessHandler.js";
 import { FDregisterSettings } from "./settings.js";
 import { debugLog } from "./utils.js";
+import { promptMadnessReduction } from "./MadnessEffects.js";
 
 const styling = `
     color:#D01B00;
@@ -14,6 +13,8 @@ const styling = `
     padding:1pt;
 `;
 
+let socketFD;
+
 /**
  * Registers the hooks for the Fate's Descent module.
  */
@@ -21,25 +22,7 @@ export function FDregisterHooks()
 {
     const sanityMadnessHandler = new SanityMadnessHandler(MODULE_ID);
    
-    // eslint-disable-next-line no-shadow
-    let socket;
-
-    Hooks.once("socketlib.ready", () => 
-    {
-        try 
-        {
-            // eslint-disable-next-line no-undef
-            socket = socketlib.registerModule(MODULE_ID);
-            socket.register("updateSanityMadness", sanityMadnessHandler.updateSanityAndMadness.bind(sanityMadnessHandler));
-            debugLog("Socketlib registered successfully.", styling);
-        }
-        catch (error) 
-        {
-            console.error("%cFailed to register socketlib:", styling, error);
-        }
-    });
-
-    Hooks.once("init", () => 
+      Hooks.once("init", () => 
     {
         try 
         {
@@ -53,20 +36,22 @@ export function FDregisterHooks()
         }
     });
 
-    Hooks.once('ready', () => 
+    Hooks.once('ready', () =>   
     {
         try 
         {
             debugLog("Fate's Descent | Module is ready and initialized!", styling);
+    
             if (game.settings.get(MODULE_ID, 'enableModule')) 
             {
-                new FatesDescentRoll(); 
+                new FatesDescentRoll();
                 debugLog("FatesDescentRoll instance created successfully.", styling);
             }
             else 
             {
                 debugLog("Fate's Descent module is disabled in settings.", styling);
-            }            
+            }
+    
             game.actors.contents.forEach((actor) => 
             {
                 if (actor.type === "character" && actor.prototypeToken.actorLink) 
@@ -75,73 +60,86 @@ export function FDregisterHooks()
                     sanityMadnessHandler.updateSanityAndMadness(actor);
                 }
             });
+    
+            debugLog("Socketlib is ready. Attempting to register socket.", styling);
+            try 
+            {
+                socketFD = socketlib.registerModule(MODULE_ID);
+                debugLog("Module registered. Attempting to register updateSanityMadness.", styling);
+                socketFD.register("updateSanityMadness", sanityMadnessHandler.updateSanityAndMadness.bind(sanityMadnessHandler));
+                debugLog("updateSanityMadness registered successfully.", styling);
+                debugLog("Attempting to register promptMadnessReduction.", styling);
+                socketFD.register("promptMadnessReduction", promptMadnessReduction);
+                debugLog("promptMadnessReduction registered successfully.", styling);
+                debugLog("Socketlib registered successfully.", styling);
+            }
+            catch (error) 
+            {
+                console.error("Failed to register socketlib:", error);
+            }
         }
         catch (error) 
         {
             console.error("%cFailed during ready hook:", styling, error);
         }
+    
         game.settings.set("fates-descent", "globalSaveRequests", []);
         game.settings.set("fates-descent", "globalTestRequests", []);
     });
-
+    
+    
     Hooks.on("preUpdateActor", async (actor, changes) => 
-{
-      if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return; }
-  
-      try 
-{
-          debugLog("Pre-update detected for linked actor.", styling);
-          const sanityPointsMax = actor.getFlag("fates-descent", "sanityPoints.max");
-          const madnessMax = actor.getFlag("fates-descent", "madness.max");
-          if (changes.flags?.["fates-descent"]?.sanityPoints?.current !== undefined) 
-{
-              const newSanityCurrent = changes.flags["fates-descent"].sanityPoints.current;
-              const clampedSanity = Math.min(Math.max(newSanityCurrent, 0), sanityPointsMax);
-              changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.sanityPoints.current"]: clampedSanity });
-              debugLog(`Sanity points updated: ${newSanityCurrent} -> ${clampedSanity}`, styling);
-  
-              let madnessIncrement = 0;
-  
-              // Check each range
-              for (let i = 1; i <= 3; i++) 
-{
-                  const enabled = game.settings.get(MODULE_ID, `enableMadnessRange${i}`);
-                  if (enabled) 
-{
-                      const rangeStart = game.settings.get(MODULE_ID, `madnessRange${i}Start`);
-                      const rangeEnd = i < 3 ? game.settings.get(MODULE_ID, `madnessRange${i}End`) : sanityPointsMax; // Use max sanity points for the third range end
-                      const increment = game.settings.get(MODULE_ID, `madnessRange${i}Increment`);
-                      if (clampedSanity >= rangeStart && clampedSanity <= rangeEnd) 
-{
-                          madnessIncrement = increment;
-                          break; // Exit loop once a range matches
-                      }
-                  }
-              }
-  
-              if (madnessIncrement > 0) 
-{
-                  const currentMadness = actor.getFlag("fates-descent", "madness").current + madnessIncrement;
-                  changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: Math.min(currentMadness, madnessMax) });
-                  debugLog(`Madness points incremented by ${madnessIncrement}. New madness: ${currentMadness}`, styling);
-              }
-          }
-          if (changes.flags?.["fates-descent"]?.madness?.current !== undefined) 
-{
-              const newMadnessCurrent = changes.flags["fates-descent"].madness.current;
-              const clampedMadness = Math.min(Math.max(newMadnessCurrent, 0), madnessMax);
-              changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: clampedMadness });
-              debugLog(`Madness points updated: ${newMadnessCurrent} -> ${clampedMadness}`, styling);
-  
-              applyMadnessPenalties(actor, clampedMadness);
-          }
-  
-      }
- catch (error) 
-{
+    {
+        if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return; }  
+        try 
+        {
+            debugLog("Pre-update detected for linked actor.", styling);
+            const sanityPointsMax = actor.getFlag("fates-descent", "sanityPoints.max");
+            const madnessMax = actor.getFlag("fates-descent", "madness.max");
+            if (changes.flags?.["fates-descent"]?.sanityPoints?.current !== undefined) 
+            {
+                const newSanityCurrent = changes.flags["fates-descent"].sanityPoints.current;
+                const clampedSanity = Math.min(Math.max(newSanityCurrent, 0), sanityPointsMax);
+                changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.sanityPoints.current"]: clampedSanity });
+                debugLog(`Sanity points updated: ${newSanityCurrent} -> ${clampedSanity}`, styling);
+    
+                let madnessIncrement = 0;
+                for (let i = 1; i <= 3; i++) 
+                {
+                    const enabled = game.settings.get(MODULE_ID, `enableMadnessRange${i}`);
+                    if (enabled) 
+                    {
+                        const rangeStart = game.settings.get(MODULE_ID, `madnessRange${i}Start`);
+                        const rangeEnd = i < 3 ? game.settings.get(MODULE_ID, `madnessRange${i}End`) : sanityPointsMax; // Use max sanity points for the third range end
+                        const increment = game.settings.get(MODULE_ID, `madnessRange${i}Increment`);
+                        if (clampedSanity >= rangeStart && clampedSanity <= rangeEnd) 
+                        {
+                            madnessIncrement = increment;
+                            break;
+                        }
+                    }
+                }  
+                if (madnessIncrement > 0) 
+                {
+                    const currentMadness = actor.getFlag("fates-descent", "madness").current + madnessIncrement;
+                    changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: Math.min(currentMadness, madnessMax) });
+                    debugLog(`Madness points incremented by ${madnessIncrement}. New madness: ${currentMadness}`, styling);
+                }
+            }
+            if (changes.flags?.["fates-descent"]?.madness?.current !== undefined) 
+            {
+                const newMadnessCurrent = changes.flags["fates-descent"].madness.current;
+                const clampedMadness = Math.min(Math.max(newMadnessCurrent, 0), madnessMax);
+                changes = foundry.utils.mergeObject(changes, { ["flags.fates-descent.madness.current"]: clampedMadness });
+                debugLog(`Madness points updated: ${newMadnessCurrent} -> ${clampedMadness}`, styling);    
+                applyMadnessPenalties(actor, clampedMadness);
+            }  
+        }
+        catch (error) 
+        {
           console.error("%cFailed during preUpdateActor hook:", styling, error);
-      }
-  });
+        }
+    });
 
     /**
      * Applies madness penalties to the actor.
@@ -152,14 +150,9 @@ export function FDregisterHooks()
      */
     async function applyMadnessPenalties(actor, madnessPoints) 
     {
-        // Get the Sanity Modifier
         const sanityModifier = actor.system.abilities.san.mod;
-
-        // Get the starting madness points limit from settings
         const startingMadnessPoints = game.settings.get(MODULE_ID, "startingMadnessPoints");
         const scaleFactor = startingMadnessPoints / 10;
-
-        // Define the base madness levels, scaled according to the starting madness points
         const baseLevels = {
             1: Math.round(startingMadnessPoints * 0.2),
             2: Math.round(startingMadnessPoints * 0.4),
@@ -167,11 +160,7 @@ export function FDregisterHooks()
             4: Math.round(startingMadnessPoints * 0.8),
             5: startingMadnessPoints
         };
-
-        // Adjust sanity modifier based on the scale factor
         const adjustedSanityModifier = Math.round(sanityModifier * scaleFactor);
-
-        // Adjust levels based on scaled sanity modifier
         const adjustedLevels = {
             1: Math.max(1, baseLevels[1] + adjustedSanityModifier),
             2: Math.max(1, baseLevels[2] + adjustedSanityModifier),
@@ -179,9 +168,7 @@ export function FDregisterHooks()
             4: Math.max(1, baseLevels[4] + adjustedSanityModifier),
             5: Math.max(1, baseLevels[5] + adjustedSanityModifier)
         };
-
         debugLog(`Adjusted Madness Levels: ${JSON.stringify(adjustedLevels)}`, styling);
-
         const penalties = {
             1: { 
                 effect: "Disturbance", 
@@ -365,8 +352,6 @@ export function FDregisterHooks()
 
         const actorEffects = actor.effects.map((e) => e.data.label);
         const currentEffects = [];
-
-        // Check which effects are currently applied
         for (let i = 1; i <= 5; i++) 
         {
             if (actorEffects.includes(penalties[i].effect)) 
@@ -376,8 +361,6 @@ export function FDregisterHooks()
         }
 
         debugLog(`Current Madness Effects: ${currentEffects}`, styling);
-
-        // Apply or remove penalties based on the current madness level
         for (let i = 1; i <= 5; i++) 
         {
             if (madnessPoints >= adjustedLevels[i]) 
@@ -417,7 +400,7 @@ export function FDregisterHooks()
      * @param {boolean} isGain - Whether the effect is being gained or lost.
      */
     async function addMadnessEffect(actor, effectName, messageTemplate, imagePath, aspectRatio, iconPath, changes, isGain) 
-    {
+{
         const effectData = {
             label: effectName,
             icon: iconPath,
@@ -427,14 +410,14 @@ export function FDregisterHooks()
             duration: { rounds: 0, turns: 0 },
             flags: { core: { statusId: effectName } }
         };
-
+    
         await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
         debugLog(`Effect ${effectName} added to actor ${actor.name}`, styling);
-
+    
         const characterName = actor.name.split(" ")[0]; // Get the first name of the actor
         const action = isGain ? "Gained" : "Lost";
         const updatedMessage = messageTemplate(characterName, action);
-
+    
         const chatMessageContent = `
           <div style="
             position: relative; 
@@ -466,9 +449,48 @@ export function FDregisterHooks()
             </div>
           </div>
         `;
-
+    
         ChatMessage.create({ content: chatMessageContent });
+    
+        if (isGain) 
+        {
+            debugLog("Is Gain:", styling, isGain);
+            const permissionObject = getProperty(actor, "ownership") ?? {};
+            debugLog("Permission Object:", styling, permissionObject);
+        
+            const playerOwners = Object.entries(permissionObject)
+                .filter(
+                    ([id, level]) =>
+                        !game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3
+                )
+                .map(([id]) => id);
+            debugLog("Player Owners:", styling, playerOwners);
+        
+            const targetUserId = playerOwners.length > 0 ? playerOwners[0] : game.users.find((u) => u.isGM)?.id;
+            debugLog("Target User:", styling, targetUserId);
+        
+            if (targetUserId) 
+            {
+                try 
+                {
+                    if (socketFD === undefined) 
+                    {
+                        console.error("socketFD is undefined when trying to execute promptMadnessReduction");
+                    }
+                    else 
+                    {
+                        await socketFD.executeAsUser("promptMadnessReduction", targetUserId, actor.id);
+                        debugLog("Prompt Madness Reduction executed successfully", styling);
+                    }
+                } 
+                catch (error) 
+                {
+                    console.error("Socket execution failed:", error);
+                }
+            }
+        }
     }
+    
 
     /**
      * Removes a Madness effect from the actor and posts a chat message.
@@ -491,7 +513,7 @@ export function FDregisterHooks()
             await effect.delete();
             debugLog(`Effect ${effectName} removed from actor ${actor.name}`, styling);
 
-            const characterName = actor.name.split(" ")[0]; // Get the first name of the actor
+            const characterName = actor.name.split(" ")[0];
             const updatedMessage = messageTemplate(characterName, "Lost");
 
             const chatMessageContent = `
@@ -612,13 +634,13 @@ Hooks.on("dnd5e.preShortRest", async (actor, config) =>
   
 Hooks.on("dnd5e.preLongRest", async (actor, config) => 
 {
-  const hasCataclysm = actor.effects.find((e) => e.data.label === "Cataclysm");
-  if (hasCataclysm) 
-{
-      ChatMessage.create({ content: `${actor.name} cannot benefit from a long rest due to their madness.` });
-      return false; // Prevent the long rest
-  }
-  return await handleSanityRest(actor, config);
+    const hasCataclysm = actor.effects.find((e) => e.data.label === "Cataclysm");
+    if (hasCataclysm) 
+    {
+        ChatMessage.create({ content: `${actor.name} cannot benefit from a long rest due to their madness.` });
+        return false;
+    }
+    return await handleSanityRest(actor, config);
 });
   
 /**
@@ -631,146 +653,145 @@ Hooks.on("dnd5e.preLongRest", async (actor, config) =>
  */
 async function handleSanityRest(actor) 
 {
-  const hitDiceLeft = Object.values(actor.classes).reduce((acc, classItem) => 
-  {
-    if (classItem.system.hitDiceUsed < classItem.system.levels) 
+    const hitDiceLeft = Object.values(actor.classes).reduce((acc, classItem) => 
     {
-      if (!acc[classItem.system.hitDice]) 
-      {
-        acc[classItem.system.hitDice] = {
-          remaining: 0,
-          class: null,
-        }; 
-      }
-      acc[classItem.system.hitDice].remaining += classItem.system.levels - classItem.system.hitDiceUsed;
-      acc[classItem.system.hitDice].class = classItem.identifier; 
-    }
+        if (classItem.system.hitDiceUsed < classItem.system.levels) 
+        {
+            if (!acc[classItem.system.hitDice]) 
+            {
+                acc[classItem.system.hitDice] = {
+                remaining: 0,
+                class: null,
+                }; 
+            }
+            acc[classItem.system.hitDice].remaining += classItem.system.levels - classItem.system.hitDiceUsed;
+            acc[classItem.system.hitDice].class = classItem.identifier; 
+        }
     return acc;
-  }, {});
+    }, {});
 
   const options = Object.entries(hitDiceLeft).map(([hitDice, data]) => `<option value="${hitDice}">${hitDice} (${data.remaining} left)</option>`);
-  if (!options.length) { return true; }  // No hit dice left, continue with the rest
-
+  if (!options.length) { return true; }
   const selected = await new Promise((resolve) => 
   {
     const dialog = new Dialog({
-      title: "Sanity Points HitDie Recovery",
-      content: `
-      <style>
-        .sanity-dialog {
-          background: #222;
-          color: #f8f8f8;
-          padding: 5px;
-          border-radius: 0px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .sanity-dialog p {
-          margin-bottom: 5px;
-        }
-        .sanity-dialog select {
-          margin-left: 10px;
-          background: #333; 
-          color: #f8f8f8; 
-          border: 1px solid #444;
-          padding: 2px;
-          border-radius: 4px;
-          font-size: 12px;
-          text-align: center;
-        }
-        .sanity-dialog input {
-          margin-left: 10px;
-          background: #333; 
-          color: #f8f8f8; 
-          border: 1px solid #444;
-          padding: 2px;
-          border-radius: 4px;
-          font-size: 12px;
-          text-align: center;
-        }  
-        .sanity-dialog button {
-          background: #f8f8f8;
-          color: #222;
-          border: none;
-          padding: 1px 5px;
-          border-radius: 4px;
-          font-weight: bold;
-          font-size: 12px;
-          cursor: pointer;
-        }
-        .sanity-dialog button:hover {
-          background: #95f853;
-        }
-        .custom-dialog-position {
-          top: 20% !important;
-        }
-      </style>
-      <div class="sanity-dialog">
-        <h3>Select Hit Dice to Recover Sanity</h3>
-        <p>
-          <select name="hitDice" style="width: 100px;>${options.join("")}</select>
-          <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
-        </p>
-      </div>
-      `,
-      buttons: {
-        yes: {
-          label: "Confirm",
-          callback: (html) => 
-          {
-            const selectedValue = html.find("select").val();
-            const numDice = parseInt(html.find('input[name="numDice"]').val(), 10);
-            resolve({
-              class: hitDiceLeft[selectedValue].class,
-              hitDice: selectedValue,
-              numDice
-            });
-          },
+        title: "Sanity Points HitDie Recovery",
+        content: `
+        <style>
+            .sanity-dialog {
+            background: #222;
+            color: #f8f8f8;
+            padding: 5px;
+            border-radius: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            }
+            .sanity-dialog p {
+            margin-bottom: 5px;
+            }
+            .sanity-dialog select {
+            margin-left: 10px;
+            background: #333; 
+            color: #f8f8f8; 
+            border: 1px solid #444;
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+            }
+            .sanity-dialog input {
+            margin-left: 10px;
+            background: #333; 
+            color: #f8f8f8; 
+            border: 1px solid #444;
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+            }  
+            .sanity-dialog button {
+            background: #f8f8f8;
+            color: #222;
+            border: none;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            }
+            .sanity-dialog button:hover {
+            background: #95f853;
+            }
+            .custom-dialog-position {
+            top: 20% !important;
+            }
+        </style>
+        <div class="sanity-dialog">
+            <h3>Select Hit Dice to Recover Sanity</h3>
+            <p>
+            <select name="hitDice" style="width: 100px;>${options.join("")}</select>
+            <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
+            </p>
+        </div>
+        `,
+        buttons: {
+            yes: {
+            label: "Confirm",
+            callback: (html) => 
+            {
+                const selectedValue = html.find("select").val();
+                const numDice = parseInt(html.find('input[name="numDice"]').val(), 10);
+                resolve({
+                class: hitDiceLeft[selectedValue].class,
+                hitDice: selectedValue,
+                numDice
+                });
+            },
+            },
+            no: {
+            label: "Cancel",
+            callback: () => resolve(null),
+            },
         },
-        no: {
-          label: "Cancel",
-          callback: () => resolve(null),
-        },
-      },
-      default: "no",
-    }, {
-      classes: ["custom-dialog-position"]
+        default: "no",
+        }, {
+        classes: ["custom-dialog-position"]
+        });
+        dialog.render(true);
     });
-    dialog.render(true);
-  });
 
-  if (!selected) { return true; }  // User canceled, continue with the rest
+    if (!selected) { return true; }
 
-  const rollDice = await new Roll(`${selected.numDice}${selected.hitDice}`).evaluate({ async: true });
-  const sanityPoints = getProperty(actor, "flags.fates-descent.sanityPoints.current");
-  const maxSanity = getProperty(actor, "flags.fates-descent.sanityPoints.max");
+    const rollDice = await new Roll(`${selected.numDice}${selected.hitDice}`).evaluate({ async: true });
+    const sanityPoints = getProperty(actor, "flags.fates-descent.sanityPoints.current");
+    const maxSanity = getProperty(actor, "flags.fates-descent.sanityPoints.max");
 
-  if (sanityPoints < maxSanity) 
-  {
-    const newValue = Math.min(sanityPoints + rollDice.total, maxSanity);
-    await actor.setFlag("fates-descent", "sanityPoints.current", newValue);
-    rollDice.toMessage();
-    const regainedSanity = newValue - sanityPoints;
-    ChatMessage.create({ content: `${actor.name} has regained ${regainedSanity} Sanity!` });
-  }
-  else 
-  {
-    return true;  // No sanity points to recover, continue with the rest
-  }
-
-  if (selected.class) 
-  {
-    for (const classItem of Object.values(actor.classes)) 
+    if (sanityPoints < maxSanity) 
     {
-      if (classItem.identifier === selected.class) 
-      {
-        classItem.system.hitDiceUsed += selected.numDice;
-        await classItem.update({ 'system.hitDiceUsed': classItem.system.hitDiceUsed });
-        break;
-      }
+        const newValue = Math.min(sanityPoints + rollDice.total, maxSanity);
+        await actor.setFlag("fates-descent", "sanityPoints.current", newValue);
+        rollDice.toMessage();
+        const regainedSanity = newValue - sanityPoints;
+        ChatMessage.create({ content: `${actor.name} has regained ${regainedSanity} Sanity!` });
     }
-  }
+    else 
+    {
+        return true;
+    }
 
-  return true;
+    if (selected.class) 
+    {
+        for (const classItem of Object.values(actor.classes)) 
+        {
+            if (classItem.identifier === selected.class) 
+            {
+                classItem.system.hitDiceUsed += selected.numDice;
+                await classItem.update({ 'system.hitDiceUsed': classItem.system.hitDiceUsed });
+                break;
+            }
+        }
+    }
+
+    return true;
 }

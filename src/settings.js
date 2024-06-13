@@ -32,16 +32,6 @@ export function FDregisterSettings()
         default: 8
     });
 
-    game.settings.register(MODULE_ID, "debug", {
-        name: "Enable Debug Logging",
-        hint: "Enable or disable debug logging for the Fate's Descent module.",
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false
-    });
-
-    // Hidden setting to store global save requests
     game.settings.register(MODULE_ID, "globalSaveRequests", {
         scope: "world",
         config: false,
@@ -49,7 +39,6 @@ export function FDregisterSettings()
         default: []
     });
 
-    // Hidden setting to store global test requests
     game.settings.register(MODULE_ID, "globalTestRequests", {
         scope: "world",
         config: false,
@@ -57,9 +46,9 @@ export function FDregisterSettings()
         default: []
     });
 
-    // New settings for madness point additions
+
     for (let i = 1; i <= 3; i++) 
-{
+    {
         game.settings.register(MODULE_ID, `enableMadnessRange${i}`, {
             name: `Enable Sanity Points Range ${i}`,
             hint: `Enable or disable the addition of madness points for range ${i}.`,
@@ -75,19 +64,18 @@ export function FDregisterSettings()
             scope: "world",
             config: true,
             type: Number,
-            default: i === 1 ? 0 : i === 2 ? 10 : 20 // Default values based on current logic
+            default: i === 1 ? 0 : i === 2 ? 10 : 20
         });
 
-        // Only register the end range for the first two ranges
         if (i < 3) 
-{
+        {
             game.settings.register(MODULE_ID, `madnessRange${i}End`, {
                 name: `Sanity Points Range ${i} End`,
                 hint: `The ending sanity point for range ${i}.`,
                 scope: "world",
                 config: true,
                 type: Number,
-                default: i === 1 ? 9 : 19 // Default values based on current logic
+                default: i === 1 ? 9 : 19 
             });
         }
 
@@ -97,7 +85,55 @@ export function FDregisterSettings()
             scope: "world",
             config: true,
             type: Number,
-            default: i === 1 ? 3 : i === 2 ? 2 : 1 // Default values based on current logic
+            default: i === 1 ? 3 : i === 2 ? 2 : 1 
         });
     }
+
+    game.settings.register(MODULE_ID, "shortTermInsanityReduction", {
+        name: "Short-Term Madness Reduction",
+        hint: "Set the number of madness points reduced when a short-term insanity effect is gained.",
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 1
+    });
+
+    game.settings.register(MODULE_ID, "longTermInsanityReduction", {
+        name: "Long-Term Madness Reduction",
+        hint: "Set the number of madness points reduced when a long-term insanity effect is gained.",
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 3
+    });
+
+    game.settings.register(MODULE_ID, "debug", {
+        name: "Enable Debug Logging",
+        hint: "Enable or disable debug logging for the Fate's Descent module.",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false
+    });
 }
+
+Hooks.on('renderSettingsConfig', (app, html) => 
+{
+    const settings = [
+        { key: "startingSanityPoints", header: "Starting Sanity & Madness" },
+        { key: "enableMadnessRange1", header: "Sanity Point Range 1" },
+        { key: "enableMadnessRange2", header: "Sanity Point Range 2" },
+        { key: "enableMadnessRange3", header: "Sanity Point Range 3" },
+        { key: "shortTermInsanityReduction", header: "Rolltable Madness Reductions" },
+        { key: "debug", header: "Debug Settings" },
+    ];
+
+    settings.forEach((setting) => 
+{
+        const element = html[0].querySelector(`[data-setting-id="fates-descent.${setting.key}"]`);
+        if (element) 
+{
+            element.insertAdjacentHTML('beforeBegin', `<h3>${setting.header}</h3>`);
+        }
+    });
+});

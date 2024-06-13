@@ -2,6 +2,9 @@
 
 import { FDregisterSettings } from "./settings.js";
 import { FDregisterHooks } from "./hooks.js";
+import { promptMadnessReduction } from './MadnessEffects.js';
+
+window.promptMadnessReduction = promptMadnessReduction;
 
 const styling = `
     color:#D01B00;
@@ -26,5 +29,5 @@ Hooks.on("init", () =>
     CONFIG.DND5E.damageTypes.sanity = {
         label: "Sanity",
         isPhysical: false
-      };
-  });
+    };
+});

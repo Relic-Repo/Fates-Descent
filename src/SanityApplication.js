@@ -11,8 +11,6 @@ export default class SanityApplication extends SvelteApplication
     debugLog("SanityApplication | constructor called with:", actor, type, config);
     const actorName = game.actors.get(actor.id)?.name;
     const globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
-
-    // Add the new request to the global array
     globalRequests.push({ actorId: actor.id, actorName, type, config });
     game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);
 
@@ -57,7 +55,6 @@ export default class SanityApplication extends SvelteApplication
     } 
     else 
     {
-      // Add the new request to the existing global array
       const actorName = game.actors.get(actorId)?.name;
       globalRequests.push({ actorId, actorName, type, config });
       game.settings.set(MODULE_ID, "globalSaveRequests", globalRequests);

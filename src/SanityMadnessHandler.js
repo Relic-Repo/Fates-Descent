@@ -8,7 +8,7 @@ export class SanityMadnessHandler
      * Constructs an instance of SanityMadnessHandler, initializes styling, and sets up hooks.
      */
     constructor() 
-{
+    {
         this.styling = `
             color:#D01B00;
             background-color:#A3A6B4;
@@ -19,9 +19,9 @@ export class SanityMadnessHandler
         this.moduleId = MODULE_ID;
 
         Hooks.on("updateActor", (actor, updateData) => 
-{
+        {
             if (actor.type === "character" && actor.prototypeToken.actorLink && this.isSanityOrMadnessUpdate(updateData)) 
-{
+            {
                 this.updateBarsForActor(actor);
             }
         });
@@ -35,7 +35,7 @@ export class SanityMadnessHandler
      * @returns {boolean} True if the update data includes sanity or madness updates, false otherwise.
      */
     isSanityOrMadnessUpdate(updateData) 
-{
+    {
         return updateData.flags?.[this.moduleId]?.sanityPoints || updateData.flags?.[this.moduleId]?.madness;
     }
 
@@ -45,11 +45,11 @@ export class SanityMadnessHandler
      * @param {Actor} actor - The actor whose bars need to be updated.
      */
     updateBarsForActor(actor) 
-{
+    {
         const appId = `ActorSheet${actor.sheet?.constructor?.name}-${actor.id}`;
         const appFD = Object.values(ui.windows).find((app) => app.options.id === appId);
         if (appFD) 
-{
+    {
             appFD.render(true);
         }
     }
@@ -60,12 +60,12 @@ export class SanityMadnessHandler
      * @param {Actor} actor - The actor whose sanity and madness values need to be updated.
      */
     updateSanityAndMadness(actor) 
-{
+    {
         if (actor.type !== "character" || !actor.prototypeToken.actorLink) { return; }
         debugLog(`Updating sanity and madness for linked actor: ${actor.name}`, this.styling);
 
         if (!actor.system?.abilities?.san) 
-{
+        {
             debugLog("San ability not defined for this linked actor.", this.styling);
             return;
         }
@@ -89,7 +89,7 @@ export class SanityMadnessHandler
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
     addSanityAndMadnessBarsDnd5e2(actor, html) 
-{
+    {
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLDnd5e2(actor);
         html.find('.meter-group').last().after(sanityPointsHtml + madnessHtml);
     }
@@ -102,7 +102,7 @@ export class SanityMadnessHandler
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
     addSanityAndMadnessBarsDnd5e(actor, html) 
-{
+    {
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLDnd5e(actor);
         html.find('.counters').after(sanityPointsHtml + madnessHtml);
     }
@@ -115,7 +115,7 @@ export class SanityMadnessHandler
      * @param {jQuery} html - The jQuery HTML object of the sheet.
      */
     addSanityAndMadnessBarsTidy5e(actor, html) 
-{
+    {
         const { sanityPointsHtml, madnessHtml } = this.generateMeterHTMLTidy5e(actor);
         html.find('.main-panel .flex-column.small-gap').append(sanityPointsHtml + madnessHtml);
     }
@@ -128,7 +128,7 @@ export class SanityMadnessHandler
      * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
     generateMeterHTMLDnd5e2(actor) 
-{
+    {
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 
@@ -167,7 +167,7 @@ export class SanityMadnessHandler
      * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
     generateMeterHTMLDnd5e(actor) 
-{
+    {
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 
@@ -206,7 +206,7 @@ export class SanityMadnessHandler
      * @returns {object} An object containing the HTML for the sanity and madness meters.
      */
     generateMeterHTMLTidy5e(actor) 
-{
+    {
         const sanityPointsData = actor.getFlag(this.moduleId, 'sanityPoints') || { current: 28, max: 28 };
         const madnessData = actor.getFlag(this.moduleId, 'madness') || { current: 0, max: 8 };
 
