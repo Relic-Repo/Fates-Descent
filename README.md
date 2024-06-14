@@ -29,10 +29,10 @@
             <table>
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=12Kk2D9ydJBlguXLJ0O0LMy7GCRtJJd5b" alt="Actor sheet V2" style="width: 350px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=12Kk2D9ydJBlguXLJ0O0LMy7GCRtJJd5b" alt="Actor sheet V2" style="width: 300px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1AUWSkotw835LAMtPGc_EBF5-52WPD-eI" alt="Actor Sheet" style="width: 350px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1AUWSkotw835LAMtPGc_EBF5-52WPD-eI" alt="Actor Sheet" style="width: 300px; height: auto;" />
                     </td>
                 </tr>
             </table>
