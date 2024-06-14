@@ -22,7 +22,7 @@
     <h4>Sanity Points</h4>
     <p class="indented">
         <dl>
-        <dt>The first of these metrics is Sanity Points, which are akin to Hit Points but represent a character's mental fortitude. Sanity Points are recovered similarly to Hit Points using Hit Dice. During rest periods, players can choose to use some of their Hit Dice for Sanity Point recovery.</dt>
+        <dd>The first of these metrics is Sanity Points, which are akin to Hit Points but represent a character's mental fortitude. Sanity Points are recovered similarly to Hit Points using Hit Dice. During rest periods, players can choose to use some of their Hit Dice for Sanity Point recovery.</dd>
         <br>
         <br>
         <li>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.</li>
