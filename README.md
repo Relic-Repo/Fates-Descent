@@ -25,7 +25,6 @@
     <p>
         <dl>
         <dd>The first of these metrics is Sanity Points, which are akin to Hit Points but represent a character's mental fortitude. Sanity Points are recovered similarly to Hit Points using Hit Dice. During rest periods, players can choose to use some of their Hit Dice for Sanity Point recovery.</dd>
-            <p align="center">
             <table align="center">
                 <tr>
                     <td>
@@ -36,12 +35,10 @@
                     </td>
                 </tr>
             </table>
-            </p>
         <dd>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.</dd>        
         <dd>Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.</dd>
         </dl>
-            <p align="center">
-            <table>
+            <table align="center">
                 <tr>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
@@ -54,7 +51,6 @@
                     </td>
                 </tr>
             </table>
-            </p>
     </p>
     <h4>Madness Points</h4>
     <p>
