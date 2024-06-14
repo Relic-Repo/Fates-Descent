@@ -32,6 +32,7 @@
         <br>
         By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.
         <br>
+        <br>
         Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.
     </p>
     <h4>Madness Points</h4>
