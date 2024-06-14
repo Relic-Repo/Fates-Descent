@@ -55,6 +55,27 @@
         <dl>
         <dd>Madness progresses through five phases, ranging from mild inconvenience to the character becoming an NPC at the final phase. These phases are evenly spaced across the Madness Points, with the final phase at the very end.</dd>
         </dl>
+        <p align="center">
+            <table>
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=127DIXB1nHm7ShWrE1-CntFNGYEVsEvKk" alt="Actor sheet V2" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=15bQIuANAs4G2CNkEsqngj3N9ZbxgeMVx" alt="Actor Sheet" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1rFVUWlv7-6jlKraK-lR0LNKEVDnNx6Lf" alt="tidySheet" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1c5iuHZhBiZS6t7JuquWTeFJOkGi8Lfvv" alt="tidySheet" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="tidySheet" style="width: 200px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
     </p>
     <h4>Reducing Madness Points</h4>
     <p>
