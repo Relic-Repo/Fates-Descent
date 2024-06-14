@@ -55,7 +55,7 @@
     <h4>Madness Points</h4>
     <p>
         <dl>
-        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 Madness Points, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.</dd>
+        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 Madness Points, by default, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.</dd>
         </dl>
     </p>
     <h4>Phases of Madness</h4>
