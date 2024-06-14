@@ -29,14 +29,16 @@
         <dd>Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.</dd>
         </dl>
         <p align="left">
-            <div style="display: inline-block; vertical-align: top;">
-                <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
-            </div>
-            <div style="display: inline-block; vertical-align: top; margin-left: 10px;">
-                <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 210px; height: auto;" />
-            </div>
-            <div style="display: inline-block; vertical-align: top; margin-left: 10px;">
-                <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 210px; height: auto;" />
+            <div style="display: flex; justify-content: left; align-items: flex-start;">
+                <div style="margin-right: 10px;">
+                    <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
+                </div>
+                <div style="margin-right: 10px;">
+                    <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 210px; height: auto;" />
+                </div>
+                <div>
+                    <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 210px; height: auto;" />
+                </div>
             </div>
         </p>
     </p>
