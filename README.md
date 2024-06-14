@@ -20,7 +20,7 @@
         Fate's Descent introduces two new metrics to the D&D5e system, expanding the optional rules for Madness found in the Dungeon Master's Guide (DMG) on page 258.
     </p>
     <h4>Sanity Points</h4>
-    <p class="indented">
+    <p>
         <dl>
         <dd>The first of these metrics is Sanity Points, which are akin to Hit Points but represent a character's mental fortitude. Sanity Points are recovered similarly to Hit Points using Hit Dice. During rest periods, players can choose to use some of their Hit Dice for Sanity Point recovery.</dd>        
         <dd>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.</dd>        
