@@ -35,10 +35,10 @@
                     <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 300px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 395px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 300px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 395px; height: auto;" />
                     </td>
                 </tr>
             </table>
