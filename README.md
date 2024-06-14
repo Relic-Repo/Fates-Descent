@@ -1,3 +1,5 @@
+![GitHub Latest Version](https://img.shields.io/github/v/tag/Relic-Repo/Fates-Descent?label=version)
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,6 +19,7 @@
     <br>
     <h2 align="left">How to Use</h2>
     <div>
+        <h3 align="left">Installation
     </div>
 
 
