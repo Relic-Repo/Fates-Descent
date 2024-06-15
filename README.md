@@ -134,8 +134,7 @@
                 </tr>
             </table>
         </p>
-            <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>
-        </ul>
+            <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>        
         <p align="center">
             <table align="center">
                 <tr>
@@ -177,6 +176,7 @@
                 </tr>
             </table>
         </p>
+        </ul>
     </p>
     <h5>Presented with a Choice</h5>
     <table align="center">
