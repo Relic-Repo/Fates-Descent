@@ -38,17 +38,17 @@
         <dd>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.</dd>        
         <dd>Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.</dd>
         </dl>
-            <table align="center">
+            <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td rowspan="2">
+                    <td rowspan="2" style="border: none;">
                     <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
                     </td>
-                    <td>
+                    <td style="border: none;">
                     <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 210px; height: auto;" />
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="border: none;">
                     <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 210px; height: auto;" />
                     </td>
                 </tr>
