@@ -28,10 +28,10 @@
             <table align="center">
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=12Kk2D9ydJBlguXLJ0O0LMy7GCRtJJd5b" alt="Actor sheet V2" style="width: 300px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=12Kk2D9ydJBlguXLJ0O0LMy7GCRtJJd5b" alt="Short Rest Sanity" style="width: 300px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1AUWSkotw835LAMtPGc_EBF5-52WPD-eI" alt="Actor Sheet" style="width: 300px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1AUWSkotw835LAMtPGc_EBF5-52WPD-eI" alt="Long Rest Sanity" style="width: 300px; height: auto;" />
                     </td>
                 </tr>
             </table>
@@ -40,14 +40,16 @@
         </dl>
             <table align="center">
                 <tr>
-                    <td>
+                    <td rowspan="2">
                     <img src="https://drive.google.com/uc?export=view&id=1-OKKacGlEnwvS-9G0lRH1J7Q1id_pQ72" alt="Actor sheet V2" style="width: 210px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 395px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1DRbt81TEzF7nKbYZOqZR-xWa5lD_mj_u" alt="Actor Sheet" style="width: 210px; height: auto;" />
                     </td>
+                </tr>
+                <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 395px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1stMIIB_8mMnWs61t9d3_EWTlfvp8bCou" alt="tidySheet" style="width: 210px; height: auto;" />
                     </td>
                 </tr>
             </table>
@@ -67,19 +69,19 @@
             <table>
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=127DIXB1nHm7ShWrE1-CntFNGYEVsEvKk" alt="Actor sheet V2" style="width: 200px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=127DIXB1nHm7ShWrE1-CntFNGYEVsEvKk" alt="Disturbance" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=15bQIuANAs4G2CNkEsqngj3N9ZbxgeMVx" alt="Actor Sheet" style="width: 200px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=15bQIuANAs4G2CNkEsqngj3N9ZbxgeMVx" alt="Disorientation" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1rFVUWlv7-6jlKraK-lR0LNKEVDnNx6Lf" alt="tidySheet" style="width: 200px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1rFVUWlv7-6jlKraK-lR0LNKEVDnNx6Lf" alt="Delirium" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1c5iuHZhBiZS6t7JuquWTeFJOkGi8Lfvv" alt="tidySheet" style="width: 200px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1c5iuHZhBiZS6t7JuquWTeFJOkGi8Lfvv" alt="Cataclysm" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="tidySheet" style="width: 200px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="Oblivion" style="width: 200px; height: auto;" />
                     </td>
                 </tr>
             </table>
