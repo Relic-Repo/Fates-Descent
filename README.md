@@ -95,9 +95,6 @@
             <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.</li>
             <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>
         </ul>
-        <dl>
-        <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
-        </dl>
     </p>
     <table align="center">
         <tr>
@@ -106,6 +103,9 @@
             </td>
         </tr>
     </table>
+<dl>
+    <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
+    </dl>
 </body>
 
 </html>
