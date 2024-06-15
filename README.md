@@ -99,6 +99,13 @@
         <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
         </dl>
     </p>
+    <table align="center">
+        <tr>
+            <td>
+            <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 300px; height: auto;" />
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>
