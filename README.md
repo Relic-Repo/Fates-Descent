@@ -64,7 +64,7 @@
         <dd>Madness progresses through five phases, ranging from mild inconvenience to the character becoming an NPC at the final phase. These phases are evenly spaced across the Madness Points, with the final phase at the very end.</dd>
         </dl>
         <p align="center">
-            <table>
+            <table align="center">
                 <tr>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=127DIXB1nHm7ShWrE1-CntFNGYEVsEvKk" alt="Disturbance" style="width: 200px; height: auto;" />
@@ -83,7 +83,7 @@
                     </td>
                 </tr>
             </table>
-            </p>
+        </p>
     </p>
     <h4>Reducing Madness Points</h4>
     <p>
@@ -93,6 +93,47 @@
         <ul>
             <li>Greater Restoration: This spell lowers a character's Madness Points by two levels (four points by default).</li>
             <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1oCtCtmrGakXdenU5a7Mma9PNHjlJquOf" alt="Hysterical" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1_RSXo1h4Rf6x3Ak0isY5aEUPV5qAKU5y" alt="Frightened" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1IsFd0YjD37Y3d5P8RkonFP4Cg1n2zjHk" alt="Babbling" style="width: 200px; height: auto;" />
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1NL4r_lSZKs0iZvdX6dvnfKBTQuJpZPsP" alt="Maleficent" style="width: 200px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+        </p>
+        <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=127DIXB1nHm7ShWrE1-CntFNGYEVsEvKk" alt="Disturbance" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=15bQIuANAs4G2CNkEsqngj3N9ZbxgeMVx" alt="Disorientation" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1rFVUWlv7-6jlKraK-lR0LNKEVDnNx6Lf" alt="Delirium" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1c5iuHZhBiZS6t7JuquWTeFJOkGi8Lfvv" alt="Cataclysm" style="width: 200px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="Oblivion" style="width: 200px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+        </p>
             <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>
         </ul>
     </p>
