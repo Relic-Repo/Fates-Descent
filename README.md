@@ -97,7 +97,7 @@
             <table align="center">
                 <tr>
                     <td>
-                    <stong>Stasis</strong>
+                    <b>Stasis</b>
                     <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
                     </td>
                     <td>
