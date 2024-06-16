@@ -97,7 +97,8 @@
             <table align="center">
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />Stasis
+                    <stong>Stasis</strong>
+                    <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
                     </td>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1oCtCtmrGakXdenU5a7Mma9PNHjlJquOf" alt="Hysterical" style="width: 200px; height: auto;" />Hysterical
