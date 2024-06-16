@@ -140,6 +140,7 @@
                 <tr>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1elK-8l1xTAndQQGS0BoVmKqGKtuclMPp" alt="Compulsive" style="width: 167px; height: auto;" />
+                    </td>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1U49wqnz5ZQDk7oa2hVKdJEIaO7frr2OV" alt="Hallucinating" style="width: 167px; height: auto;" />
                     </td>
@@ -175,6 +176,7 @@
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1shyx5EYyO3mmS8NKeFBENqSnbJ7H2XVT" alt="Silenced" style="width: 167px; height: auto;" />g
                     </td>
+                    <td>
                     <img src="https://drive.google.com/uc?export=view&id=1WsiZs726ffYIXWt7afnbL6ENGq7ZqixZ" alt="Catatonic" style="width: 167px; height: auto;" />
                     </td>
                 </tr>
