@@ -96,7 +96,7 @@
             <table align="center">
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1tqY3boFMch8pLae9CQ79NCtFiSiyE3Dq" alt="Stasis" style="width: 300px; height: auto;" />
+                    <img src="https://drive.google.com/uc?export=view&id=1tqY3boFMch8pLae9CQ79NCtFiSiyE3Dq" alt="Stasis" style="width: 500px; height: auto;" />
                     </td>
                 </tr>
             </table>
@@ -198,7 +198,7 @@
     <table align="center">
         <tr>
             <td>
-            <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 300px; height: auto;" />
+            <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
             </td>
         </tr>
     </table>
