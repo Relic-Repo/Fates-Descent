@@ -97,23 +97,18 @@
             <table align="center">
                 <tr>
                     <td>
-                    <b>Stasis</b>
                     <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <b>Hysterical</b>
                     <img src="https://drive.google.com/uc?export=view&id=1oCtCtmrGakXdenU5a7Mma9PNHjlJquOf" alt="Hysterical" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <b>Frightened</b>
                     <img src="https://drive.google.com/uc?export=view&id=1_RSXo1h4Rf6x3Ak0isY5aEUPV5qAKU5y" alt="Frightened" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <b>Babbling</b>
                     <img src="https://drive.google.com/uc?export=view&id=1IsFd0YjD37Y3d5P8RkonFP4Cg1n2zjHk" alt="Babbling" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <b>Maleficent</b>
                     <img src="https://drive.google.com/uc?export=view&id=1NL4r_lSZKs0iZvdX6dvnfKBTQuJpZPsP" alt="Maleficent" style="width: 200px; height: auto;" />
                     </td>
                 </tr>
@@ -123,23 +118,15 @@
             <table align="center">
                 <tr>
                     <td>
-                    <b>Hallucinating</b>
                     <img src="https://drive.google.com/uc?export=view&id=1QK35QJdjQOoFUCWZ2S0G-qXIlsmiDJbn" alt="Hallucinating" style="width: 200px; height: auto;" />
                     </td>
-                    <td>
-                    <b>Compelled</b>
                     <img src="https://drive.google.com/uc?export=view&id=19hlEEDgG3kA9OtSdxXMEbTk6U5wOdFtW" alt="Compelled" style="width: 200px; height: auto;" />
                     </td>
-                    <td>
-                    <b>Ravenous</b>
                     <img src="https://drive.google.com/uc?export=view&id=1AcsiEAO1b5EtG-MebBf6engi0GUXcIPx" alt="Ravenous" style="width: 200px; height: auto;" />
                     </td>
-                    <td>
-                    <b>Stunned</b>
                     <img src="https://drive.google.com/uc?export=view&id=1AIjl-b1nd9WWqctgUYDMmaGrfGUGf1gO" alt="Stunned" style="width: 200px; height: auto;" />
                     </td>
                     <td>
-                    <b>Catatonic</b>
                     <img src="https://drive.google.com/uc?export=view&id=1toVOw0VHrXdOwuR84lIyzAZIIZHPrxDo" alt="Catatonic" style="width: 200px; height: auto;" />
                     </td>
                 </tr>
