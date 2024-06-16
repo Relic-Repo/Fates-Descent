@@ -120,10 +120,13 @@
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1QK35QJdjQOoFUCWZ2S0G-qXIlsmiDJbn" alt="Hallucinating" style="width: 200px; height: auto;" />
                     </td>
+                    <td>
                     <img src="https://drive.google.com/uc?export=view&id=19hlEEDgG3kA9OtSdxXMEbTk6U5wOdFtW" alt="Compelled" style="width: 200px; height: auto;" />
                     </td>
+                    <td>
                     <img src="https://drive.google.com/uc?export=view&id=1AcsiEAO1b5EtG-MebBf6engi0GUXcIPx" alt="Ravenous" style="width: 200px; height: auto;" />
                     </td>
+                    <td>
                     <img src="https://drive.google.com/uc?export=view&id=1AIjl-b1nd9WWqctgUYDMmaGrfGUGf1gO" alt="Stunned" style="width: 200px; height: auto;" />
                     </td>
                     <td>
