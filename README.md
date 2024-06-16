@@ -92,6 +92,15 @@
         </dl>
         <ul>
             <li>Greater Restoration: This spell lowers a character's Madness Points by two levels (four points by default).</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1tqY3boFMch8pLae9CQ79NCtFiSiyE3Dq" alt="Stasis" style="width: 300px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
             <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.</li>
             <p align="center">
             <table align="center">
