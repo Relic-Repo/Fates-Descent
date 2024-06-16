@@ -107,6 +107,7 @@
                     </td>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1IsFd0YjD37Y3d5P8RkonFP4Cg1n2zjHk" alt="Babbling" style="width: 200px; height: auto;" />Babbling
+                    </td>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1NL4r_lSZKs0iZvdX6dvnfKBTQuJpZPsP" alt="Maleficent" style="width: 200px; height: auto;" />Maleficent
                     </td>
