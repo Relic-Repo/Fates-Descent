@@ -174,7 +174,7 @@
                     <img src="https://drive.google.com/uc?export=view&id=1lUeQ6sYMX8YEBPhwLmjebRFgTIhSgTuO" alt="Confusion" style="width: 167px; height: auto;" />
                     </td>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1shyx5EYyO3mmS8NKeFBENqSnbJ7H2XVT" alt="Silenced" style="width: 167px; height: auto;" />g
+                    <img src="https://drive.google.com/uc?export=view&id=1shyx5EYyO3mmS8NKeFBENqSnbJ7H2XVT" alt="Silenced" style="width: 167px; height: auto;" />
                     </td>
                     <td>
                     <img src="https://drive.google.com/uc?export=view&id=1WsiZs726ffYIXWt7afnbL6ENGq7ZqixZ" alt="Catatonic" style="width: 167px; height: auto;" />
