@@ -21,6 +21,7 @@
         <dd>Fate's Descent introduces two new metrics to the D&D5e system, expanding the optional rules for Madness found in the Dungeon Master's Guide (DMG) on page 258.</dd>
         </dl>
     </p>
+    <hr>
     <h4>Sanity Points</h4>
     <p>
         <dl>
