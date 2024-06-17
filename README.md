@@ -199,14 +199,23 @@
         </ul>
     </p>
     <h5>Presented with a Choice</h5>
-    <table align="center">
         <ul>
-            <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation. They will also be informed of how many points the roll will reduce their Madness by. These values are adjustable but should generally correspond to half a phase for Short Term Madness and one and a half phases for Long Term Madness.</li>   
-        <tr>
-            <td>
-            <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
-            </td>
-        </tr>
+            <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation. They will also be informed of how many points the roll will reduce their Madness by. These values are adjustable but should generally correspond to half a phase for Short Term Madness and one and a half phases for Long Term Madness.</li>
+            <table align="center">   
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+             </table>   
+            <li>First, the character will enter the new Madness Phase and be presented with the Roll Table option. Selecting Short Term will roll on the Short Term Madness Table, reduce their Madness Points, and if the reduction is sufficient, remove the Madness Phase.</li>
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
         </ul>
     </table>
     <hr>
