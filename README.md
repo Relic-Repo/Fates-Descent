@@ -222,6 +222,7 @@
                         <img src="https://drive.google.com/uc?export=view&id=1nkaLJ7PF7HbLouPgbHN2zmPLJ-AMr56U" alt="Amnesic" style="width: 250px; height: auto;" />
                     </td>
             </table>
+            <li>Similarly, selecting Long Term will roll on the Long Term Madness Table, reduce their Madness Points, and at least lower the character by one Madness Phase.</li>
         </ul>
     </table>
     <hr>
