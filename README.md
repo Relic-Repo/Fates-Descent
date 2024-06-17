@@ -16,10 +16,23 @@
         </div>
     <h2>How to Use</h2>
         <h3>Installation</h3>
+            <p>
+                <dl>
+                    <dd>Use the Foundry VTT installer with the manifest link or you may copy the link of the latest release.</dd>
+                </dl>
+            </p>
+        <h3>Required Modules</h3>
+            <p>
+                <ul>
+                    <li><a href="https://foundryvtt.com/packages/midi-qol">Midi-QoL</a></li>
+                    <li><a href="https://foundryvtt.com/packages/dae/">D.A.E.</a></li>
+                    <li><a href="https://foundryvtt.com/packages/socketlib">socketlib</a></li>
+                </ul>
+            </p>    
         <h3>Fate's Descent: Expanding the D&D5e System with Sanity and Madness</h3>
             <p>
                 <dl>
-                <dd>Fate's Descent introduces two new metrics to the D&D5e system, expanding the optional rules for Madness found in the Dungeon Master's Guide (DMG) on page 258.</dd>
+                    <dd>Fate's Descent introduces two new metrics to the D&D5e system, expanding the optional rules for Madness found in the Dungeon Master's Guide (DMG) on page 258.</dd>
                 </dl>
             </p>
         <hr>
