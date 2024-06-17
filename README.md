@@ -210,11 +210,17 @@
              </table>   
             <li>First, the character will enter the new Madness Phase and be presented with the Roll Table option. Selecting Short Term will roll on the Short Term Madness Table, reduce their Madness Points, and if the reduction is sufficient, remove the Madness Phase.</li>
             <table align="center">
+                <table align="center">
                 <tr>
                     <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
+                        <img src="https://drive.google.com/uc?export=view&id=1hwKUJlgUfQoIXS7VEZoTPSpTNlgS6J5b" alt="Imprisoned" style="width: 250px; height: auto;" />
                     </td>
-                </tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1FJpQ_IZltxdqou0gSXNB9JcSFifbCTOL" alt="Tremors" style="width: 250px; height: auto;" />
+                    </td>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1nkaLJ7PF7HbLouPgbHN2zmPLJ-AMr56U" alt="Amnesic" style="width: 250px; height: auto;" />
+                    </td>
             </table>
         </ul>
     </table>
