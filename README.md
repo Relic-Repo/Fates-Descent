@@ -18,7 +18,7 @@
         <h3>Installation</h3>
             <p>
                 <dl>
-                    <dd>Use the Foundry VTT installer with the manifest link or you may copy the link of the latest release.</dd>
+                    <dd>Use the Foundry VTT installer with the manifest link or you may copy the link of the module.json from the latest release.</dd>
                 </dl>
             </p>
         <h3>Required Modules</h3>
