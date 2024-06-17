@@ -356,7 +356,7 @@
             <table align="center">
                 <tr>
                     <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1CNZnNjPSyyvWxLUe0dsqrVnnpVWj_6yf" alt="Stasis" style="width: 250px; height: auto;" />
+                        <img src="https://drive.google.com/uc?export=view&id=1CNZnNjPSyyvWxLUe0dsqrVnnpVWj_6yf" alt="Stasis" style="width: 500px; height: auto;" />
                     </td>
                 </tr>
             </table>
