@@ -237,7 +237,7 @@
             </p>          
             <hr>
             <h4>The Sanity Roller</h4>
-            <p>
+                <p>
                 <dl>
                     <dd>This module has an integrated rolling app for the GM to use. It allows the GM to request rolls naturally and then set the DCs and/or loss amounts as the rolls come in.
                 </dd>
@@ -307,7 +307,8 @@
                                 <img src="https://drive.google.com/uc?export=view&id=16dUUMdWHfgxvUHab22OJUdX3NFxgA2wH" alt="Stasis" style="width: 250px; height: auto;" />
                             </td>
                         </tr>
-                    </table>>
+                    </table>
+                </p>    
             <hr>
             <h4>Included Macros</h4>
                 <p>
