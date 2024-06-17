@@ -40,7 +40,6 @@
                             </td>
                         </tr>
                     </table>
-                    <br>
                 </ul>    
             </p>          
             <h4>Sanity Points</h4>
@@ -58,7 +57,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <br>
                         <dd>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.
                         </dd>        
                         <dd>Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.
@@ -76,7 +74,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <br>
                     </dl>    
                 </p>
             <hr>
@@ -112,8 +109,7 @@
                                     <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="Oblivion" style="width: 200px; height: auto;" />
                                 </td>
                             </tr>
-                        </table>
-                        <br>    
+                        </table>    
                 </p>
             <hr>
             <h4>Reducing Madness Points</h4>
