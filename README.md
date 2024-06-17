@@ -306,6 +306,62 @@
             </table>
             </p>
     <hr>
+    <h4>Included Macros</hr>
+    <p>
+        <dl>
+        <dd>There are currently six different macros included with the system.
+        </dd>
+        </dl>
+        <ul>
+            <li>You can find these macro's in the compendia and they all should be imported.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1iGtxtWHu9lzxg_k6GL837Hw0rzsp6dnI" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>The first of these, "addHitDie," is a macro meant to be used with ItemMacro or equivalent. It will provide a consumable item the ability to add Hit Dice back to the character. This is meant to help supplement the use of Hit Dice and provide a way for more "comforting" things in your world to help "heal" those suffering from reduced Sanity. Characters can not gain additional Max Hit Dice from this, but can replenished what they have already used.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1ajCwcQOzxgXn06FzuuNBhH62_jcoYn39" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1QMM9js8R4gM9baC6-bNJxd6kYdnlcdHT" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td> 
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1bdxDH6Bveksx17jd1zIPd4QOYKGyX5Aq" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td>     
+                </tr>
+            </table>
+            </p>
+            <li>The "Clear Sanity Requests" macro is for GM use and will empty the global storage of requests. This may be necessary if no Sanity Roller apps are loading when players are making requests.</li>
+            <li>The "Madness Rolltable" macro is for player use and will present the player with the Temporary Insanity choice to help reduce their Madness.</li>            
+            <li>The "Revert NPC" macro is for GM use and will revert a character that has been turned into an NPC by the final Phase of Madness back to a PC. If a character reaches the final phase, the system will immediately convert their character sheet into an NPC sheet.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1_Fd3OzLDR14NcoC0GXuv4uakjcPc4OR9" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>The "Madness & Sanity Adjustment" macros are for GM use and allow for manual adjustment of the Sanity Point and Madness Point values of the characters.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1CNZnNjPSyyvWxLUe0dsqrVnnpVWj_6yf" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+    <hr>
     <dl>
     <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
     </dl>
