@@ -283,6 +283,29 @@
                 </tr>
             </table>
             </p>
+            <li>Making changes to the ALL row will set all requests currently populated on the Roller.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=18mEJsRGAZc1xdD3aVX7YU0fXBN43ox5Z" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>"Rolling All" will roll all requests at their current set inputs. "Cancel All" will bypass the Sanity Roller inputs and process the rolls normally. The chat message outputs will state the Severity Level set, the DC value, and the Sanity Points lost or, if the roll was successful, state that Sanity was maintained.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1_kLb9k_CWokGCdwUTc7o9mzWCNhz1eDg" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=16dUUMdWHfgxvUHab22OJUdX3NFxgA2wH" alt="Stasis" style="width: 250px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
             <hr>
     <dl>
     <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
