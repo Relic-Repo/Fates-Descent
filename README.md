@@ -14,7 +14,6 @@
         <strong>Fate's Descent</strong> is a dynamic and immersive module designed for Foundry Virtual Tabletop, enhancing gameplay by introducing a comprehensive system of sanity and madness mechanics. The module meticulously tracks sanity points and introduces various levels of madness, each with unique effects that influence character behavior and abilities. Players can experience short-term and long-term madness, with effects ranging from mild disturbances to severe, mind-altering conditions. The module integrates seamlessly with character sheets, providing visual indicators for sanity and madness levels, and automates the application of effects through interactive dialogs and rollable tables. Fate's Descent elevates the role-playing experience, adding depth and complexity to character development and storytelling. With robust settings for customization, game masters can tailor the madness mechanics to fit their campaign's tone and intensity, ensuring an engaging and challenging adventure for all participants.
     </div>
     <h2>How to Use</h2>
-    <hr>
     <h3>Installation</h3>
     <h3>Fate's Descent: Expanding the D&D5e System with Sanity and Madness</h3>
     <p>
@@ -58,7 +57,7 @@
     <h4>Madness Points</h4>
     <p>
         <dl>
-        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 Madness Points, by default, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.</dd>
+        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 maximum Madness Points lsimit, by default, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.</dd>
         </dl>
     </p>
     <hr>
@@ -201,6 +200,9 @@
     </p>
     <h5>Presented with a Choice</h5>
     <table align="center">
+        <ul>
+            <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation.</li>
+        </ul>    
         <tr>
             <td>
             <img src="https://drive.google.com/uc?export=view&id=1sjZusZjA0YiJRytSThGvF14NzHA7HLpN" alt="Madness Rolltable" style="width: 500px; height: auto;" />
