@@ -201,7 +201,7 @@
     <h5>Presented with a Choice</h5>
     <table align="center">
         <ul>
-            <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation.</li>
+            <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation. They will also be informed of how many points the roll will reduce their Madness by. These values are adjustable but should generally correspond to half a phase for Short Term Madness and one and a half phases for Long Term Madness.</li>
         </ul>    
         <tr>
             <td>
