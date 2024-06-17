@@ -234,6 +234,7 @@
                             </td>
                         </tr>
                     </table>
+                </ul>    
             </p>          
             <hr>
             <h4>The Sanity Roller</h4>
@@ -308,6 +309,7 @@
                             </td>
                         </tr>
                     </table>
+                </ul>    
                 </p>    
             <hr>
             <h4>Included Macros</h4>
