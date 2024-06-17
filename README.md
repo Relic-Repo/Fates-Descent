@@ -31,6 +31,7 @@
                 <ul>
                     <li>Please be sure this option is activated. The module will not fucntion without it. You will be given a warning on screen if the Setting is detected as False.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -245,6 +246,7 @@
                 </dl>
                 <ul>
                     <li>You can apply the Sanity damage type in all cases as you would other damage types. This includes vulnerabilities, resistances, and Midi-QoL's Overtime Effects</li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
