@@ -89,7 +89,7 @@
                                     <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="Oblivion" style="width: 200px; height: auto;" />
                                 </td>
                             </tr>
-                        </table>
+                        </table>    
                 </p>
             <hr>
             <h4>Reducing Madness Points</h4>
@@ -108,97 +108,89 @@
                             </tr>
                         </table>
                         <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.</li>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1oCtCtmrGakXdenU5a7Mma9PNHjlJquOf" alt="Hysterical" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1_RSXo1h4Rf6x3Ak0isY5aEUPV5qAKU5y" alt="Frightened" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1IsFd0YjD37Y3d5P8RkonFP4Cg1n2zjHk" alt="Babbling" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1NL4r_lSZKs0iZvdX6dvnfKBTQuJpZPsP" alt="Maleficent" style="width: 200px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1QK35QJdjQOoFUCWZ2S0G-qXIlsmiDJbn" alt="Hallucinating" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=19hlEEDgG3kA9OtSdxXMEbTk6U5wOdFtW" alt="Compelled" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1AcsiEAO1b5EtG-MebBf6engi0GUXcIPx" alt="Ravenous" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1AIjl-b1nd9WWqctgUYDMmaGrfGUGf1gO" alt="Stunned" style="width: 200px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1toVOw0VHrXdOwuR84lIyzAZIIZHPrxDo" alt="Catatonic" style="width: 200px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
-                    <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>        
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1elK-8l1xTAndQQGS0BoVmKqGKtuclMPp" alt="Compulsive" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1U49wqnz5ZQDk7oa2hVKdJEIaO7frr2OV" alt="Hallucinating" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1KJ6IWDJwELbaNRT0377xYX6TTCYwSoVV" alt="Paranoid" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1EgaysgnZlaVFhmurd54L1aqjQ6WWie6j" alt="Revulsion" style="width: 167px; height: auto;" />
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=17MGVNq_p1mXJ-aqJllKWK0Y5JruWF97o" alt="Delusional" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1cPG3SuGacgr6wgqoFSwSl0XvMMKa6mw4" alt="Charmed" style="width: 167px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1nB_iKZKSLeyI-wFnWTQMoTFLop0L06NX" alt="Imprisoned" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1od6x4rfAcDnnBLgK_D6AanFJop0kg4Vg" alt="Tremors" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1Z1h8D4WSWuVPSSplWUJKYmKCZbc-j2V7" alt="Amnesic" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1lUeQ6sYMX8YEBPhwLmjebRFgTIhSgTuO" alt="Confusion" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1shyx5EYyO3mmS8NKeFBENqSnbJ7H2XVT" alt="Silenced" style="width: 167px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1WsiZs726ffYIXWt7afnbL6ENGq7ZqixZ" alt="Catatonic" style="width: 167px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                </p>
-                </ul>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1uVwo7ih1cJuv_yoRe-QXDMWq7cQRWMAA" alt="Stasis" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1oCtCtmrGakXdenU5a7Mma9PNHjlJquOf" alt="Hysterical" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1_RSXo1h4Rf6x3Ak0isY5aEUPV5qAKU5y" alt="Frightened" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1IsFd0YjD37Y3d5P8RkonFP4Cg1n2zjHk" alt="Babbling" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1NL4r_lSZKs0iZvdX6dvnfKBTQuJpZPsP" alt="Maleficent" style="width: 200px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1QK35QJdjQOoFUCWZ2S0G-qXIlsmiDJbn" alt="Hallucinating" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=19hlEEDgG3kA9OtSdxXMEbTk6U5wOdFtW" alt="Compelled" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1AcsiEAO1b5EtG-MebBf6engi0GUXcIPx" alt="Ravenous" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1AIjl-b1nd9WWqctgUYDMmaGrfGUGf1gO" alt="Stunned" style="width: 200px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1toVOw0VHrXdOwuR84lIyzAZIIZHPrxDo" alt="Catatonic" style="width: 200px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1elK-8l1xTAndQQGS0BoVmKqGKtuclMPp" alt="Compulsive" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1U49wqnz5ZQDk7oa2hVKdJEIaO7frr2OV" alt="Hallucinating" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1KJ6IWDJwELbaNRT0377xYX6TTCYwSoVV" alt="Paranoid" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1EgaysgnZlaVFhmurd54L1aqjQ6WWie6j" alt="Revulsion" style="width: 167px; height: auto;" />
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=17MGVNq_p1mXJ-aqJllKWK0Y5JruWF97o" alt="Delusional" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1cPG3SuGacgr6wgqoFSwSl0XvMMKa6mw4" alt="Charmed" style="width: 167px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1nB_iKZKSLeyI-wFnWTQMoTFLop0L06NX" alt="Imprisoned" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1od6x4rfAcDnnBLgK_D6AanFJop0kg4Vg" alt="Tremors" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1Z1h8D4WSWuVPSSplWUJKYmKCZbc-j2V7" alt="Amnesic" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1lUeQ6sYMX8YEBPhwLmjebRFgTIhSgTuO" alt="Confusion" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1shyx5EYyO3mmS8NKeFBENqSnbJ7H2XVT" alt="Silenced" style="width: 167px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1WsiZs726ffYIXWt7afnbL6ENGq7ZqixZ" alt="Catatonic" style="width: 167px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                    </ul>    
                 </p>
                 <h5>Presented with a Choice</h5>
                     <ul>
@@ -230,12 +222,11 @@
             <h4>Sanity Damage Type</h4>
             <p>
                 <dl>
-                <dd>The Fate's Descent module implements a new damage type in the game: Sanity. Any damage set to Sanity will automatically deduct from the target's Sanity Points.
-                </dd>
+                    <dd>The Fate's Descent module implements a new damage type in the game: Sanity. Any damage set to Sanity will automatically deduct from the target's Sanity Points.
+                    </dd>
                 </dl>
                 <ul>
                     <li>You can apply the Sanity damage type in all cases as you would other damage types. This includes vulnerabilities, resistances, and Midi-QoL's Overtime Effects</li>
-                    <p align="center">
                     <table align="center">
                         <tr>
                             <td>
@@ -243,18 +234,17 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
             </p>          
             <hr>
             <h4>The Sanity Roller</h4>
             <p>
                 <dl>
-                <dd>This module has an integrated rolling app for the GM to use. It allows the GM to request rolls naturally and then set the DCs and/or loss amounts as the rolls come in.
+                    <dd>This module has an integrated rolling app for the GM to use. It allows the GM to request rolls naturally and then set the DCs and/or loss amounts as the rolls come in.
                 </dd>
                 </dl>
                 <ul>
-                    <li>The First roller will initiate the Sanity Roller app.</li>
-                    <p align="center">
+                    <li>The First roller will initiate the Sanity Roller app.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -262,9 +252,8 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
-                    <li>Any subsequent requests received will populate the currently open app.</li>
-                    <p align="center">
+                    <li>Any subsequent requests received will populate the currently open app.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -272,9 +261,8 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
-                    <li>If any character rolls the wrong type of Sanity Roll, the GM will be notified by a color change to the Name entry. A color key is provided to help quickly indicate these possible play errors.</li>
-                    <p align="center">
+                    <li>If any character rolls the wrong type of Sanity Roll, the GM will be notified by a color change to the Name entry. A color key is provided to help quickly indicate these possible play errors.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -282,9 +270,8 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
-                    <li>Clicking on any of the names will switch their roll type, so correcting an incorrect roll is as simple as clicking the name and changing the roll type.</li>
-                    <p align="center">
+                    <li>Clicking on any of the names will switch their roll type, so correcting an incorrect roll is as simple as clicking the name and changing the roll type.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -292,9 +279,8 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
-                    <li>The Sanity Roller will continue to expand to accommodate many requests.</li>
-                    <p align="center">
+                    <li>The Sanity Roller will continue to expand to accommodate many requests.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -302,9 +288,8 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
-                    <li>Making changes to the ALL row will set all requests currently populated on the Roller.</li>
-                    <p align="center">
+                    <li>Making changes to the ALL row will set all requests currently populated on the Roller.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -312,9 +297,7 @@
                             </td>
                         </tr>
                     </table>
-                    </p>
                     <li>"Rolling All" will roll all requests at their current set inputs. "Cancel All" will bypass the Sanity Roller inputs and process the rolls normally. The chat message outputs will state the Severity Level set, the DC value, and the Sanity Points lost or, if the roll was successful, state that Sanity was maintained.</li>
-                    <p align="center">
                     <table align="center">
                         <tr>
                             <td>
@@ -324,64 +307,62 @@
                                 <img src="https://drive.google.com/uc?export=view&id=16dUUMdWHfgxvUHab22OJUdX3NFxgA2wH" alt="Stasis" style="width: 250px; height: auto;" />
                             </td>
                         </tr>
-                    </table>
-                    </p>
+                    </table>>
             <hr>
             <h4>Included Macros</h4>
-            <p>
-                <dl>
-                <dd>There are currently six different macros included with the system.
-                </dd>
-                </dl>
-                <ul>
-                    <li>You can find these macro's in the compendia and they all should be imported.</li>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1iGtxtWHu9lzxg_k6GL837Hw0rzsp6dnI" alt="Stasis" style="width: 500px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
-                    <li>The first of these, "addHitDie," is a macro meant to be used with ItemMacro or equivalent. It will provide a consumable item the ability to add Hit Dice back to the character. This is meant to help supplement the use of Hit Dice and provide a way for more "comforting" things in your world to help "heal" those suffering from reduced Sanity. Characters can not gain additional Max Hit Dice from this, but can replenished what they have already used.</li>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1ajCwcQOzxgXn06FzuuNBhH62_jcoYn39" alt="Stasis" style="width: 250px; height: auto;" />
-                            </td>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1QMM9js8R4gM9baC6-bNJxd6kYdnlcdHT" alt="Stasis" style="width: 250px; height: auto;" />
-                            </td> 
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1bdxDH6Bveksx17jd1zIPd4QOYKGyX5Aq" alt="Stasis" style="width: 250px; height: auto;" />
-                            </td>     
-                        </tr>
-                    </table>
-                    </p>
-                    <li>The "Clear Sanity Requests" macro is for GM use and will empty the global storage of requests. This may be necessary if no Sanity Roller apps are loading when players are making requests.</li>
-                    <li>The "Madness Rolltable" macro is for player use and will present the player with the Temporary Insanity choice to help reduce their Madness.</li>            
-                    <li>The "Revert NPC" macro is for GM use and will revert a character that has been turned into an NPC by the final Phase of Madness back to a PC. If a character reaches the final phase, the system will immediately convert their character sheet into an NPC sheet.</li>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1_Fd3OzLDR14NcoC0GXuv4uakjcPc4OR9" alt="Stasis" style="width: 500px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
-                    <li>The "Madness & Sanity Adjustment" macros are for GM use and allow for manual adjustment of the Sanity Point and Madness Point values of the characters.</li>
-                    <p align="center">
-                    <table align="center">
-                        <tr>
-                            <td>
-                                <img src="https://drive.google.com/uc?export=view&id=1CNZnNjPSyyvWxLUe0dsqrVnnpVWj_6yf" alt="Stasis" style="width: 500px; height: auto;" />
-                            </td>
-                        </tr>
-                    </table>
-                    </p>
+                <p>
+                    <dl>
+                        <dd>There are currently six different macros included with the system.
+                    </dd>
+                    </dl>
+                    <ul>
+                        <li>You can find these macro's in the compendia and they all should be imported.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1iGtxtWHu9lzxg_k6GL837Hw0rzsp6dnI" alt="Stasis" style="width: 500px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <li>The first of these, "addHitDie," is a macro meant to be used with ItemMacro or equivalent. It will provide a consumable item the ability to add Hit Dice back to the character. This is meant to help supplement the use of Hit Dice and provide a way for more "comforting" things in your world to help "heal" those suffering from reduced Sanity. Characters can not gain additional Max Hit Dice from this, but can replenished what they have already used.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1ajCwcQOzxgXn06FzuuNBhH62_jcoYn39" alt="Stasis" style="width: 250px; height: auto;" />
+                                </td>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1QMM9js8R4gM9baC6-bNJxd6kYdnlcdHT" alt="Stasis" style="width: 250px; height: auto;" />
+                                </td> 
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1bdxDH6Bveksx17jd1zIPd4QOYKGyX5Aq" alt="Stasis" style="width: 250px; height: auto;" />
+                                </td>     
+                            </tr>
+                        </table>
+                        <li>The "Clear Sanity Requests" macro is for GM use and will empty the global storage of requests. This may be necessary if no Sanity Roller apps are loading when players are making requests.
+                        </li>
+                        <li>The "Madness Rolltable" macro is for player use and will present the player with the Temporary Insanity choice to help reduce their Madness.
+                        </li>            
+                        <li>The "Revert NPC" macro is for GM use and will revert a character that has been turned into an NPC by the final Phase of Madness back to a PC. If a character reaches the final phase, the system will immediately convert their character sheet into an NPC sheet.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1_Fd3OzLDR14NcoC0GXuv4uakjcPc4OR9" alt="Stasis" style="width: 500px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <li>The "Madness & Sanity Adjustment" macros are for GM use and allow for manual adjustment of the Sanity Point and Madness Point values of the characters.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1CNZnNjPSyyvWxLUe0dsqrVnnpVWj_6yf" alt="Stasis" style="width: 500px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                </p>
             <hr>
             <dl>
             <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
