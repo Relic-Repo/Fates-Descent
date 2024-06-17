@@ -1,12 +1,12 @@
 ![GitHub Latest Version](https://img.shields.io/github/v/tag/Relic-Repo/Fates-Descent?label=version)
 
 <html lang="en">
-<base href="https://drive.google.com/uc?export=view&id=">
+
 <body>
     <h1 align="center">Fate's Descent</h1>
     <p align="center">
-        <a href="1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG">
-            <img src="1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG" style="width: 1280px; max-width: 100%; height: auto;" title="Fate's Descent Banner" />
+        <a href="https://drive.google.com/uc?export=view&id=1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG">
+            <img src="https://drive.google.com/uc?export=view&id=1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG" style="width: 1280px; max-width: 100%; height: auto;" title="Fate's Descent Banner" />
         </a>
     </p>
     <h2>Description</h2>
