@@ -9,6 +9,7 @@
             <img src="https://drive.google.com/uc?export=view&id=1CUZdvqMfdNQXYMIAf77P6i4xzI3KXcPG" style="width: 1280px; max-width: 100%; height: auto;" title="Fate's Descent Banner" />
         </a>
     </p>
+    <br>
     <h2>Description</h2>
         <div align="center" style="margin: 0 auto; padding: 20px;">
             <strong><b>Fate's Descent</b></strong> is a dynamic and immersive module designed for Foundry Virtual Tabletop, enhancing gameplay by introducing a comprehensive system of sanity and madness mechanics. The module meticulously tracks sanity points and introduces various levels of madness, each with unique effects that influence character behavior and abilities. Players can experience short-term and long-term madness, with effects ranging from mild disturbances to severe, mind-altering conditions. The module integrates seamlessly with character sheets, providing visual indicators for sanity and madness levels, and automates the application of effects through interactive dialogs and rollable tables. Fate's Descent elevates the role-playing experience, adding depth and complexity to character development and storytelling. With robust settings for customization, game masters can tailor the madness mechanics to fit their campaign's tone and intensity, ensuring an engaging and challenging adventure for all participants.
@@ -39,6 +40,7 @@
                             </td>
                         </tr>
                     </table>
+                    <br>
                 </ul>    
             </p>          
             <h4>Sanity Points</h4>
@@ -56,6 +58,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <br>
                         <dd>By default, each character begins with an initial 28 Sanity Points, bolstered by their Sanity Modifier. These points do not increase with level, although customization by the Game Master (GM) is possible, and features may be added to increase this amount.
                         </dd>        
                         <dd>Maintaining a healthy amount of Sanity Points becomes imperative with the introduction of the second metric. As characters lose Sanity Points, Madness Points begin to accumulate if not "healed." The rate of accumulation increases as Sanity Points are further reduced.
@@ -73,6 +76,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <br>
                     </dl>    
                 </p>
             <hr>
@@ -108,7 +112,8 @@
                                     <img src="https://drive.google.com/uc?export=view&id=12aZGIX2HouqvmyhaO68GBz78-j7U_v3S" alt="Oblivion" style="width: 200px; height: auto;" />
                                 </td>
                             </tr>
-                        </table>    
+                        </table>
+                        <br>    
                 </p>
             <hr>
             <h4>Reducing Madness Points</h4>
@@ -231,7 +236,6 @@
                         </li>
                         <br>
                         <table align="center">
-                            <table align="center">
                             <tr>
                                 <td>
                                     <img src="https://drive.google.com/uc?export=view&id=1hwKUJlgUfQoIXS7VEZoTPSpTNlgS6J5b" alt="Imprisoned" style="width: 250px; height: auto;" />
