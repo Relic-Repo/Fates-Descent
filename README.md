@@ -225,6 +225,24 @@
                 <li>Similarly, selecting Long Term will roll on the Long Term Madness Table, reduce their Madness Points, and at least lower the character by one Madness Phase.</li>
             </ul>
     <hr>
+    <h4>Sanity Damage Type</h4>
+    <p>
+        <dl>
+        <dd>The Fate's Descent module implements a new damage type in the game: Sanity. Any damage set to Sanity will automatically deduct from the target's Sanity Points.
+        </dd>
+        </dl>
+        <ul>
+            <li>You can apply the Sanity damage type in all cases as you would other damage types. This includes vulnerabilities, resistances, and Midi-QoL's Overtime Effects</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                        <img src="https://drive.google.com/uc?export=view&id=1AXRo_kjNMTjuZths2ZtV2ycQ3687p1dm" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+    </p>   
+    <hr>
     <h4>The Sanity Roller</h4>
     <p>
         <dl>
