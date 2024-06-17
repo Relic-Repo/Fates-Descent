@@ -22,6 +22,23 @@
                 </dl>
             </p>
         <hr>
+            <h4>Sanity Ability Score</h4>
+            <p>
+                <dl>
+                    <dd>The D&D5e system has an optional rule and setting to activate the Sanity ability score.
+                    </dd>
+                </dl>
+                <ul>
+                    <li>Please be sure this option is activated. The module will not fucntion without it. You will be given a warning on screen if the Setting is detected as False.</li>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <img src="https://drive.google.com/uc?export=view&id=1f_rO8YvB1CFh1qunfnZjw5gLHBc_fndt" alt="Stasis" style="width: 500px; height: auto;" />
+                            </td>
+                        </tr>
+                    </table>
+                </ul>    
+            </p>          
             <h4>Sanity Points</h4>
                 <p>
                     <dl>
