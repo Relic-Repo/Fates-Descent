@@ -119,6 +119,7 @@
                     <ul>
                         <li>Greater Restoration: This spell lowers a character's Madness Points by two levels (four points by default).
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -126,7 +127,9 @@
                                 </td>
                             </tr>
                         </table>
-                        <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.</li>
+                        <li>Short Term Madness Roll Table: Rolling voluntarily on this table imposes Insanity Effects lasting 1 to 10 minutes, reducing Madness Points by 1.
+                        </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -165,7 +168,9 @@
                                 </td>
                             </tr>
                         </table>
-                        <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.</li>
+                        <li>Long Term Madness Roll Table: Rolling voluntarily on this table imposes more severe Insanity Effects lasting 10 to 100 hours, reducing Madness Points by 3.
+                        </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -214,6 +219,7 @@
                 <h5>Presented with a Choice</h5>
                     <ul>
                         <li>Each time a character accumulates enough Madness Points to move into a new phase of madness, they will be given a choice: roll on the Short or Long Term Madness Tables and gain a Temporary Insanity to help reduce their Madness accumulation. They will also be informed of how many points the roll will reduce their Madness by. These values are adjustable but should generally correspond to half a phase for Short Term Madness and one and a half phases for Long Term Madness.</li>
+                        <br>
                         <table align="center">   
                             <tr>
                                 <td>
@@ -221,7 +227,9 @@
                                 </td>
                             </tr>
                         </table>   
-                        <li>First, the character will enter the new Madness Phase and be presented with the Roll Table option. Selecting Short Term will roll on the Short Term Madness Table, reduce their Madness Points, and if the reduction is sufficient, remove the Madness Phase.</li>
+                        <li>First, the character will enter the new Madness Phase and be presented with the Roll Table option. Selecting Short Term will roll on the Short Term Madness Table, reduce their Madness Points, and if the reduction is sufficient, remove the Madness Phase.
+                        </li>
+                        <br>
                         <table align="center">
                             <table align="center">
                             <tr>
@@ -266,6 +274,7 @@
                 <ul>
                     <li>The First roller will initiate the Sanity Roller app.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -275,6 +284,7 @@
                     </table>
                     <li>Any subsequent requests received will populate the currently open app.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -284,6 +294,7 @@
                     </table>
                     <li>If any character rolls the wrong type of Sanity Roll, the GM will be notified by a color change to the Name entry. A color key is provided to help quickly indicate these possible play errors.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -293,6 +304,7 @@
                     </table>
                     <li>Clicking on any of the names will switch their roll type, so correcting an incorrect roll is as simple as clicking the name and changing the roll type.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -302,6 +314,7 @@
                     </table>
                     <li>The Sanity Roller will continue to expand to accommodate many requests.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -311,6 +324,7 @@
                     </table>
                     <li>Making changes to the ALL row will set all requests currently populated on the Roller.
                     </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -318,7 +332,9 @@
                             </td>
                         </tr>
                     </table>
-                    <li>"Rolling All" will roll all requests at their current set inputs. "Cancel All" will bypass the Sanity Roller inputs and process the rolls normally. The chat message outputs will state the Severity Level set, the DC value, and the Sanity Points lost or, if the roll was successful, state that Sanity was maintained.</li>
+                    <li>"Rolling All" will roll all requests at their current set inputs. "Cancel All" will bypass the Sanity Roller inputs and process the rolls normally. The chat message outputs will state the Severity Level set, the DC value, and the Sanity Points lost or, if the roll was successful, state that Sanity was maintained.
+                    </li>
+                    <br>
                     <table align="center">
                         <tr>
                             <td>
@@ -341,6 +357,7 @@
                     <ul>
                         <li>You can find these macro's in the compendia and they all should be imported.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -350,6 +367,7 @@
                         </table>
                         <li>The first of these, "addHitDie," is a macro meant to be used with ItemMacro or equivalent. It will provide a consumable item the ability to add Hit Dice back to the character. This is meant to help supplement the use of Hit Dice and provide a way for more "comforting" things in your world to help "heal" those suffering from reduced Sanity. Characters can not gain additional Max Hit Dice from this, but can replenished what they have already used.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -369,6 +387,7 @@
                         </li>            
                         <li>The "Revert NPC" macro is for GM use and will revert a character that has been turned into an NPC by the final Phase of Madness back to a PC. If a character reaches the final phase, the system will immediately convert their character sheet into an NPC sheet.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -378,6 +397,7 @@
                         </table>
                         <li>The "Madness & Sanity Adjustment" macros are for GM use and allow for manual adjustment of the Sanity Point and Madness Point values of the characters.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -397,6 +417,7 @@
                     <ul>
                         <li>You can adjust the starting Sanity and Madness values, as well as the points at which characters begin accumulating Madness due to the loss of Sanity Points.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
@@ -406,6 +427,7 @@
                         </table>
                         <li>You can also adjust the amount the Rolltables reduce the Characters Madness and adjust the default values of the Sanity Roller.
                         </li>
+                        <br>
                         <table align="center">
                             <tr>
                                 <td>
