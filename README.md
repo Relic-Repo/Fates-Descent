@@ -409,7 +409,7 @@
                         <table align="center">
                             <tr>
                                 <td>
-                                    <img src="https://drive.google.com/uc?export=view&id=1Y_SuOJgxu4YcUr0DfWo_2bdijKzLC2Y8" alt="Stasis" style="width: 250px; height: auto;" />
+                                    <img src="https://drive.google.com/uc?export=view&id=1Y_SuOJgxu4YcUr0DfWo_2bdijKzLC2Y8" alt="Stasis" style="width: 500px; height: auto;" />
                                 </td>                              
                             </tr>
                         </table>
