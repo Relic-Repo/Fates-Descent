@@ -226,7 +226,65 @@
         </ul>
     </table>
     <hr>
-<dl>
+    <h4>The Sanity Roller</h4>
+    <p>
+        <dl>
+        <dd>This module has an integrated rolling app for the GM to use. It allows the GM to request rolls naturally and then set the DCs and/or loss amounts as the rolls come in.
+        </dd>
+        </dl>
+        <ul>
+            <li>The First roller will initiate the Sanity Roller app.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1A9nkEN_xF_9Y2Sc8PAJbqmbhECym26Tq" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>Any subsequent requests received will populate the currently open app.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1cWiPus2N_0UfgOWseoYSSbOtTtFEF62X" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>If any character rolls the wrong type of Sanity Roll, the GM will be notified by a color change to the Name entry. A color key is provided to help quickly indicate these possible play errors.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1q_2IE0sfJLsh_8DrevHEydEc_55r-hMy" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>Clicking on any of the names will switch their roll type, so correcting an incorrect roll is as simple as clicking the name and changing the roll type.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=12lotJU6B854Ay4ZlU_QE7Ick5nrGeDx2" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <li>The Sanity Roller will continue to expand to accommodate many requests.</li>
+            <p align="center">
+            <table align="center">
+                <tr>
+                    <td>
+                    <img src="https://drive.google.com/uc?export=view&id=1lUGie_s0Ls1CW5MRg5HNE-JHBrhtTaCP" alt="Stasis" style="width: 500px; height: auto;" />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            <hr>
+    <dl>
     <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
     </dl>
 </body>
