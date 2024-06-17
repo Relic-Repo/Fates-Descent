@@ -241,7 +241,8 @@
                     </td>
                 </tr>
             </table>
-    </p>   
+            </p>
+    </p>          
     <hr>
     <h4>The Sanity Roller</h4>
     <p>
