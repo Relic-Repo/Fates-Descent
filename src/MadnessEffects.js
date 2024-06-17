@@ -28,7 +28,7 @@ async function promptMadnessReduction(actorId)
     if (!actor) { return; }
 
     new Dialog({
-        title: "Insanity",
+        title: "Temporary Insanity",
         content: `
         <style>
             .insanity-dialog {
@@ -161,7 +161,7 @@ async function rollMadnessReduction(actor, tableType)
                 justify-content: flex-start; 
                 padding: 10px; 
                 background-color: rgba(0, 0, 0, 0.5); 
-                margin-top: 0%;">
+                margin-top: 1%;">
                 ${effect.message(firstName, durationText)}
             </div>
         </div>
@@ -582,9 +582,9 @@ function getShortTermMadnessEffect(roll)
         {
             range: [91, 100],
             effect: {
-                name: "Unconscious",
+                name: "Catatonic",
                 message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} falls Unconscious</h3>
+                    <h3 style="margin-bottom: 3px;">${character} falls Catatonic</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
                     <p>The character falls unconscious.</p>
                 `,
@@ -595,7 +595,7 @@ function getShortTermMadnessEffect(roll)
                         key: "StatusEffectName",
                         mode: 0,
                         priority: 20,
-                        value: "Unconscious"
+                        value: "Catatonic"
                     },
                     { 
                         key: "flags.midi-qol.fail.ability.save.dex",
@@ -800,7 +800,7 @@ function getLongTermMadnessEffect(roll)
             effect: {
                 name: "Delusion",
                 message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} is Delsuional</h3>
+                    <h3 style="margin-bottom: 3px;">${character} is Delusional</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
                     <p>The character experiences a powerful delusion. Choose a potion. The character imagines that he or she is under its effects.</p>
                 `,
@@ -1005,20 +1005,20 @@ function getLongTermMadnessEffect(roll)
         {
             range: [96, 100],
             effect: {
-                name: "Unconscious",
+                name: "Catatonic",
                 message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} falls Unconscious</h3>
+                    <h3 style="margin-bottom: 3px;">${character} falls Catatonic</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
-                    <p>The character falls unconscious. No amount of jostling or damage can wake the character.</p>
+                    <p>The character falls catatonic. No amount of jostling or damage can wake the character.</p>
                 `,
                 icon: "modules/fates-descent/img/insanityIcon/unconscious.webp",
-                description: "The character falls unconscious. No amount of jostling or damage can wake the character.",
+                description: "The character falls catatonic. No amount of jostling or damage can wake the character.",
                 changes: [
                     { 
                         key: "StatusEffectName",
                         mode: 0,
                         priority: 20,
-                        value: "Unconscious"
+                        value: "Catatonic"
                     },
                     { 
                         key: "flags.midi-qol.fail.ability.save.dex",

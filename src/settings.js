@@ -24,7 +24,7 @@ export function FDregisterSettings()
     });
 
     game.settings.register(MODULE_ID, "startingMadnessPoints", {
-        name: "Starting Madness Points",
+        name: "Starting Madness Limit",
         hint: "Set the initial amount of Madness Points before modifiers.",
         scope: "world",
         config: true,
@@ -46,7 +46,6 @@ export function FDregisterSettings()
         default: []
     });
 
-
     for (let i = 1; i <= 3; i++) 
     {
         game.settings.register(MODULE_ID, `enableMadnessRange${i}`, {
@@ -57,7 +56,7 @@ export function FDregisterSettings()
             type: Boolean,
             default: true
         });
-
+    
         game.settings.register(MODULE_ID, `madnessRange${i}Start`, {
             name: `Sanity Points Range ${i} Start`,
             hint: `The starting sanity point for range ${i}.`,
@@ -66,7 +65,7 @@ export function FDregisterSettings()
             type: Number,
             default: i === 1 ? 0 : i === 2 ? 10 : 20
         });
-
+        
         if (i < 3) 
         {
             game.settings.register(MODULE_ID, `madnessRange${i}End`, {
@@ -78,17 +77,17 @@ export function FDregisterSettings()
                 default: i === 1 ? 9 : 19 
             });
         }
-
+    
         game.settings.register(MODULE_ID, `madnessRange${i}Increment`, {
             name: `Madness Points ${i} Increment`,
             hint: `The amount of madness points to add for range ${i}.`,
             scope: "world",
             config: true,
             type: Number,
-            default: i === 1 ? 3 : i === 2 ? 2 : 1 
+            default: i === 1 ? 2 : i === 2 ? 1 : 0
         });
     }
-
+    
     game.settings.register(MODULE_ID, "shortTermInsanityReduction", {
         name: "Short-Term Madness Reduction",
         hint: "Set the number of madness points reduced when a short-term insanity effect is gained.",
@@ -105,6 +104,29 @@ export function FDregisterSettings()
         config: true,
         type: Number,
         default: 3
+    });
+
+    // New settings for severity levels
+    const severities = ["minimal", "moderate", "serious", "extreme"];
+    severities.forEach((severity) => 
+    {
+        game.settings.register(MODULE_ID, `${severity}DC`, {
+            name: `${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity DC`,
+            hint: `Set the DC for ${severity} severity.`,
+            scope: "world",
+            config: true,
+            type: Number,
+            default: severity === "minimal" ? 8 : severity === "moderate" ? 12 : severity === "serious" ? 16 : 20
+        });
+
+        game.settings.register(MODULE_ID, `${severity}Loss`, {
+            name: `${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity Loss`,
+            hint: `Set the loss amount for ${severity} severity.`,
+            scope: "world",
+            config: true,
+            type: String,
+            default: severity === "minimal" ? '1d4' : severity === "moderate" ? '1d6' : severity === "serious" ? '1d8' : '1d10'
+        });
     });
 
     game.settings.register(MODULE_ID, "debug", {
@@ -125,6 +147,7 @@ Hooks.on('renderSettingsConfig', (app, html) =>
         { key: "enableMadnessRange2", header: "Sanity Point Range 2" },
         { key: "enableMadnessRange3", header: "Sanity Point Range 3" },
         { key: "shortTermInsanityReduction", header: "Rolltable Madness Reductions" },
+        { key: "minimalDC", header: "Severity Levels" },
         { key: "debug", header: "Debug Settings" },
     ];
 

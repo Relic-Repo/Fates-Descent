@@ -13,11 +13,11 @@
   const stylesContent = { padding: '0' };
 
   const defaultSeverities = [
-    { id: 'minimal', text: 'Minimal (DC 8)', dc: 8, loss: '1d4' },
-    { id: 'moderate', text: 'Moderate (DC 12)', dc: 12, loss: '1d6' },
-    { id: 'serious', text: 'Serious (DC 16)', dc: 16, loss: '1d8' },
-    { id: 'extreme', text: 'Extreme (DC 20)', dc: 20, loss: '1d10' }
-  ];
+    { id: 'minimal', text: 'Minimal (DC 8)', dc: game.settings.get(MODULE_ID, 'minimalDC'), loss: game.settings.get(MODULE_ID, 'minimalLoss') },
+    { id: 'moderate', text: 'Moderate (DC 12)', dc: game.settings.get(MODULE_ID, 'moderateDC'), loss: game.settings.get(MODULE_ID, 'moderateLoss') },
+    { id: 'serious', text: 'Serious (DC 16)', dc: game.settings.get(MODULE_ID, 'seriousDC'), loss: game.settings.get(MODULE_ID, 'seriousLoss') },
+    { id: 'extreme', text: 'Extreme (DC 20)', dc: game.settings.get(MODULE_ID, 'extremeDC'), loss: game.settings.get(MODULE_ID, 'extremeLoss') }
+];
 
   const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests").map(request => ({
     ...request,
@@ -37,7 +37,12 @@
   async function handleRoll({ detail: request }) {
     const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const severityId = selectedSeverity?.id || 'minimal';
-    const lossInput = useCustomLoss ? loss : { 'minimal': '1d4', 'moderate': '1d6', 'serious': '1d8', 'extreme': '1d10' }[severityId];
+    const lossInput = useCustomLoss ? loss : {
+    'minimal': game.settings.get(MODULE_ID, 'minimalLoss'),
+    'moderate': game.settings.get(MODULE_ID, 'moderateLoss'),
+    'serious': game.settings.get(MODULE_ID, 'seriousLoss'),
+    'extreme': game.settings.get(MODULE_ID, 'extremeLoss')
+    }[severityId];
 
     await performRoll(actorId, severityId, customDC, type, lossInput, config, useCustomDC, useCustomLoss);
 

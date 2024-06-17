@@ -17,7 +17,7 @@ function FDregisterSettings() {
     default: 28
   });
   game.settings.register(MODULE_ID, "startingMadnessPoints", {
-    name: "Starting Madness Points",
+    name: "Starting Madness Limit",
     hint: "Set the initial amount of Madness Points before modifiers.",
     scope: "world",
     config: true,
@@ -69,7 +69,7 @@ function FDregisterSettings() {
       scope: "world",
       config: true,
       type: Number,
-      default: i === 1 ? 3 : i === 2 ? 2 : 1
+      default: i === 1 ? 2 : i === 2 ? 1 : 0
     });
   }
   game.settings.register(MODULE_ID, "shortTermInsanityReduction", {
@@ -88,6 +88,25 @@ function FDregisterSettings() {
     type: Number,
     default: 3
   });
+  const severities = ["minimal", "moderate", "serious", "extreme"];
+  severities.forEach((severity) => {
+    game.settings.register(MODULE_ID, `${severity}DC`, {
+      name: `${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity DC`,
+      hint: `Set the DC for ${severity} severity.`,
+      scope: "world",
+      config: true,
+      type: Number,
+      default: severity === "minimal" ? 8 : severity === "moderate" ? 12 : severity === "serious" ? 16 : 20
+    });
+    game.settings.register(MODULE_ID, `${severity}Loss`, {
+      name: `${severity.charAt(0).toUpperCase() + severity.slice(1)} Severity Loss`,
+      hint: `Set the loss amount for ${severity} severity.`,
+      scope: "world",
+      config: true,
+      type: String,
+      default: severity === "minimal" ? "1d4" : severity === "moderate" ? "1d6" : severity === "serious" ? "1d8" : "1d10"
+    });
+  });
   game.settings.register(MODULE_ID, "debug", {
     name: "Enable Debug Logging",
     hint: "Enable or disable debug logging for the Fate's Descent module.",
@@ -104,6 +123,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
     { key: "enableMadnessRange2", header: "Sanity Point Range 2" },
     { key: "enableMadnessRange3", header: "Sanity Point Range 3" },
     { key: "shortTermInsanityReduction", header: "Rolltable Madness Reductions" },
+    { key: "minimalDC", header: "Severity Levels" },
     { key: "debug", header: "Debug Settings" }
   ];
   settings.forEach((setting) => {
@@ -15507,26 +15527,26 @@ function instance($$self, $$props, $$invalidate) {
     {
       id: "minimal",
       text: "Minimal (DC 8)",
-      dc: 8,
-      loss: "1d4"
+      dc: game.settings.get(MODULE_ID, "minimalDC"),
+      loss: game.settings.get(MODULE_ID, "minimalLoss")
     },
     {
       id: "moderate",
       text: "Moderate (DC 12)",
-      dc: 12,
-      loss: "1d6"
+      dc: game.settings.get(MODULE_ID, "moderateDC"),
+      loss: game.settings.get(MODULE_ID, "moderateLoss")
     },
     {
       id: "serious",
       text: "Serious (DC 16)",
-      dc: 16,
-      loss: "1d8"
+      dc: game.settings.get(MODULE_ID, "seriousDC"),
+      loss: game.settings.get(MODULE_ID, "seriousLoss")
     },
     {
       id: "extreme",
       text: "Extreme (DC 20)",
-      dc: 20,
-      loss: "1d10"
+      dc: game.settings.get(MODULE_ID, "extremeDC"),
+      loss: game.settings.get(MODULE_ID, "extremeLoss")
     }
   ];
   const requestsStore = writable(game.settings.get(MODULE_ID, "globalSaveRequests").map((request) => ({
@@ -15540,10 +15560,10 @@ function instance($$self, $$props, $$invalidate) {
     const { actorId, selectedSeverity, customDC, type, useCustomLoss, loss, config, useCustomDC } = request;
     const severityId = selectedSeverity?.id || "minimal";
     const lossInput = useCustomLoss ? loss : {
-      "minimal": "1d4",
-      "moderate": "1d6",
-      "serious": "1d8",
-      "extreme": "1d10"
+      "minimal": game.settings.get(MODULE_ID, "minimalLoss"),
+      "moderate": game.settings.get(MODULE_ID, "moderateLoss"),
+      "serious": game.settings.get(MODULE_ID, "seriousLoss"),
+      "extreme": game.settings.get(MODULE_ID, "extremeLoss")
     }[severityId];
     await performRoll(actorId, severityId, customDC, type, lossInput, config, useCustomDC, useCustomLoss);
     let globalRequests = game.settings.get(MODULE_ID, "globalSaveRequests");
@@ -16126,7 +16146,7 @@ async function promptMadnessReduction(actorId) {
     return;
   }
   new Dialog({
-    title: "Insanity",
+    title: "Temporary Insanity",
     content: `
         <style>
             .insanity-dialog {
@@ -16238,7 +16258,7 @@ async function rollMadnessReduction(actor, tableType) {
                 justify-content: flex-start; 
                 padding: 10px; 
                 background-color: rgba(0, 0, 0, 0.5); 
-                margin-top: 0%;">
+                margin-top: 1%;">
                 ${effect.message(firstName, durationText)}
             </div>
         </div>
@@ -16593,9 +16613,9 @@ function getShortTermMadnessEffect(roll) {
     {
       range: [91, 100],
       effect: {
-        name: "Unconscious",
+        name: "Catatonic",
         message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} falls Unconscious</h3>
+                    <h3 style="margin-bottom: 3px;">${character} falls Catatonic</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
                     <p>The character falls unconscious.</p>
                 `,
@@ -16606,7 +16626,7 @@ function getShortTermMadnessEffect(roll) {
             key: "StatusEffectName",
             mode: 0,
             priority: 20,
-            value: "Unconscious"
+            value: "Catatonic"
           },
           {
             key: "flags.midi-qol.fail.ability.save.dex",
@@ -16795,7 +16815,7 @@ function getLongTermMadnessEffect(roll) {
       effect: {
         name: "Delusion",
         message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} is Delsuional</h3>
+                    <h3 style="margin-bottom: 3px;">${character} is Delusional</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
                     <p>The character experiences a powerful delusion. Choose a potion. The character imagines that he or she is under its effects.</p>
                 `,
@@ -17000,20 +17020,20 @@ function getLongTermMadnessEffect(roll) {
     {
       range: [96, 100],
       effect: {
-        name: "Unconscious",
+        name: "Catatonic",
         message: (character, durationText) => `
-                    <h3 style="margin-bottom: 3px;">${character} falls Unconscious</h3>
+                    <h3 style="margin-bottom: 3px;">${character} falls Catatonic</h3>
                     <h4 style="margin-bottom: 1px;">Duration: ${durationText}</h4>
-                    <p>The character falls unconscious. No amount of jostling or damage can wake the character.</p>
+                    <p>The character falls catatonic. No amount of jostling or damage can wake the character.</p>
                 `,
         icon: "modules/fates-descent/img/insanityIcon/unconscious.webp",
-        description: "The character falls unconscious. No amount of jostling or damage can wake the character.",
+        description: "The character falls catatonic. No amount of jostling or damage can wake the character.",
         changes: [
           {
             key: "StatusEffectName",
             mode: 0,
             priority: 20,
-            value: "Unconscious"
+            value: "Catatonic"
           },
           {
             key: "flags.midi-qol.fail.ability.save.dex",
@@ -17102,6 +17122,9 @@ function FDregisterHooks() {
   });
   Hooks.once("ready", () => {
     try {
+      if (!game.settings.get("dnd5e", "sanityScore")) {
+        ui.notifications.warn("Fate's Descent will not function properly unless the Sanity Score setting is enabled in the D&D 5E system settings.");
+      }
       debugLog("Fate's Descent | Module is ready and initialized!", styling$1);
       if (game.settings.get(MODULE_ID, "enableModule")) {
         new FatesDescentRoll();
@@ -17586,7 +17609,9 @@ async function handleSanityRest(actor) {
     }
     return acc;
   }, {});
-  const options = Object.entries(hitDiceLeft).map(([hitDice, data]) => `<option value="${hitDice}">${hitDice} (${data.remaining} left)</option>`);
+  const options = Object.entries(hitDiceLeft).map(
+    ([hitDice, data]) => `<option value="${hitDice}">${hitDice} (${data.remaining} left)</option>`
+  );
   if (!options.length) {
     return true;
   }
@@ -17594,63 +17619,63 @@ async function handleSanityRest(actor) {
     const dialog = new Dialog({
       title: "Sanity Points HitDie Recovery",
       content: `
-        <style>
+          <style>
             .sanity-dialog {
-            background: #222;
-            color: #f8f8f8;
-            padding: 5px;
-            border-radius: 0px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+              background: #222;
+              color: #f8f8f8;
+              padding: 5px;
+              border-radius: 0px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
             }
             .sanity-dialog p {
-            margin-bottom: 5px;
+              margin-bottom: 5px;
             }
             .sanity-dialog select {
-            margin-left: 10px;
-            background: #333; 
-            color: #f8f8f8; 
-            border: 1px solid #444;
-            padding: 2px;
-            border-radius: 4px;
-            font-size: 12px;
-            text-align: center;
+              margin-left: 10px;
+              background: #333; 
+              color: #f8f8f8; 
+              border: 1px solid #444;
+              padding: 2px;
+              border-radius: 4px;
+              font-size: 12px;
+              text-align: center;
             }
             .sanity-dialog input {
-            margin-left: 10px;
-            background: #333; 
-            color: #f8f8f8; 
-            border: 1px solid #444;
-            padding: 2px;
-            border-radius: 4px;
-            font-size: 12px;
-            text-align: center;
+              margin-left: 10px;
+              background: #333; 
+              color: #f8f8f8; 
+              border: 1px solid #444;
+              padding: 2px;
+              border-radius: 4px;
+              font-size: 12px;
+              text-align: center;
             }  
             .sanity-dialog button {
-            background: #f8f8f8;
-            color: #222;
-            border: none;
-            padding: 1px 5px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
+              background: #f8f8f8;
+              color: #222;
+              border: none;
+              padding: 1px 5px;
+              border-radius: 4px;
+              font-weight: bold;
+              font-size: 12px;
+              cursor: pointer;
             }
             .sanity-dialog button:hover {
-            background: #95f853;
+              background: #95f853;
             }
             .custom-dialog-position {
-            top: 20% !important;
+              top: 20% !important;
             }
-        </style>
-        <div class="sanity-dialog">
+          </style>
+          <div class="sanity-dialog">
             <h3>Select Hit Dice to Recover Sanity</h3>
             <p>
-            <select name="hitDice" style="width: 100px;>${options.join("")}</select>
-            <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
+              <select name="hitDice" style="width: 100px;">${options.join("")}</select>
+              <input type="number" name="numDice" min="1" value="1" style="width: 50px;" />
             </p>
-        </div>
+          </div>
         `,
       buttons: {
         yes: {
@@ -17679,17 +17704,15 @@ async function handleSanityRest(actor) {
   if (!selected) {
     return true;
   }
-  const rollDice = await new Roll(`${selected.numDice}${selected.hitDice}`).evaluate({ async: true });
-  const sanityPoints = getProperty(actor, "flags.fates-descent.sanityPoints.current");
-  const maxSanity = getProperty(actor, "flags.fates-descent.sanityPoints.max");
-  if (sanityPoints < maxSanity) {
-    const newValue = Math.min(sanityPoints + rollDice.total, maxSanity);
-    await actor.setFlag("fates-descent", "sanityPoints.current", newValue);
+  const rollDice = await new Roll(`1${selected.hitDice} * ${selected.numDice}`).evaluate();
+  const sanPool = actor.getRollData().resources.fifth;
+  const maxSanity = sanPool.max;
+  if (sanPool.value < maxSanity) {
+    const newValue = Math.min(sanPool.value + rollDice.total, maxSanity);
+    await actor.update({ "system.resources.fifth.value": newValue });
     rollDice.toMessage();
-    const regainedSanity = newValue - sanityPoints;
+    const regainedSanity = newValue - sanPool.value;
     ChatMessage.create({ content: `${actor.name} has regained ${regainedSanity} Sanity!` });
-  } else {
-    return true;
   }
   if (selected.class) {
     for (const classItem of Object.values(actor.classes)) {
