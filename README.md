@@ -29,7 +29,8 @@
                     </dd>
                 </dl>
                 <ul>
-                    <li>Please be sure this option is activated. The module will not fucntion without it. You will be given a warning on screen if the Setting is detected as False.</li>
+                    <li>Please be sure this option is activated. The module will not fucntion without it. You will be given a warning on screen if the Setting is detected as False.
+                    </li>
                     <table align="center">
                         <tr>
                             <td>
@@ -382,7 +383,36 @@
                                 </td>
                             </tr>
                         </table>
+                    </ul>    
                 </p>
+            <hr>    
+            <h4>Settings & Customization</h4>
+                <p>
+                    <dl>
+                        <dd>Most settings have been made adjustable, allowing each GM to customize the value ranges to fit their desired campaign.
+                    </dd>
+                    </dl>
+                    <ul>
+                        <li>You can adjust the starting Sanity and Madness values, as well as the points at which characters begin accumulating Madness due to the loss of Sanity Points.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1LcN2p_zGjO5p42H3OOOWXwPVqLJItqic" alt="Stasis" style="width: 500px; height: auto;" />
+                                </td>
+                            </tr>
+                        </table>
+                        <li>You can also adjust the amount the Rolltables reduce the Characters Madness and adjust the default values of the Sanity Roller.
+                        </li>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <img src="https://drive.google.com/uc?export=view&id=1Y_SuOJgxu4YcUr0DfWo_2bdijKzLC2Y8" alt="Stasis" style="width: 250px; height: auto;" />
+                                </td>                              
+                            </tr>
+                        </table>
+                    </ul>                            
+                </p>    
             <hr>
             <dl>
             <dd>By incorporating these new mechanics, Fate's Descent deepens the role-playing experience, challenging characters to maintain their mental fortitude while facing the horrors of their adventures.</dd>
