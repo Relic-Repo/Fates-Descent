@@ -93,7 +93,7 @@
             <h4>Madness Points</h4>
                 <p>
                     <dl>
-                        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 maximum Madness Points lsimit, by default, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.
+                        <dd>The second metric, Madness Points, represents the effects of sanity damage. Every character starts with 10 maximum Madness Points limit, by default, plus their Sanity Modifier, which serves a dual purpose: increasing capacity and providing an early-stage buffer against the effects of accumulated Madness.
                         </dd>
                     </dl>
                 </p>
