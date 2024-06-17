@@ -306,7 +306,7 @@
             </table>
             </p>
     <hr>
-    <h4>Included Macros</hr>
+    <h4>Included Macros</h4>
     <p>
         <dl>
         <dd>There are currently six different macros included with the system.
